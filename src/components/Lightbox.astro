@@ -1,0 +1,82 @@
+---
+/**
+ * Visor modal reutilizable, sobre `<dialog>` + `showModal()`: el top layer, el
+ * trap de foco, el cierre con Escape, el `inert` del resto de la página y la
+ * devolución del foco al disparador son nativos. El JS solo abre, cierra y
+ * cambia de slide.
+ *
+ * La galería le pasa sus slides por el slot: cada uno es un
+ * `<figure data-lb-slide>` con su propio caption, así no se duplican los datos.
+ * Con `count === 1` (caso del video) se ocultan navegación y contador.
+ */
+interface Props {
+  /** Identificador de la galería; los disparadores usan `data-lb-open="<id>:<i>"`. */
+  id: string;
+  /** Rótulo de la barra superior y `aria-label` del diálogo. */
+  label: string;
+  /** Número de slides, para el contador y los controles. */
+  count: number;
+}
+
+const { id, label, count } = Astro.props;
+const multiple = count > 1;
+
+const chromeButton =
+  'flex size-[52px] flex-none cursor-pointer items-center justify-center border border-hair-menu bg-transparent text-[18px] text-bone transition-colors duration-500 ease-editorial hover:border-gold hover:text-gold focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold';
+const chromeLabel = 'font-mono text-[10px] tracking-[.14em] text-bone-45 uppercase';
+---
+
+<dialog
+  data-lightbox={id}
+  data-index="0"
+  aria-label={label}
+  class="hidden size-full max-h-none max-w-none flex-col border-0 bg-ink p-0 text-bone open:flex"
+>
+  <div
+    class="section-x flex flex-none items-center justify-between gap-6 border-b border-hair py-[16px]"
+  >
+    <span class={chromeLabel}>{label}</span>
+    <button type="button" data-lb-close aria-label="Cerrar visor" class={chromeButton}>
+      ✕
+    </button>
+  </div>
+
+  <div
+    data-lb-backdrop
+    class="relative flex min-h-0 flex-1 items-center justify-center px-[clamp(20px,4vw,64px)] py-[clamp(24px,4vh,52px)]"
+  >
+    <slot />
+  </div>
+
+  <div
+    class="section-x flex flex-none items-center justify-between gap-6 border-t border-hair py-[16px]"
+  >
+    {
+      multiple ? (
+        <div class="flex items-center gap-[10px]">
+          <button type="button" data-lb-prev aria-label="Anterior" class={chromeButton}>
+            ←
+          </button>
+          <button type="button" data-lb-next aria-label="Siguiente" class={chromeButton}>
+            →
+          </button>
+        </div>
+      ) : (
+        <span />
+      )
+    }
+    {
+      multiple && (
+        <span data-lb-counter aria-live="polite" class={chromeLabel}>
+          {`01 / ${String(count).padStart(2, '0')}`}
+        </span>
+      )
+    }
+  </div>
+</dialog>
+
+<script>
+  import { initLightbox } from '../scripts/lightbox';
+
+  initLightbox();
+</script>

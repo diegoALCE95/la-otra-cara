@@ -38,7 +38,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
+  import { initHoverCursors } from '../scripts/hover-cursor';
   import { initReveals } from '../scripts/reveal';
 
   initReveals();
+  // El cursor cubre dos secciones (Proyectos y Servicios): se inicializa aquí.
+  initHoverCursors();
 </script>

@@ -16,13 +16,13 @@ import Button from './ui/Button.astro';
       heroMedia.video && (
         <video
           data-hero-video
-          src={heroMedia.video}
+          data-src={heroMedia.video}
           poster={heroMedia.poster ?? undefined}
           autoplay
           muted
           loop
           playsinline
-          preload="metadata"
+          preload="none"
           aria-hidden="true"
           class="size-full object-cover"
         />
@@ -86,3 +86,9 @@ import Button from './ui/Button.astro';
     <span class="text-[10px] tracking-[.24em] text-bone-45 uppercase">Scroll</span>
   </div>
 </section>
+
+<script>
+  import { initHeroVideo } from '../scripts/hero-video';
+
+  initHeroVideo();
+</script>

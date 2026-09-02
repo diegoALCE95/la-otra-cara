@@ -4,6 +4,8 @@ import ImagePlaceholder from './ui/ImagePlaceholder.astro';
 
 interface Props {
   proyecto: Proyecto;
+  /** Posición en la galería del visor (`data-lb-open="work:<índice>"`). */
+  index: number;
   /** Clase de delay del reveal, p.ej. '[--reveal-delay:.12s]'. */
   delay?: string;
   /** El destacado ancho usa la escala de título mayor. */
@@ -11,12 +13,14 @@ interface Props {
   class?: string;
 }
 
-const { proyecto, delay = '', wide = false, class: extra = '' } = Astro.props;
+const { proyecto, index, delay = '', wide = false, class: extra = '' } = Astro.props;
 ---
 
 <a
   href="#proyectos"
-  data-work
+  data-lb-open={`work:${index}`}
+  data-cursor-target
+  aria-haspopup="dialog"
   data-reveal
   class:list={[
     'group reveal block text-bone [--reveal-y:24px]',
@@ -25,7 +29,7 @@ const { proyecto, delay = '', wide = false, class: extra = '' } = Astro.props;
     extra,
   ]}
 >
-  <div class:list={['relative overflow-hidden bg-ink-well', proyecto.ratio]}>
+  <div class:list={['relative w-full overflow-hidden bg-ink-well', proyecto.ratio]}>
     <div
       class="absolute inset-0 transition-[scale] duration-[1100ms] ease-editorial group-hover:scale-[1.045]"
     >

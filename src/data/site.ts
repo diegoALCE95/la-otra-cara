@@ -18,12 +18,12 @@ export const site = {
 } as const;
 
 /**
- * Media del hero. Pendiente de entrega (README, "Assets pendientes" #1).
- * Mientras `video` sea null se muestra solo el gradiente radial difuminado,
- * que es el fallback previsto por el diseño.
- * TODO: subir hero-video.mp4 (< 3 MB, sin audio) y su poster a public/.
+ * Media del hero. El video es decorativo: se difiere por JS tras el `load` y
+ * en móvil (<900px) no se descarga — se queda el poster, que bajo `blur(26px)`
+ * es indistinguible. Ver `src/scripts/hero-video.ts`.
+ * Recodificado a 640x360 pre-difuminado (438 KB desde 25,8 MB del original).
  */
 export const heroMedia = {
-  video: null as string | null,
-  poster: null as string | null,
+  video: '/hero-video.mp4' as string | null,
+  poster: '/hero-poster.jpg' as string | null,
 };

@@ -1,9 +1,30 @@
 ---
 import { proyectos } from '../data/proyectos';
+import Lightbox from './Lightbox.astro';
 import WorkCard from './WorkCard.astro';
 import SectionShell from './ui/SectionShell.astro';
 
 const delays = ['', '[--reveal-delay:.12s]', '[--reveal-delay:.24s]'];
+
+/** Orden de lectura del grid: fila 1, destacado, fila 2. Es el del visor. */
+const galeria = [...proyectos.fila1, proyectos.destacado, ...proyectos.fila2];
+
+/**
+ * Proporción numérica derivada de la clase `aspect-[w/h]` del grid, para el
+ * espaciador del visor. Se deriva en vez de duplicarse en `proyectos.ts` para
+ * que no puedan desincronizarse.
+ */
+const proporcion = (ratio: string) => {
+  const [, w = '1', h = '1'] = ratio.match(/aspect-\[(\d+)\/(\d+)\]/) ?? [];
+  // Escaladas a px "intrínsecos": es lo que permite que max-w/max-h contengan
+  // la caja conservando el ratio, como haría una imagen real.
+  return { width: Number(w) * 200, height: Number(h) * 200 };
+};
+const indice = {
+  fila1: 0,
+  destacado: proyectos.fila1.length,
+  fila2: proyectos.fila1.length + 1,
+};
 ---
 
 <SectionShell
@@ -22,23 +43,28 @@ const delays = ['', '[--reveal-delay:.12s]', '[--reveal-delay:.24s]'];
     </span>
   </div>
 
-  <div data-work-grid>
+  <div data-cursor-zone="work">
     <div
       class="mt-[clamp(28px,5vh,56px)] grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid"
     >
       {
         proyectos.fila1.map((proyecto, i) => (
-          <WorkCard proyecto={proyecto} delay={delays[i]} />
+          <WorkCard proyecto={proyecto} index={indice.fila1 + i} delay={delays[i]} />
         ))
       }
     </div>
 
-    <WorkCard proyecto={proyectos.destacado} wide class="mt-grid" />
+    <WorkCard
+      proyecto={proyectos.destacado}
+      index={indice.destacado}
+      wide
+      class="mt-grid"
+    />
 
     <div class="mt-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid">
       {
         proyectos.fila2.map((proyecto, i) => (
-          <WorkCard proyecto={proyecto} delay={delays[i]} />
+          <WorkCard proyecto={proyecto} index={indice.fila2 + i} delay={delays[i]} />
         ))
       }
     </div>
@@ -47,16 +73,52 @@ const delays = ['', '[--reveal-delay:.12s]', '[--reveal-delay:.24s]'];
 
 {/* Cursor "Ver": solo se activa por JS en ≥900px con puntero fino. */}
 <div
-  data-work-cursor
+  data-cursor="work"
   data-on="false"
   aria-hidden="true"
-  class="pointer-events-none fixed top-0 left-0 z-[80] hidden size-24 -translate-x-1/2 -translate-y-1/2 scale-[.6] items-center justify-center rounded-full border border-gold bg-ink/25 text-[9px] tracking-[.2em] text-gold uppercase opacity-0 transition-[opacity,scale] duration-[350ms] ease-editorial data-[on=true]:scale-100 data-[on=true]:opacity-100 lg:flex"
+  class="hover-cursor text-[9px] tracking-[.2em] uppercase"
 >
   Ver
 </div>
 
-<script>
-  import { initWorkCursor } from '../scripts/work-cursor';
-
-  initWorkCursor();
-</script>
+<Lightbox id="work" label="Selected Work" count={galeria.length}>
+  {
+    galeria.map((proyecto) => (
+      <figure
+        data-lb-slide
+        hidden
+        class="m-0 flex h-full w-full max-w-[1180px] flex-col gap-[clamp(14px,2.2vh,26px)]"
+      >
+        {/* El SVG es solo el espaciador que fija la proporción: siendo elemento
+            reemplazado, al recortarlo `max-h-full` conserva el ratio en vez de
+            deformarse como lo haría un div con `aspect-*`.
+            TODO: al llegar las imágenes finales, este bloque se sustituye por
+            `<Image ... class="max-h-full w-auto object-contain" />`. */}
+        <div class="relative flex min-h-0 flex-1 items-center justify-center">
+          <svg
+            {...proporcion(proyecto.ratio)}
+            aria-hidden="true"
+            class="block h-auto max-h-full w-auto max-w-full bg-ink-well"
+          />
+          <span
+            aria-hidden="true"
+            class="absolute font-mono text-[10px] tracking-[.14em] text-bone-30 uppercase"
+          >
+            {proyecto.placeholder}
+          </span>
+        </div>
+        <figcaption class="flex flex-none flex-wrap items-baseline justify-between gap-4 border-t border-hair pt-4">
+          <span>
+            <span class="block font-display text-card-wide text-bone">
+              {proyecto.titulo}
+            </span>
+            <span class="mt-1.5 block text-[11px] tracking-[.2em] text-bone-45 uppercase">
+              {proyecto.categoria}
+            </span>
+          </span>
+          <span class="font-display text-[13px] text-gold">{proyecto.anio}</span>
+        </figcaption>
+      </figure>
+    ))
+  }
+</Lightbox>

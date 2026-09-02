@@ -254,7 +254,28 @@
   ::selection { background: var(--color-gold); color: var(--color-ink); }
 
   /* Bloqueo de scroll mientras el overlay móvil está abierto. */
-  body:has([data-menu][data-open="true"]) { overflow: hidden; }
+  body:has([data-menu][data-open="true"]),
+  body:has(dialog[data-lightbox][open]) { overflow: hidden; }
+
+  /* El visor ocupa el viewport completo; el UA lo centraría con márgenes.
+     Entrada y salida con `@starting-style` + `allow-discrete`: es la forma
+     nativa de animar un <dialog>, sin una línea de JS. El reset de
+     prefers-reduced-motion de más abajo la anula. */
+  dialog[data-lightbox] {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition:
+      opacity 380ms var(--ease-editorial),
+      display 380ms allow-discrete,
+      overlay 380ms allow-discrete;
+  }
+  dialog[data-lightbox][open] { opacity: 1; }
+  @starting-style {
+    dialog[data-lightbox][open] { opacity: 0; }
+  }
+  dialog[data-lightbox]::backdrop { background: var(--color-ink); }
 }
 
 /* ── Utilidades de composición ───────────────────────── */
@@ -271,6 +292,39 @@
 
 /* Estado inicial de los reveals al scroll. `reveal.ts` los libera.
    Ajustables por elemento: [--reveal-y:26px] [--reveal-dur:1.1s] [--reveal-delay:.12s] */
+/* Cursor que sigue al puntero sobre una zona (proyectos, servicios).
+   Solo existe ≥900px; `hover-cursor.ts` lo activa con data-on y lo posiciona. */
+@utility hover-cursor {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80;
+  display: none;
+  width: 6rem;
+  height: 6rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-gold);
+  border-radius: 9999px;
+  background: rgb(8 8 8 / .25);
+  color: var(--color-gold);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.6);
+  transition:
+    opacity 350ms var(--ease-editorial),
+    transform 350ms var(--ease-editorial);
+
+  &[data-on="true"] {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  @media (min-width: 900px) {
+    display: flex;
+  }
+}
+
 @utility reveal {
   opacity: 0;
   transform: translateY(var(--reveal-y, 18px));
