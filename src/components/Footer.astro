@@ -9,9 +9,11 @@ import { site } from '../data/site';
 <footer data-outside class="section-x relative overflow-hidden bg-ink pt-[clamp(64px,10vh,110px)]">
   <div class="shell">
     <div
+      data-reveal-group
+      data-reveal-step="90"
       class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[clamp(32px,4vw,72px)] pb-[clamp(44px,7vh,90px)]"
     >
-      <div>
+      <div data-reveal class="reveal [--reveal-y:16px]">
         <Image
           src={logoTrim}
           alt="La Otra Cara"
@@ -28,7 +30,7 @@ import { site } from '../data/site';
 
       {
         footerColumns.map((columna) => (
-          <div class="flex flex-col gap-3">
+          <div data-reveal class="reveal flex flex-col gap-3 [--reveal-y:16px]">
             <span class="mb-1.5 text-[10px] font-semibold tracking-[.26em] text-gold uppercase">
               {columna.titulo}
             </span>
@@ -52,7 +54,8 @@ import { site } from '../data/site';
     </div>
 
     <div
-      class="flex flex-wrap items-center justify-between gap-4 border-t border-hair-soft py-5"
+      data-reveal
+      class="reveal flex flex-wrap items-center justify-between gap-4 border-t border-hair-soft py-5 [--reveal-y:12px]"
     >
       <span class="text-[11px] tracking-[.14em] text-bone-35 uppercase"
         >© {site.year} {site.name}</span
@@ -61,8 +64,9 @@ import { site } from '../data/site';
     </div>
 
     <div
+      data-reveal
       aria-hidden="true"
-      class="mb-[-.16em] text-center font-display text-wordmark text-hair-faint select-none"
+      class="reveal mb-[-.16em] text-center font-display text-wordmark text-hair-faint select-none [--reveal-dur:1.2s] [--reveal-y:0px]"
     >
       LOC
     </div>

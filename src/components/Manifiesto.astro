@@ -21,15 +21,16 @@ import SectionShell from './ui/SectionShell.astro';
   <ManifiestoRings />
 
   <Eyebrow
+    data-reveal
     numero="02"
     ruleClass="bg-hair-ink-rule"
     tone="stone"
-    class="relative mb-[clamp(32px,6vh,64px)]">Manifiesto</Eyebrow
+    class="reveal relative mb-[clamp(32px,6vh,64px)]">Manifiesto</Eyebrow
   >
 
   <h2
     data-reveal
-    class="reveal relative m-0 max-w-[20ch] font-display text-h2-manifesto font-normal text-pretty [--reveal-y:26px]"
+    class="reveal relative m-0 max-w-[20ch] font-display text-h2-manifesto font-normal text-pretty [--reveal-delay:.08s] [--reveal-y:26px]"
   >
     Tu marca tiene más de una cara. Nosotros encontramos <em
       class="text-gold-deep italic">la que nadie puede ignorar.</em
@@ -48,7 +49,7 @@ import SectionShell from './ui/SectionShell.astro';
       Estrategia, identidad, contenido y medios en una sola mesa. Sin capas intermedias, sin
       presentaciones de relleno: lo que sale al mercado es lo que decidimos juntos.
     </p>
-    <div class="flex flex-col gap-[22px]">
+    <div data-reveal class="reveal flex flex-col gap-[22px] [--reveal-delay:.3s]">
       <div class="flex items-baseline gap-[14px]">
         <span class="font-display text-metric text-ink">12</span>
         <span class="text-[11px] tracking-[.18em] text-stone uppercase">Marcas al año</span>

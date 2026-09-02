@@ -7,6 +7,8 @@ interface Props {
   tone?: 'gold' | 'gold-deep' | 'stone';
   tracking?: string;
   class?: string;
+  /** El resto de atributos (p. ej. `data-reveal`) va al contenedor. */
+  [key: string]: unknown;
 }
 
 const {
@@ -15,6 +17,7 @@ const {
   tone = 'gold',
   tracking = 'tracking-[.26em]',
   class: extra = '',
+  ...atributos
 } = Astro.props;
 
 const toneClass = {
@@ -24,7 +27,7 @@ const toneClass = {
 }[tone];
 ---
 
-<div class:list={['flex items-center gap-[14px]', extra]}>
+<div class:list={['flex items-center gap-[14px]', extra]} {...atributos}>
   {numero && <span class="font-display text-[13px] text-gold-deep">{numero}</span>}
   {ruleClass && <span aria-hidden="true" class:list={['block h-px w-[56px]', ruleClass]} />}
   <span class:list={['text-[11px] font-semibold uppercase', tracking, toneClass]}>

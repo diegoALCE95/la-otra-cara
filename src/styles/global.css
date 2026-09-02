@@ -290,8 +290,6 @@
   padding-block: var(--spacing-section);
 }
 
-/* Estado inicial de los reveals al scroll. `reveal.ts` los libera.
-   Ajustables por elemento: [--reveal-y:26px] [--reveal-dur:1.1s] [--reveal-delay:.12s] */
 /* Cursor que sigue al puntero sobre una zona (proyectos, servicios).
    Solo existe ≥900px; `hover-cursor.ts` lo activa con data-on y lo posiciona. */
 @utility hover-cursor {
@@ -325,6 +323,9 @@
   }
 }
 
+/* Estado inicial de los reveals al scroll. `reveal.ts` los libera, sueltos
+   ([data-reveal]) o en cascada dentro de un [data-reveal-group].
+   Ajustables por elemento: [--reveal-y:26px] [--reveal-dur:1.1s] [--reveal-delay:.12s] */
 @utility reveal {
   opacity: 0;
   transform: translateY(var(--reveal-y, 18px));

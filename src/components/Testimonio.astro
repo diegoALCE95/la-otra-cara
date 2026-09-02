@@ -6,14 +6,22 @@ import { testimonio } from '../data/equipo';
   class="section-x border-t border-hair-gold bg-ink-soft py-[clamp(100px,18vh,210px)]"
 >
   <div class="mx-auto max-w-[1100px] text-center">
-    <span aria-hidden="true" class="block font-display text-openquote text-gold">“</span>
+    <span
+      data-reveal
+      aria-hidden="true"
+      class="reveal block font-display text-openquote text-gold [--reveal-y:12px]"
+      >“</span
+    >
     <blockquote
       data-reveal
-      class="reveal m-0 mt-[clamp(18px,3vh,34px)] font-display text-quote font-normal text-pretty text-bone [--reveal-y:22px]"
+      class="reveal m-0 mt-[clamp(18px,3vh,34px)] font-display text-quote font-normal text-pretty text-bone [--reveal-delay:.1s] [--reveal-y:22px]"
     >
       {testimonio.cita}<em class="italic">{testimonio.citaEnfasis}</em>
     </blockquote>
-    <div class="mt-[clamp(32px,5vh,56px)] flex flex-col items-center gap-2">
+    <div
+      data-reveal
+      class="reveal mt-[clamp(32px,5vh,56px)] flex flex-col items-center gap-2 [--reveal-delay:.28s]"
+    >
       <span aria-hidden="true" class="mb-3 block h-px w-[40px] bg-gold"></span>
       <span class="text-[12px] font-semibold tracking-[.2em] text-bone uppercase"
         >{testimonio.autor}</span

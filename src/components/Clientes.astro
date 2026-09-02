@@ -5,17 +5,21 @@ import SectionShell from './ui/SectionShell.astro';
 
 <SectionShell py="py-[clamp(70px,11vh,130px)]" class="bg-ink">
   <p
-    class="mt-0 mb-[clamp(32px,5vh,56px)] text-[11px] font-medium tracking-[.24em] text-bone-45 uppercase"
+    data-reveal
+    class="reveal mt-0 mb-[clamp(32px,5vh,56px)] text-[11px] font-medium tracking-[.24em] text-bone-45 uppercase [--reveal-y:12px]"
   >
     Marcas que confiaron en ver las cosas diferente.
   </p>
   <div
+    data-reveal-group
+    data-reveal-step="70"
     class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] border-t border-l border-hair-soft"
   >
     {
       clientes.map((cliente) => (
         <div
-          class="flex min-h-[110px] items-center justify-center border-r border-b border-hair-soft"
+          data-reveal
+          class="reveal flex min-h-[110px] items-center justify-center border-r border-b border-hair-soft [--reveal-dur:.8s] [--reveal-y:0px]"
         >
           <span class="font-mono text-[10px] tracking-[.14em] text-bone-30 uppercase">
             {cliente}

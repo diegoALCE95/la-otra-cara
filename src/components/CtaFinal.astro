@@ -12,26 +12,32 @@ const mailto = `mailto:${site.email}`;
   id="contacto"
   py="py-[clamp(90px,16vh,190px)]"
   class="relative overflow-hidden bg-bone text-ink"
-  innerClass="relative"
+  innerClass="relative z-10"
 >
-  {/* Retrato que invade la esquina inferior derecha a propósito. */}
+  {/* Retrato que invade la esquina inferior derecha a propósito: va por debajo
+      del texto (z-0 contra el z-10 del contenido). */}
   <div
     slot="bleed"
-    class="absolute right-0 bottom-0 aspect-[3/4] w-[clamp(180px,26vw,420px)] translate-y-[12%] overflow-hidden"
+    class="absolute right-0 bottom-0 z-0 aspect-[3/4] w-[clamp(180px,26vw,420px)] translate-y-[12%] overflow-hidden"
   >
     <ImagePlaceholder label="Retrato editorial" />
   </div>
 
-  <Eyebrow tone="gold-deep" tracking="tracking-[.3em]">Siguiente paso</Eyebrow>
+  <Eyebrow data-reveal class="reveal" tone="gold-deep" tracking="tracking-[.3em]"
+    >Siguiente paso</Eyebrow
+  >
 
   <h2
     data-reveal
-    class="reveal mt-[clamp(20px,4vh,40px)] mb-0 max-w-[22ch] font-display text-h2-cta font-normal text-pretty [--reveal-y:26px]"
+    class="reveal mt-[clamp(20px,4vh,40px)] mb-0 max-w-[22ch] font-display text-h2-cta font-normal text-pretty [--reveal-delay:.1s] [--reveal-y:26px]"
   >
     ¿Le mostramos al mundo <em class="text-gold-deep italic">la otra cara</em> de tu marca?
   </h2>
 
-  <div class="mt-[clamp(36px,6vh,72px)] flex flex-wrap items-center gap-7">
+  <div
+    data-reveal
+    class="reveal mt-[clamp(36px,6vh,72px)] flex flex-wrap items-center gap-7 [--reveal-delay:.22s]"
+  >
     <Button href={mailto} variant="solid-ink">Hablemos →</Button>
     <a
       href={mailto}
