@@ -1,0 +1,62 @@
+---
+import { proyectos } from '../data/proyectos';
+import WorkCard from './WorkCard.astro';
+import SectionShell from './ui/SectionShell.astro';
+
+const delays = ['', '[--reveal-delay:.12s]', '[--reveal-delay:.24s]'];
+---
+
+<SectionShell
+  id="proyectos"
+  py="pt-[clamp(70px,10vh,120px)] pb-[clamp(90px,14vh,170px)]"
+  class="bg-ink"
+>
+  <div
+    class="flex flex-wrap items-end justify-between gap-6 border-b border-hair pb-[clamp(32px,5vh,56px)]"
+  >
+    <h2 class="m-0 font-display text-h2 font-normal">
+      Selected <em class="text-gold italic">Work</em>
+    </h2>
+    <span class="max-w-[32ch] text-[13px]/[1.6] font-light text-bone-50">
+      Proyectos que hablan por nosotros. Selección 2025 — 2026.
+    </span>
+  </div>
+
+  <div data-work-grid>
+    <div
+      class="mt-[clamp(28px,5vh,56px)] grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid"
+    >
+      {
+        proyectos.fila1.map((proyecto, i) => (
+          <WorkCard proyecto={proyecto} delay={delays[i]} />
+        ))
+      }
+    </div>
+
+    <WorkCard proyecto={proyectos.destacado} wide class="mt-grid" />
+
+    <div class="mt-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid">
+      {
+        proyectos.fila2.map((proyecto, i) => (
+          <WorkCard proyecto={proyecto} delay={delays[i]} />
+        ))
+      }
+    </div>
+  </div>
+</SectionShell>
+
+{/* Cursor "Ver": solo se activa por JS en ≥900px con puntero fino. */}
+<div
+  data-work-cursor
+  data-on="false"
+  aria-hidden="true"
+  class="pointer-events-none fixed top-0 left-0 z-[80] hidden size-24 -translate-x-1/2 -translate-y-1/2 scale-[.6] items-center justify-center rounded-full border border-gold bg-ink/25 text-[9px] tracking-[.2em] text-gold uppercase opacity-0 transition-[opacity,scale] duration-[350ms] ease-editorial data-[on=true]:scale-100 data-[on=true]:opacity-100 lg:flex"
+>
+  Ver
+</div>
+
+<script>
+  import { initWorkCursor } from '../scripts/work-cursor';
+
+  initWorkCursor();
+</script>

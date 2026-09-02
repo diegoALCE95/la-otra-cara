@@ -1,0 +1,41 @@
+---
+type Disciplina = { texto: string; estilo: 'serif' | 'serif-italic' | 'label' };
+
+const disciplinas: Disciplina[] = [
+  { texto: 'Branding', estilo: 'serif' },
+  { texto: 'Dirección de arte', estilo: 'label' },
+  { texto: 'Social Media', estilo: 'serif-italic' },
+  { texto: 'Paid Media', estilo: 'label' },
+  { texto: 'Web', estilo: 'serif' },
+  { texto: 'Producción', estilo: 'label' },
+];
+
+const estilos = {
+  serif: 'font-display text-marquee text-bone-90',
+  'serif-italic': 'font-display text-marquee text-bone-90 italic',
+  label: 'text-[11px] tracking-[.26em] text-bone-50 uppercase',
+};
+---
+
+<div class="overflow-hidden border-y border-hair-gold bg-ink py-[22px]">
+  <div class="flex w-max animate-marquee">
+    {
+      /* La segunda pista es un duplicado decorativo: la animación recorre -50%. */
+      [false, true].map((duplicada) => (
+        <div
+          aria-hidden={duplicada ? 'true' : undefined}
+          class="flex items-center gap-[clamp(28px,4vw,64px)] pr-[clamp(28px,4vw,64px)]"
+        >
+          {disciplinas.map((d) => (
+            <>
+              <span class:list={['whitespace-nowrap', estilos[d.estilo]]}>{d.texto}</span>
+              <span aria-hidden="true" class="text-gold">
+                ◆
+              </span>
+            </>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>

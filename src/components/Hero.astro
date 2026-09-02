@@ -1,0 +1,88 @@
+---
+import { heroMedia } from '../data/site';
+import Button from './ui/Button.astro';
+---
+
+<section
+  id="top"
+  class="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden text-center"
+>
+  {/* Capa de media difuminada con drift. Sin video, el gradiente es el fallback del diseño. */}
+  <div
+    aria-hidden="true"
+    class="absolute inset-[-8%] z-0 animate-hero-drift bg-[radial-gradient(70%_60%_at_40%_35%,#2a2419_0%,#141210_45%,#080808_100%)] [transform:scale(1.12)] brightness-[.62] saturate-[.72] blur-[26px]"
+  >
+    {
+      heroMedia.video && (
+        <video
+          data-hero-video
+          src={heroMedia.video}
+          poster={heroMedia.poster ?? undefined}
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          aria-hidden="true"
+          class="size-full object-cover"
+        />
+      )
+    }
+  </div>
+
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(120%_90%_at_50%_45%,rgba(8,8,8,.28)_0%,rgba(8,8,8,.72)_55%,rgba(8,8,8,.94)_100%)]"
+  >
+  </div>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(180deg,rgba(8,8,8,.85)_0%,rgba(8,8,8,0)_26%,rgba(8,8,8,0)_68%,rgba(8,8,8,.95)_100%)]"
+  >
+  </div>
+
+  <div
+    class="section-x relative z-[2] flex w-full max-w-[1180px] flex-col items-center pt-[clamp(120px,18vh,190px)] pb-[clamp(96px,14vh,150px)]"
+  >
+    <div
+      data-reveal
+      class="reveal mb-[clamp(22px,4vh,40px)] flex items-center justify-center gap-[14px]"
+    >
+      <span aria-hidden="true" class="block h-px w-[clamp(24px,4vw,56px)] bg-gold"></span>
+      <span class="text-[11px] font-semibold tracking-[.28em] text-gold uppercase"
+        >Agencia Creativa &amp; Marketing</span
+      >
+      <span aria-hidden="true" class="block h-px w-[clamp(24px,4vw,56px)] bg-gold"></span>
+    </div>
+
+    <h1
+      data-reveal
+      class="reveal m-0 font-display text-hero font-normal text-balance text-white [--reveal-delay:.1s] [--reveal-dur:1.1s] [--reveal-y:28px]"
+    >
+      Mostramos <em class="text-bone italic">la otra cara</em> de tu marca.
+    </h1>
+
+    <p
+      data-reveal
+      class="reveal mt-[clamp(24px,4vh,44px)] max-w-[52ch] text-body font-light text-pretty text-bone-76 [--reveal-delay:.25s]"
+    >
+      Estrategia, identidad y comunicación para marcas que quieren competir en otra categoría.
+    </p>
+
+    <div
+      data-reveal
+      class="reveal mt-[clamp(30px,5vh,52px)] flex flex-wrap items-center justify-center gap-[14px] [--reveal-delay:.35s]"
+    >
+      <Button href="#contacto" variant="solid-bone">Cuéntanos tu proyecto →</Button>
+      <Button href="#proyectos" variant="outline-bone">Ver proyectos</Button>
+    </div>
+  </div>
+
+  <div
+    aria-hidden="true"
+    class="absolute inset-x-0 bottom-[clamp(24px,5vh,44px)] z-[2] flex flex-col items-center gap-[10px]"
+  >
+    <span class="block h-[44px] w-px animate-scroll-hint bg-gold"></span>
+    <span class="text-[10px] tracking-[.24em] text-bone-45 uppercase">Scroll</span>
+  </div>
+</section>

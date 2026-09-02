@@ -1,0 +1,23 @@
+---
+/**
+ * Hueco de imagen mientras el asset final no existe: mantiene el fondo y la
+ * proporción del contenedor para que no haya salto de layout (CLS 0).
+ * El label va en mono 10px, como en la referencia.
+ */
+interface Props {
+  label: string;
+  class?: string;
+}
+
+const { label, class: extra = '' } = Astro.props;
+---
+
+<div
+  aria-hidden="true"
+  class:list={['flex size-full items-center justify-center bg-ink-well px-6', extra]}
+>
+  <span
+    class="text-center font-mono text-[10px] tracking-[.14em] text-bone-30 uppercase"
+    >{label}</span
+  >
+</div>

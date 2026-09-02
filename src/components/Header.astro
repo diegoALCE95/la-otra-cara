@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+
+import logoMark from '../assets/loc-logo-mark.png';
+import { navLinks } from '../data/nav';
+import Button from './ui/Button.astro';
+---
+
+<header
+  data-header
+  data-scrolled="false"
+  class="section-x fixed inset-x-0 top-0 z-[60] flex items-center justify-between gap-6 border-b border-transparent bg-transparent py-[22px] transition-[background-color,backdrop-filter,border-color,padding] duration-500 ease-editorial data-[scrolled=true]:border-hair-scroll data-[scrolled=true]:bg-scrim data-[scrolled=true]:py-[14px] data-[scrolled=true]:backdrop-blur-[14px] data-[scrolled=true]:backdrop-saturate-[1.4]"
+>
+  <a
+    href="#top"
+    class="flex items-center gap-[14px] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+  >
+    <Image
+      src={logoMark}
+      alt="La Otra Cara"
+      height={40}
+      densities={[1, 2]}
+      loading="eager"
+      class="block h-10 w-auto"
+    />
+  </a>
+
+  <nav aria-label="Principal" class="hidden items-center gap-[clamp(22px,2.6vw,42px)] lg:flex">
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-[12px] font-medium tracking-[.16em] text-bone uppercase focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+
+  {/* La visibilidad va en el contenedor: el `display` del botón lo fija su variante. */}
+  <div class="hidden lg:block">
+    <Button href="#contacto" variant="outline-gold">Hablemos</Button>
+  </div>
+
+  <button
+    type="button"
+    data-menu-toggle
+    aria-label="Abrir menú"
+    aria-controls="menu-movil"
+    aria-expanded="false"
+    class="flex size-[52px] cursor-pointer flex-col justify-center gap-[6px] border border-hair-menu bg-transparent px-3 focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold lg:hidden"
+  >
+    <span aria-hidden="true" class="block h-px bg-bone"></span>
+    <span aria-hidden="true" class="block h-px bg-gold"></span>
+  </button>
+</header>
+
+<script>
+  import { initHeader } from '../scripts/header';
+
+  initHeader();
+</script>

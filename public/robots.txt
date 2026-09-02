@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://laotracara.com/sitemap-index.xml

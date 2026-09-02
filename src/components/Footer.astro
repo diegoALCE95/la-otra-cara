@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+
+import logoTrim from '../assets/loc-logo-trim.png';
+import { footerColumns } from '../data/nav';
+import { site } from '../data/site';
+---
+
+<footer data-outside class="section-x relative overflow-hidden bg-ink pt-[clamp(64px,10vh,110px)]">
+  <div class="shell">
+    <div
+      class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[clamp(32px,4vw,72px)] pb-[clamp(44px,7vh,90px)]"
+    >
+      <div>
+        <Image
+          src={logoTrim}
+          alt="La Otra Cara"
+          height={58}
+          densities={[1, 2]}
+          loading="lazy"
+          decoding="async"
+          class="block h-[58px] w-auto"
+        />
+        <p class="mt-[22px] mb-0 max-w-[26ch] text-[13px]/[1.7] font-light text-bone-45">
+          Agencia boutique de marketing, branding y crecimiento digital.
+        </p>
+      </div>
+
+      {
+        footerColumns.map((columna) => (
+          <div class="flex flex-col gap-3">
+            <span class="mb-1.5 text-[10px] font-semibold tracking-[.26em] text-gold uppercase">
+              {columna.titulo}
+            </span>
+            {columna.items.map((item) =>
+              item.href ? (
+                <a
+                  href={item.href}
+                  class="text-[13px] text-bone-70 hover:text-bone focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <span class:list={['text-[13px]', item.muted ? 'font-light text-bone-45' : 'text-bone-70']}>
+                  {item.label}
+                </span>
+              ),
+            )}
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="flex flex-wrap items-center justify-between gap-4 border-t border-hair-soft py-5"
+    >
+      <span class="text-[11px] tracking-[.14em] text-bone-35 uppercase"
+        >© {site.year} {site.name}</span
+      >
+      <span class="text-[11px] tracking-[.14em] text-bone-35 uppercase">{site.tagline}</span>
+    </div>
+
+    <div
+      aria-hidden="true"
+      class="mb-[-.16em] text-center font-display text-wordmark text-hair-faint select-none"
+    >
+      LOC
+    </div>
+  </div>
+</footer>

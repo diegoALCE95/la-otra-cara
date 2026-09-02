@@ -1,0 +1,41 @@
+---
+import { equipo } from '../data/equipo';
+import ImagePlaceholder from './ui/ImagePlaceholder.astro';
+import SectionShell from './ui/SectionShell.astro';
+
+const delays = ['', '[--reveal-delay:.14s]'];
+---
+
+<SectionShell class="bg-ink">
+  <div class="flex flex-wrap items-end justify-between gap-6">
+    <h2 class="m-0 max-w-[16ch] font-display text-h2-team font-normal">
+      Las ideas tienen <em class="text-gold italic">responsables.</em>
+    </h2>
+    <p class="m-0 max-w-[34ch] text-lede font-light text-bone-55">
+      “Estrategia, creatividad y ejecución bajo una misma visión.”
+    </p>
+  </div>
+
+  <div
+    class="mt-[clamp(40px,7vh,80px)] grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid"
+  >
+    {
+      equipo.map((persona, i) => (
+        <div data-reveal class:list={['reveal [--reveal-y:24px]', delays[i]]}>
+          <div class="relative aspect-[4/5] overflow-hidden bg-ink-well">
+            <ImagePlaceholder label={persona.placeholder} />
+          </div>
+          <div class="mt-4 flex items-baseline justify-between gap-4 border-t border-hair pt-4">
+            <span>
+              <span class="block font-display text-card-team">{persona.nombre}</span>
+              <span class="mt-1.5 block text-[11px] tracking-[.2em] text-bone-45 uppercase">
+                {persona.rol}
+              </span>
+            </span>
+            <span class="font-display text-[13px] text-gold">{persona.indice}</span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</SectionShell>

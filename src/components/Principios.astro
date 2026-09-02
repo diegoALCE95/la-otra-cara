@@ -1,0 +1,38 @@
+---
+import { principios } from '../data/principios';
+import Eyebrow from './ui/Eyebrow.astro';
+import SectionShell from './ui/SectionShell.astro';
+
+/* Padding e hairlines por celda: la primera no lleva padding izquierdo,
+   la última no lleva padding derecho, y 2ª y 3ª añaden borde izquierdo. */
+const celdas = [
+  'py-[clamp(26px,4vh,44px)] pr-[clamp(20px,2.4vw,40px)] pl-0',
+  'px-[clamp(20px,2.4vw,40px)] py-[clamp(26px,4vh,44px)] border-l border-hair',
+  'py-[clamp(26px,4vh,44px)] pr-0 pl-[clamp(20px,2.4vw,40px)] border-l border-hair',
+];
+---
+
+<SectionShell class="border-t border-hair-gold bg-ink-soft">
+  <Eyebrow tracking="tracking-[.3em]">No somos otra agencia</Eyebrow>
+
+  <h2
+    data-reveal
+    class="reveal mt-[clamp(18px,3vh,32px)] mb-0 font-display text-h2-mega font-normal [--reveal-y:26px]"
+  >
+    Somos <em class="italic">La Otra Cara.</em>
+  </h2>
+
+  <div
+    class="mt-[clamp(48px,9vh,110px)] grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-0 border-t border-hair"
+  >
+    {
+      principios.map((principio, i) => (
+        <div class:list={['border-b border-hair', celdas[i]]}>
+          <span class="font-display text-[13px] text-gold">{principio.numeral}</span>
+          <p class="mt-4 mb-0 font-display text-principle text-bone">{principio.titulo}</p>
+          <p class="mt-3.5 mb-0 text-[14px]/[1.65] font-light text-bone-50">{principio.apoyo}</p>
+        </div>
+      ))
+    }
+  </div>
+</SectionShell>

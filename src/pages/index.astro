@@ -1,0 +1,44 @@
+---
+import Clientes from '../components/Clientes.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import Equipo from '../components/Equipo.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Manifiesto from '../components/Manifiesto.astro';
+import Marquee from '../components/Marquee.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Principios from '../components/Principios.astro';
+import Proceso from '../components/Proceso.astro';
+import SelectedWork from '../components/SelectedWork.astro';
+import Servicios from '../components/Servicios.astro';
+import Testimonio from '../components/Testimonio.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <Header />
+  <MobileMenu />
+
+  <main id="main" data-outside>
+    <Hero />
+    <Manifiesto />
+    <Marquee />
+    <Servicios />
+    <SelectedWork />
+    <Principios />
+    <Equipo />
+    <Proceso />
+    <Clientes />
+    <Testimonio />
+    <CtaFinal />
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  import { initReveals } from '../scripts/reveal';
+
+  initReveals();
+</script>

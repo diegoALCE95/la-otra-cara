@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+
+import logoMark from '../assets/loc-logo-mark.png';
+import { navLinks } from '../data/nav';
+import Button from './ui/Button.astro';
+---
+
+<div
+  id="menu-movil"
+  data-menu
+  data-open="false"
+  hidden
+  class="fixed inset-0 z-[90] flex-col bg-ink px-[clamp(20px,6vw,48px)] pt-[22px] pb-12 data-[open=true]:flex lg:hidden"
+>
+  <div class="flex items-center justify-between">
+    <Image
+      src={logoMark}
+      alt="La Otra Cara"
+      height={42}
+      densities={[1, 2]}
+      class="block h-[42px] w-auto"
+    />
+    <button
+      type="button"
+      data-menu-close
+      aria-label="Cerrar menú"
+      class="size-[52px] cursor-pointer border border-hair-menu bg-transparent text-[20px] text-bone focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+      >✕</button
+    >
+  </div>
+
+  <nav aria-label="Principal (móvil)" class="mt-auto flex flex-col gap-[6px]">
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          data-menu-close
+          class:list={[
+            'font-display text-menu-link focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold',
+            link.href === '#contacto' ? 'text-gold italic' : 'text-bone',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+
+  <Button href="#contacto" variant="solid-gold" class="mt-[44px]" data-menu-close="">
+    Hablemos →
+  </Button>
+</div>
+
+<script>
+  import { initMenu } from '../scripts/menu';
+
+  initMenu();
+</script>

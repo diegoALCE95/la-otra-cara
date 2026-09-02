@@ -1,0 +1,36 @@
+---
+import { proceso } from '../data/proceso';
+import Eyebrow from './ui/Eyebrow.astro';
+import SectionShell from './ui/SectionShell.astro';
+
+const delays = ['', '[--reveal-delay:.1s]', '[--reveal-delay:.2s]', '[--reveal-delay:.3s]'];
+---
+
+<SectionShell class="bg-bone text-ink">
+  <Eyebrow
+    ruleClass="bg-hair-ink-rule-soft"
+    tone="stone"
+    tracking="tracking-[.28em]"
+    class="mb-[clamp(32px,6vh,64px)]">Proceso</Eyebrow
+  >
+
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-[clamp(28px,3vw,56px)]">
+    {
+      proceso.map((paso, i) => (
+        <div
+          data-reveal
+          class:list={[
+            'reveal border-t border-hair-ink-strong pt-[22px] [--reveal-dur:.9s] [--reveal-y:20px]',
+            delays[i],
+          ]}
+        >
+          <span class="block font-display text-step">{paso.numero}</span>
+          <span class="mt-[18px] block text-[11px] font-semibold tracking-[.24em] uppercase">
+            {paso.titulo}
+          </span>
+          <p class="mt-3 mb-0 text-[14px]/[1.65] font-light text-graphite-soft">{paso.apoyo}</p>
+        </div>
+      ))
+    }
+  </div>
+</SectionShell>

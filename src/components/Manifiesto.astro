@@ -1,0 +1,62 @@
+---
+import ManifiestoRings from './ManifiestoRings.astro';
+import Eyebrow from './ui/Eyebrow.astro';
+import SectionShell from './ui/SectionShell.astro';
+---
+
+<SectionShell
+  id="agencia"
+  py="py-[clamp(90px,15vh,190px)]"
+  class="relative overflow-hidden bg-bone text-ink"
+  innerClass="relative"
+>
+  <div
+    slot="bleed"
+    aria-hidden="true"
+    class="pointer-events-none absolute bottom-[-6vh] left-[-4vw] font-display text-watermark whitespace-nowrap text-watermark-ink italic select-none"
+  >
+    cara
+  </div>
+
+  <ManifiestoRings />
+
+  <Eyebrow
+    numero="02"
+    ruleClass="bg-hair-ink-rule"
+    tone="stone"
+    class="relative mb-[clamp(32px,6vh,64px)]">Manifiesto</Eyebrow
+  >
+
+  <h2
+    data-reveal
+    class="reveal relative m-0 max-w-[20ch] font-display text-h2-manifesto font-normal text-pretty [--reveal-y:26px]"
+  >
+    Tu marca tiene más de una cara. Nosotros encontramos <em
+      class="text-gold-deep italic">la que nadie puede ignorar.</em
+    >
+  </h2>
+
+  <div
+    class="mt-[clamp(44px,8vh,96px)] grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-column border-t border-hair-ink pt-[clamp(28px,4vh,44px)]"
+  >
+    <p data-reveal class="reveal m-0 text-body font-light text-graphite [--reveal-delay:.1s]">
+      Somos una agencia boutique. Trabajamos con pocas marcas al año porque creemos que el criterio
+      no se escala: se dedica. Cada proyecto empieza con una pregunta incómoda sobre el negocio, no
+      con un moodboard.
+    </p>
+    <p data-reveal class="reveal m-0 text-body font-light text-graphite [--reveal-delay:.2s]">
+      Estrategia, identidad, contenido y medios en una sola mesa. Sin capas intermedias, sin
+      presentaciones de relleno: lo que sale al mercado es lo que decidimos juntos.
+    </p>
+    <div class="flex flex-col gap-[22px]">
+      <div class="flex items-baseline gap-[14px]">
+        <span class="font-display text-metric text-ink">12</span>
+        <span class="text-[11px] tracking-[.18em] text-stone uppercase">Marcas al año</span>
+      </div>
+      <div class="flex items-baseline gap-[14px]">
+        <span class="font-display text-metric text-ink">05</span>
+        <span class="text-[11px] tracking-[.18em] text-stone uppercase">Disciplinas</span>
+      </div>
+    </div>
+  </div>
+</SectionShell>

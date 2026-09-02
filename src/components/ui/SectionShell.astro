@@ -1,0 +1,24 @@
+---
+/**
+ * Envoltorio de sección: gutter lateral del sistema + contenedor de 1440px.
+ * `py` recibe la clase completa de padding vertical (nunca se combina con
+ * otra en `class`, para que no compitan dos declaraciones equivalentes).
+ * El slot `bleed` va suelto en la sección, para lo que se posiciona respecto
+ * a ella y sangra fuera del contenedor (marca de agua, retrato en esquina).
+ */
+interface Props {
+  id?: string;
+  py?: string;
+  class?: string;
+  innerClass?: string;
+}
+
+const { id, py = 'section-y', class: extra = '', innerClass = '' } = Astro.props;
+---
+
+<section id={id} class:list={['section-x', py, extra]}>
+  <slot name="bleed" />
+  <div class:list={['shell', innerClass]}>
+    <slot />
+  </div>
+</section>

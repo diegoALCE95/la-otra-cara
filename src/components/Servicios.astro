@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+
+import { servicios } from '../data/servicios';
+import Eyebrow from './ui/Eyebrow.astro';
+import SectionShell from './ui/SectionShell.astro';
+---
+
+<SectionShell id="servicios" class="bg-ink">
+  <div
+    class="flex flex-wrap items-end justify-between gap-6 pb-[clamp(36px,6vh,64px)]"
+  >
+    <h2 class="m-0 font-display text-h2 font-normal">Lo que hacemos</h2>
+    <Eyebrow>03 — Capacidades</Eyebrow>
+  </div>
+
+  <div data-svc-block class="flex items-start gap-column">
+    <div data-svc-list class="min-w-0 flex-[1_1_520px] border-t border-hair">
+      {
+        servicios.map((servicio, i) => (
+          <a
+            href="#contacto"
+            data-svc={i + 1}
+            class="flex items-baseline gap-[clamp(16px,3vw,48px)] border-b border-hair px-1 py-[clamp(22px,3.4vh,38px)] transition-[padding-left,background-color] duration-500 ease-editorial hover:bg-wash hover:pl-[18px] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+          >
+            <span class="w-[34px] flex-none font-display text-svc-index text-gold">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-display text-svc text-bone">{servicio.titulo}</span>
+              <span class="mt-[10px] block max-w-[46ch] text-[14px]/[1.6] font-light text-bone-50">
+                {servicio.descripcion}
+              </span>
+            </span>
+            <span aria-hidden="true" class="flex-none text-[14px] text-gold">
+              →
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div
+      data-svc-stage
+      aria-hidden="true"
+      class="sticky top-[120px] hidden aspect-[3/4] flex-[0_0_clamp(280px,26vw,420px)] overflow-hidden lg:block"
+    >
+      {
+        servicios.map((servicio, i) => (
+          <div
+            data-svc-img={i + 1}
+            style={`filter:${servicio.filtro}`}
+            class:list={[
+              'absolute inset-0 transition-opacity duration-[600ms] ease-[ease]',
+              i === 0 ? 'opacity-100' : 'opacity-0',
+            ]}
+          >
+            <Image
+              src={servicio.imagen}
+              alt=""
+              widths={[420, 840]}
+              sizes="clamp(280px, 26vw, 420px)"
+              loading="lazy"
+              decoding="async"
+              class="size-full object-cover"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</SectionShell>
+
+<script>
+  import { initServiceStage } from '../scripts/servicios-hover';
+
+  initServiceStage();
+</script>

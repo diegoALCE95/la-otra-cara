@@ -1,0 +1,42 @@
+---
+import { site } from '../data/site';
+import Button from './ui/Button.astro';
+import Eyebrow from './ui/Eyebrow.astro';
+import ImagePlaceholder from './ui/ImagePlaceholder.astro';
+import SectionShell from './ui/SectionShell.astro';
+
+const mailto = `mailto:${site.email}`;
+---
+
+<SectionShell
+  id="contacto"
+  py="py-[clamp(90px,16vh,190px)]"
+  class="relative overflow-hidden bg-bone text-ink"
+  innerClass="relative"
+>
+  {/* Retrato que invade la esquina inferior derecha a propósito. */}
+  <div
+    slot="bleed"
+    class="absolute right-0 bottom-0 aspect-[3/4] w-[clamp(180px,26vw,420px)] translate-y-[12%] overflow-hidden"
+  >
+    <ImagePlaceholder label="Retrato editorial" />
+  </div>
+
+  <Eyebrow tone="gold-deep" tracking="tracking-[.3em]">Siguiente paso</Eyebrow>
+
+  <h2
+    data-reveal
+    class="reveal mt-[clamp(20px,4vh,40px)] mb-0 max-w-[22ch] font-display text-h2-cta font-normal text-pretty [--reveal-y:26px]"
+  >
+    ¿Le mostramos al mundo <em class="text-gold-deep italic">la otra cara</em> de tu marca?
+  </h2>
+
+  <div class="mt-[clamp(36px,6vh,72px)] flex flex-wrap items-center gap-7">
+    <Button href={mailto} variant="solid-ink">Hablemos →</Button>
+    <a
+      href={mailto}
+      class="border-b border-hair-ink-link pb-[3px] font-display text-mail text-ink hover:text-ink focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold-deep"
+      >{site.email}</a
+    >
+  </div>
+</SectionShell>

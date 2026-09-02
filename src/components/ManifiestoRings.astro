@@ -1,0 +1,65 @@
+---
+/** Animación decorativa del manifiesto: anillos, cruz de hairlines y barrido. */
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none absolute top-[clamp(40px,7vh,110px)] right-0 z-0 hidden aspect-square w-[clamp(240px,27vw,440px)] lg:block"
+>
+  <div class="absolute inset-0 animate-spin-slow">
+    <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+      <circle
+        cx="100"
+        cy="100"
+        r="98"
+        stroke="rgba(8,8,8,.13)"
+        stroke-width=".6"
+        stroke-dasharray="1200"
+        class="animate-draw"></circle>
+      <path
+        d="M100 2 A98 98 0 0 1 198 100"
+        stroke="#8D6B3E"
+        stroke-width="1"
+        stroke-linecap="round"
+        stroke-dasharray="1200"
+        class="animate-draw"></path>
+    </svg>
+  </div>
+
+  <div class="absolute inset-[13%] animate-spin-rev">
+    <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+      <circle cx="100" cy="100" r="98" stroke="rgba(8,8,8,.1)" stroke-width=".6" stroke-dasharray="3 9"
+      ></circle>
+      <path
+        d="M100 2 A98 98 0 0 0 2 100"
+        stroke="rgba(141,107,62,.55)"
+        stroke-width=".9"
+        stroke-linecap="round"
+        stroke-dasharray="1200"
+        class="animate-draw-slow"></path>
+    </svg>
+  </div>
+
+  <div class="absolute inset-[30%] animate-breathe rounded-full border border-[rgba(8,8,8,.12)]"></div>
+
+  <div
+    class="absolute top-[8%] bottom-[8%] left-1/2 w-px bg-[linear-gradient(180deg,transparent,rgba(8,8,8,.14),transparent)]"
+  >
+  </div>
+  <div
+    class="absolute top-1/2 right-[8%] left-[8%] h-px bg-[linear-gradient(90deg,transparent,rgba(8,8,8,.14),transparent)]"
+  >
+  </div>
+
+  <div class="pointer-events-none absolute top-0 right-[8%] left-[8%] h-[36%] overflow-hidden">
+    <div
+      class="absolute inset-x-0 h-px animate-sweep bg-[linear-gradient(90deg,transparent,#8D6B3E,transparent)]"
+    >
+    </div>
+  </div>
+
+  <div
+    class="absolute top-1/2 left-1/2 -mt-[2.5px] -ml-[2.5px] size-[5px] animate-breathe rounded-full bg-gold-deep"
+  >
+  </div>
+</div>

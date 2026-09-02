@@ -1,0 +1,39 @@
+---
+/**
+ * Botón-enlace del sistema. Cada variante reproduce una medida concreta de la
+ * referencia (padding, min-height y estados de hover incluidos).
+ */
+interface Props {
+  href: string;
+  variant: 'outline-gold' | 'solid-bone' | 'outline-bone' | 'solid-gold' | 'solid-ink';
+  class?: string;
+  'data-menu-close'?: string;
+}
+
+const { href, variant, class: extra = '', ...rest } = Astro.props;
+
+const base =
+  'items-center text-[11px] font-semibold uppercase transition-colors duration-[400ms] focus-visible:outline-1 focus-visible:outline-offset-4';
+
+const variants = {
+  // Header: "Hablemos"
+  'outline-gold':
+    'inline-flex gap-[10px] px-[26px] py-[13px] tracking-[.2em] border border-gold-55 text-bone hover:border-gold hover:bg-gold hover:text-ink focus-visible:outline-gold',
+  // Hero primario: "Cuéntanos tu proyecto →"
+  'solid-bone':
+    'inline-flex gap-3 min-h-[56px] px-8 tracking-[.2em] bg-bone text-ink hover:bg-gold focus-visible:outline-gold',
+  // Hero secundario: "Ver proyectos"
+  'outline-bone':
+    'inline-flex gap-3 min-h-[56px] px-8 tracking-[.2em] border border-hair-outline text-bone hover:border-gold hover:text-gold focus-visible:outline-gold',
+  // Overlay móvil: "Hablemos →" a ancho completo
+  'solid-gold':
+    'flex justify-center min-h-[56px] text-[12px] tracking-[.22em] bg-gold text-ink hover:bg-bone focus-visible:outline-bone',
+  // CTA final: "Hablemos →"
+  'solid-ink':
+    'inline-flex gap-[14px] min-h-[60px] px-[38px] tracking-[.22em] bg-ink text-bone hover:bg-gold hover:text-ink focus-visible:outline-gold-deep',
+}[variant];
+---
+
+<a href={href} class:list={[base, variants, extra]} {...rest}>
+  <slot />
+</a>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital,wght@0,400;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+<script src="./image-slot.js"></script>
+<style>
+  html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+  body { margin: 0; background: #080808; color: #F4F1EB; font-family: 'DM Sans', Helvetica, Arial, sans-serif; overflow-x: hidden; }
+  a { color: #B99455; text-decoration: none; }
+  a:hover { color: #F4F1EB; }
+  ::selection { background: #B99455; color: #080808; }
+  @keyframes loc-hero-drift { from { transform: scale(1.12) translate3d(0,0,0); } to { transform: scale(1.2) translate3d(-2%,-1.5%,0); } }
+  @keyframes loc-marquee { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+  @keyframes loc-spin { to { transform: rotate(360deg); } }
+  @keyframes loc-spin-rev { to { transform: rotate(-360deg); } }
+  @keyframes loc-draw { 0% { stroke-dashoffset: 1200; } 55%, 100% { stroke-dashoffset: 0; } }
+  @keyframes loc-breathe { 0%, 100% { transform: scale(1); opacity: .55; } 50% { transform: scale(1.05); opacity: 1; } }
+  @keyframes loc-sweep { 0% { transform: translateY(-30%); opacity: 0; } 15%, 70% { opacity: 1; } 100% { transform: translateY(130%); opacity: 0; } }
+  @keyframes loc-scroll-hint { 0% { transform: scaleY(0); transform-origin: top; } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+</style>
+</helmet>
+
+<div style="background:#080808">
+
+<header data-hdr="1" style="position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px clamp(20px,4vw,64px);background:transparent;border-bottom:1px solid rgba(244,241,235,0);transition:background .5s cubic-bezier(.2,.7,.2,1), backdrop-filter .5s, border-color .5s, padding .5s">
+  <a href="#top" style="display:flex;align-items:center;gap:14px">
+    <img src="./loc-logo-mark.png" alt="La Otra Cara" style="height:40px;width:auto;display:block" />
+  </a>
+  <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+    <nav style="display:flex;align-items:center;gap:clamp(22px,2.6vw,42px)">
+      <a href="#top" style="color:#F4F1EB;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500">Inicio</a>
+      <a href="#agencia" style="color:#F4F1EB;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500">Agencia</a>
+      <a href="#servicios" style="color:#F4F1EB;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500">Servicios</a>
+      <a href="#proyectos" style="color:#F4F1EB;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500">Proyectos</a>
+      <a href="#contacto" style="color:#F4F1EB;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500">Contacto</a>
+    </nav>
+    <a href="#contacto" style="display:inline-flex;align-items:center;gap:10px;padding:13px 26px;border:1px solid rgba(185,148,85,.55);color:#F4F1EB;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;transition:background .4s,color .4s,border-color .4s" style-hover="background:#B99455;border-color:#B99455;color:#080808">Hablemos</a>
+  </sc-if>
+  <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ openMenu }}" aria-label="Menú" style="display:flex;flex-direction:column;justify-content:center;gap:6px;width:52px;height:52px;padding:0 12px;background:none;border:1px solid rgba(244,241,235,.2);cursor:pointer">
+      <span style="display:block;height:1px;background:#F4F1EB"></span>
+      <span style="display:block;height:1px;background:#B99455"></span>
+    </button>
+  </sc-if>
+</header>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:90;background:#080808;display:flex;flex-direction:column;padding:22px clamp(20px,6vw,48px) 48px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <img src="./loc-logo-mark.png" alt="La Otra Cara" style="height:42px;width:auto;display:block" />
+      <button onClick="{{ closeMenu }}" aria-label="Cerrar" style="width:52px;height:52px;background:none;border:1px solid rgba(244,241,235,.2);color:#F4F1EB;font-size:20px;font-family:'DM Sans',sans-serif;cursor:pointer">✕</button>
+    </div>
+    <nav style="margin-top:auto;display:flex;flex-direction:column;gap:6px">
+      <a href="#top" onClick="{{ closeMenu }}" style="font-family:'DM Serif Display',serif;font-size:clamp(38px,11vw,64px);line-height:1.1;color:#F4F1EB">Inicio</a>
+      <a href="#agencia" onClick="{{ closeMenu }}" style="font-family:'DM Serif Display',serif;font-size:clamp(38px,11vw,64px);line-height:1.1;color:#F4F1EB">Agencia</a>
+      <a href="#servicios" onClick="{{ closeMenu }}" style="font-family:'DM Serif Display',serif;font-size:clamp(38px,11vw,64px);line-height:1.1;color:#F4F1EB">Servicios</a>
+      <a href="#proyectos" onClick="{{ closeMenu }}" style="font-family:'DM Serif Display',serif;font-size:clamp(38px,11vw,64px);line-height:1.1;color:#F4F1EB">Proyectos</a>
+      <a href="#contacto" onClick="{{ closeMenu }}" style="font-family:'DM Serif Display',serif;font-size:clamp(38px,11vw,64px);line-height:1.1;color:#B99455;font-style:italic">Contacto</a>
+    </nav>
+    <a href="#contacto" onClick="{{ closeMenu }}" style="margin-top:44px;display:flex;align-items:center;justify-content:center;min-height:56px;background:#B99455;color:#080808;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:600">Hablemos →</a>
+  </div>
+</sc-if>
+
+<section id="top" style="position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden">
+  <div style="position:absolute;inset:-8%;z-index:0;background:radial-gradient(70% 60% at 40% 35%,#2a2419 0%,#141210 45%,#080808 100%);filter:blur(26px) saturate(.72) brightness(.62);transform:scale(1.12);animation:loc-hero-drift 26s ease-in-out infinite alternate">
+    <image-slot id="loc-hero" shape="rect" fit="cover" placeholder="fondo del hero — personas reunidas (o sube hero-video.mp4)"></image-slot>
+    <video data-hero-video="1" autoplay="" muted="" loop="" playsinline="" onError="{{ hideVideo }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"></video>
+  </div>
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,rgba(8,8,8,.28) 0%,rgba(8,8,8,.72) 55%,rgba(8,8,8,.94) 100%)"></div>
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,8,8,.85) 0%,rgba(8,8,8,0) 26%,rgba(8,8,8,0) 68%,rgba(8,8,8,.95) 100%)"></div>
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;width:100%;max-width:1180px;box-sizing:border-box;padding:clamp(120px,18vh,190px) clamp(20px,4vw,64px) clamp(96px,14vh,150px)">
+    <div data-reveal="1" style="opacity:0;transform:translateY(18px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:clamp(22px,4vh,40px)">
+      <span style="display:block;width:clamp(24px,4vw,56px);height:1px;background:#B99455"></span>
+      <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#B99455;font-weight:600">Agencia Creativa &amp; Marketing</span>
+      <span style="display:block;width:clamp(24px,4vw,56px);height:1px;background:#B99455"></span>
+    </div>
+    <h1 data-reveal="1" style="opacity:0;transform:translateY(28px);transition:opacity 1.1s ease .1s,transform 1.1s cubic-bezier(.2,.7,.2,1) .1s;margin:0;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(42px,7.4vw,124px);line-height:1;letter-spacing:-.022em;color:#FFFFFF;text-wrap:balance">
+      Mostramos <em style="font-style:italic;color:#F4F1EB">la otra cara</em> de tu marca.
+    </h1>
+    <p data-reveal="1" style="opacity:0;transform:translateY(18px);transition:opacity 1s ease .25s,transform 1s cubic-bezier(.2,.7,.2,1) .25s;margin:clamp(24px,4vh,44px) 0 0;max-width:52ch;font-size:clamp(15px,1.2vw,18px);line-height:1.7;color:rgba(244,241,235,.76);font-weight:300;text-wrap:pretty">Estrategia, identidad y comunicación para marcas que quieren competir en otra categoría.</p>
+    <div data-reveal="1" style="opacity:0;transform:translateY(18px);transition:opacity 1s ease .35s,transform 1s cubic-bezier(.2,.7,.2,1) .35s;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin-top:clamp(30px,5vh,52px)">
+      <a href="#contacto" style="display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:0 32px;background:#F4F1EB;color:#080808;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;transition:background .4s,color .4s" style-hover="background:#B99455;color:#080808">Cuéntanos tu proyecto →</a>
+      <a href="#proyectos" style="display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:0 32px;border:1px solid rgba(244,241,235,.28);color:#F4F1EB;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;transition:border-color .4s,color .4s" style-hover="border-color:#B99455;color:#B99455">Ver proyectos</a>
+    </div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:clamp(24px,5vh,44px);z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px">
+    <span style="display:block;width:1px;height:44px;background:#B99455;animation:loc-scroll-hint 2.6s cubic-bezier(.4,0,.2,1) infinite"></span>
+    <span style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(244,241,235,.45)">Scroll</span>
+  </div>
+</section>
+
+<section id="agencia" style="background:#F4F1EB;color:#080808;position:relative;overflow:hidden;padding:clamp(90px,15vh,190px) clamp(20px,4vw,64px)">
+  <div aria-hidden="true" style="position:absolute;left:-4vw;bottom:-6vh;font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(180px,34vw,520px);line-height:.7;color:rgba(8,8,8,.045);pointer-events:none;user-select:none;white-space:nowrap">cara</div>
+  <div style="position:relative;max-width:1440px;margin:0 auto">
+    <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+      <div aria-hidden="true" style="position:absolute;top:clamp(40px,7vh,110px);right:0;width:clamp(240px,27vw,440px);aspect-ratio:1;pointer-events:none;z-index:0">
+        <div style="position:absolute;inset:0;animation:loc-spin 68s linear infinite">
+          <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+            <circle cx="100" cy="100" r="98" stroke="rgba(8,8,8,.13)" stroke-width=".6" stroke-dasharray="1200" style="animation:loc-draw 9s cubic-bezier(.4,0,.2,1) infinite"></circle>
+            <path d="M100 2 A98 98 0 0 1 198 100" stroke="#8D6B3E" stroke-width="1" stroke-linecap="round" stroke-dasharray="1200" style="animation:loc-draw 9s cubic-bezier(.4,0,.2,1) infinite"></path>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:13%;animation:loc-spin-rev 46s linear infinite">
+          <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+            <circle cx="100" cy="100" r="98" stroke="rgba(8,8,8,.1)" stroke-width=".6" stroke-dasharray="3 9"></circle>
+            <path d="M100 2 A98 98 0 0 0 2 100" stroke="rgba(141,107,62,.55)" stroke-width=".9" stroke-linecap="round" stroke-dasharray="1200" style="animation:loc-draw 11s cubic-bezier(.4,0,.2,1) infinite .8s"></path>
+          </svg>
+        </div>
+        <div style="position:absolute;inset:30%;border:1px solid rgba(8,8,8,.12);border-radius:50%;animation:loc-breathe 7s ease-in-out infinite"></div>
+        <div style="position:absolute;left:50%;top:8%;bottom:8%;width:1px;background:linear-gradient(180deg,transparent,rgba(8,8,8,.14),transparent)"></div>
+        <div style="position:absolute;top:50%;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(8,8,8,.14),transparent)"></div>
+        <div style="position:absolute;left:8%;right:8%;top:0;height:36%;overflow:hidden;pointer-events:none">
+          <div style="position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#8D6B3E,transparent);animation:loc-sweep 6.5s cubic-bezier(.5,0,.3,1) infinite"></div>
+        </div>
+        <div style="position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:#8D6B3E;animation:loc-breathe 7s ease-in-out infinite"></div>
+      </div>
+    </sc-if>
+    <div style="position:relative;display:flex;align-items:center;gap:14px;margin-bottom:clamp(32px,6vh,64px)">
+      <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#8D6B3E">02</span>
+      <span style="display:block;width:56px;height:1px;background:rgba(8,8,8,.22)"></span>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#77736D;font-weight:600">Manifiesto</span>
+    </div>
+    <h2 data-reveal="1" style="position:relative;opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);margin:0;max-width:20ch;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(34px,5.4vw,92px);line-height:1.03;letter-spacing:-.02em;text-wrap:pretty">Tu marca tiene más de una cara. Nosotros encontramos <em style="font-style:italic;color:#8D6B3E">la que nadie puede ignorar.</em></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,72px);margin-top:clamp(44px,8vh,96px);padding-top:clamp(28px,4vh,44px);border-top:1px solid rgba(8,8,8,.14)">
+      <p data-reveal="1" style="opacity:0;transform:translateY(18px);transition:opacity 1s ease .1s,transform 1s cubic-bezier(.2,.7,.2,1) .1s;margin:0;font-size:clamp(15px,1.2vw,18px);line-height:1.7;color:#3a3733;font-weight:300">Somos una agencia boutique. Trabajamos con pocas marcas al año porque creemos que el criterio no se escala: se dedica. Cada proyecto empieza con una pregunta incómoda sobre el negocio, no con un moodboard.</p>
+      <p data-reveal="1" style="opacity:0;transform:translateY(18px);transition:opacity 1s ease .2s,transform 1s cubic-bezier(.2,.7,.2,1) .2s;margin:0;font-size:clamp(15px,1.2vw,18px);line-height:1.7;color:#3a3733;font-weight:300">Estrategia, identidad, contenido y medios en una sola mesa. Sin capas intermedias, sin presentaciones de relleno: lo que sale al mercado es lo que decidimos juntos.</p>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;align-items:baseline;gap:14px"><span style="font-family:'DM Serif Display',serif;font-size:clamp(34px,3.4vw,52px);color:#080808;line-height:1">12</span><span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#77736D">Marcas al año</span></div>
+        <div style="display:flex;align-items:baseline;gap:14px"><span style="font-family:'DM Serif Display',serif;font-size:clamp(34px,3.4vw,52px);color:#080808;line-height:1">05</span><span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#77736D">Disciplinas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="background:#080808;border-top:1px solid rgba(185,148,85,.18);border-bottom:1px solid rgba(185,148,85,.18);padding:22px 0;overflow:hidden">
+  <div style="display:flex;width:max-content;animation:loc-marquee 44s linear infinite">
+    <div style="display:flex;align-items:center;gap:clamp(28px,4vw,64px);padding-right:clamp(28px,4vw,64px)">
+      <span style="font-family:'DM Serif Display',serif;font-size:clamp(20px,2.2vw,34px);color:rgba(244,241,235,.9);white-space:nowrap">Branding</span><span style="color:#B99455">◆</span>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,241,235,.5);white-space:nowrap">Dirección de arte</span><span style="color:#B99455">◆</span>
+      <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,2.2vw,34px);color:rgba(244,241,235,.9);white-space:nowrap">Social Media</span><span style="color:#B99455">◆</span>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,241,235,.5);white-space:nowrap">Paid Media</span><span style="color:#B99455">◆</span>
+      <span style="font-family:'DM Serif Display',serif;font-size:clamp(20px,2.2vw,34px);color:rgba(244,241,235,.9);white-space:nowrap">Web</span><span style="color:#B99455">◆</span>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,241,235,.5);white-space:nowrap">Producción</span><span style="color:#B99455">◆</span>
+    </div>
+    <div aria-hidden="true" style="display:flex;align-items:center;gap:clamp(28px,4vw,64px);padding-right:clamp(28px,4vw,64px)">
+      <span style="font-family:'DM Serif Display',serif;font-size:clamp(20px,2.2vw,34px);color:rgba(244,241,235,.9);white-space:nowrap">Branding</span><span style="color:#B99455">◆</span>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,241,235,.5);white-space:nowrap">Dirección de arte</span><span style="color:#B99455">◆</span>
+      <span style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(20px,2.2vw,34px);color:rgba(244,241,235,.9);white-space:nowrap">Social Media</span><span style="color:#B99455">◆</span>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,241,235,.5);white-space:nowrap">Paid Media</span><span style="color:#B99455">◆</span>
+      <span style="font-family:'DM Serif Display',serif;font-size:clamp(20px,2.2vw,34px);color:rgba(244,241,235,.9);white-space:nowrap">Web</span><span style="color:#B99455">◆</span>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,241,235,.5);white-space:nowrap">Producción</span><span style="color:#B99455">◆</span>
+    </div>
+  </div>
+</div>
+
+<section id="servicios" style="background:#080808;padding:clamp(90px,14vh,170px) clamp(20px,4vw,64px)">
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:clamp(36px,6vh,64px)">
+      <h2 style="margin:0;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(34px,5vw,80px);line-height:1;letter-spacing:-.02em">Lo que hacemos</h2>
+      <span style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#B99455;font-weight:600">03 — Capacidades</span>
+    </div>
+    <div style="display:flex;gap:clamp(28px,4vw,72px);align-items:flex-start">
+      <div style="flex:1 1 520px;min-width:0;border-top:1px solid rgba(244,241,235,.16)">
+        <a href="#contacto" data-svc="5" style="display:flex;align-items:baseline;gap:clamp(16px,3vw,48px);padding:clamp(22px,3.4vh,38px) 4px;border-bottom:1px solid rgba(244,241,235,.16);transition:padding-left .5s cubic-bezier(.2,.7,.2,1),background .5s" style-hover="padding-left:18px;background:rgba(244,241,235,.03)">
+          <span style="font-family:'DM Serif Display',serif;font-size:clamp(13px,1vw,15px);color:#B99455;flex:none;width:34px">01</span>
+          <span style="flex:1 1 auto;min-width:0">
+            <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(24px,3.1vw,46px);line-height:1.08;color:#F4F1EB">Producción de Contenido</span>
+            <span style="display:block;margin-top:10px;max-width:46ch;font-size:14px;line-height:1.6;color:rgba(244,241,235,.5);font-weight:300">Fotografía, video, dirección creativa y piezas para campañas.</span>
+          </span>
+          <span style="flex:none;color:#B99455;font-size:14px">→</span>
+        </a>
+        <a href="#contacto" data-svc="1" style="display:flex;align-items:baseline;gap:clamp(16px,3vw,48px);padding:clamp(22px,3.4vh,38px) 4px;border-bottom:1px solid rgba(244,241,235,.16);transition:padding-left .5s cubic-bezier(.2,.7,.2,1),background .5s" style-hover="padding-left:18px;background:rgba(244,241,235,.03)">
+          <span style="font-family:'DM Serif Display',serif;font-size:clamp(13px,1vw,15px);color:#B99455;flex:none;width:34px">02</span>
+          <span style="flex:1 1 auto;min-width:0">
+            <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(24px,3.1vw,46px);line-height:1.08;color:#F4F1EB">Branding &amp; Estrategia</span>
+            <span style="display:block;margin-top:10px;max-width:46ch;font-size:14px;line-height:1.6;color:rgba(244,241,235,.5);font-weight:300">Posicionamiento, identidad de marca, dirección visual y sistemas gráficos.</span>
+          </span>
+          <span style="flex:none;color:#B99455;font-size:14px">→</span>
+        </a>
+        <a href="#contacto" data-svc="2" style="display:flex;align-items:baseline;gap:clamp(16px,3vw,48px);padding:clamp(22px,3.4vh,38px) 4px;border-bottom:1px solid rgba(244,241,235,.16);transition:padding-left .5s cubic-bezier(.2,.7,.2,1),background .5s" style-hover="padding-left:18px;background:rgba(244,241,235,.03)">
+          <span style="font-family:'DM Serif Display',serif;font-size:clamp(13px,1vw,15px);color:#B99455;flex:none;width:34px">03</span>
+          <span style="flex:1 1 auto;min-width:0">
+            <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(24px,3.1vw,46px);line-height:1.08;color:#F4F1EB">Social Media</span>
+            <span style="display:block;margin-top:10px;max-width:46ch;font-size:14px;line-height:1.6;color:rgba(244,241,235,.5);font-weight:300">Estrategia, contenido, dirección creativa y gestión de comunidades.</span>
+          </span>
+          <span style="flex:none;color:#B99455;font-size:14px">→</span>
+        </a>
+        <a href="#contacto" data-svc="3" style="display:flex;align-items:baseline;gap:clamp(16px,3vw,48px);padding:clamp(22px,3.4vh,38px) 4px;border-bottom:1px solid rgba(244,241,235,.16);transition:padding-left .5s cubic-bezier(.2,.7,.2,1),background .5s" style-hover="padding-left:18px;background:rgba(244,241,235,.03)">
+          <span style="font-family:'DM Serif Display',serif;font-size:clamp(13px,1vw,15px);color:#B99455;flex:none;width:34px">04</span>
+          <span style="flex:1 1 auto;min-width:0">
+            <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(24px,3.1vw,46px);line-height:1.08;color:#F4F1EB">Paid Media</span>
+            <span style="display:block;margin-top:10px;max-width:46ch;font-size:14px;line-height:1.6;color:rgba(244,241,235,.5);font-weight:300">Campañas digitales orientadas a crecimiento, adquisición y performance.</span>
+          </span>
+          <span style="flex:none;color:#B99455;font-size:14px">→</span>
+        </a>
+        <a href="#contacto" data-svc="4" style="display:flex;align-items:baseline;gap:clamp(16px,3vw,48px);padding:clamp(22px,3.4vh,38px) 4px;border-bottom:1px solid rgba(244,241,235,.16);transition:padding-left .5s cubic-bezier(.2,.7,.2,1),background .5s" style-hover="padding-left:18px;background:rgba(244,241,235,.03)">
+          <span style="font-family:'DM Serif Display',serif;font-size:clamp(13px,1vw,15px);color:#B99455;flex:none;width:34px">05</span>
+          <span style="flex:1 1 auto;min-width:0">
+            <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(24px,3.1vw,46px);line-height:1.08;color:#F4F1EB">Diseño &amp; Desarrollo Web</span>
+            <span style="display:block;margin-top:10px;max-width:46ch;font-size:14px;line-height:1.6;color:rgba(244,241,235,.5);font-weight:300">Experiencias digitales enfocadas en marca, conversión y posicionamiento.</span>
+          </span>
+          <span style="flex:none;color:#B99455;font-size:14px">→</span>
+        </a>
+      </div>
+      <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+        <div data-svc-stage="1" style="flex:0 0 clamp(280px,26vw,420px);position:sticky;top:120px;aspect-ratio:3/4;overflow:hidden">
+          <div data-svc-img="0" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border:1px solid rgba(244,241,235,.14);opacity:0;transition:opacity .6s ease">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,241,235,.32);text-align:center;padding:0 24px">Pasa el cursor<br />sobre un servicio</span>
+          </div>
+          <div data-svc-img="1" style="position:absolute;inset:0;opacity:0;transition:opacity .6s ease;filter:sepia(.08) saturate(1.08) contrast(1.04) brightness(1.08)"><image-slot id="loc-svc-1" src="./img/svc-01-branding-b.png" shape="rect" placeholder="branding — identity system, print detail"></image-slot></div>
+          <div data-svc-img="2" style="position:absolute;inset:0;opacity:0;transition:opacity .6s ease;filter:sepia(.08) saturate(1.08) contrast(1.04) brightness(1.08)"><image-slot id="loc-svc-2" src="./img/svc-02-social.png" shape="rect" placeholder="social — content shoot, behind the scenes"></image-slot></div>
+          <div data-svc-img="3" style="position:absolute;inset:0;opacity:0;transition:opacity .6s ease;filter:sepia(.06) saturate(1.1) contrast(1.06) brightness(1.18)"><image-slot id="loc-svc-3" src="./img/svc-03-paid.png" shape="rect" placeholder="paid media — cinematic city night"></image-slot></div>
+          <div data-svc-img="4" style="position:absolute;inset:0;opacity:0;transition:opacity .6s ease;filter:sepia(.06) saturate(1.08) contrast(1.04) brightness(1.06)"><image-slot id="loc-svc-4" src="./img/svc-04-web.png" shape="rect" placeholder="web — device / studio desk, low key"></image-slot></div>
+          <div data-svc-img="5" style="position:absolute;inset:0;opacity:1;transition:opacity .6s ease;filter:sepia(.06) saturate(1.08) contrast(1.04) brightness(1.04)"><image-slot id="loc-svc-5b" src="./img/svc-05-produccion.png" shape="rect" placeholder="producción — camera set, contrasted light"></image-slot></div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos" style="background:#080808;padding:clamp(70px,10vh,120px) clamp(20px,4vw,64px) clamp(90px,14vh,170px)">
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:clamp(32px,5vh,56px);border-bottom:1px solid rgba(244,241,235,.16)">
+      <h2 style="margin:0;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(34px,5vw,80px);line-height:1;letter-spacing:-.02em">Selected <em style="font-style:italic;color:#B99455">Work</em></h2>
+      <span style="max-width:32ch;font-size:13px;line-height:1.6;color:rgba(244,241,235,.5);font-weight:300">Proyectos que hablan por nosotros. Selección 2025 — 2026.</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,44px);margin-top:clamp(28px,5vh,56px)">
+      <a href="#proyectos" data-work="1" data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);display:block;color:#F4F1EB">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#0d0d0d"><image-slot id="loc-work-1" shape="rect" placeholder="NØR Studio — mens fashion editorial"></image-slot></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid rgba(244,241,235,.16);margin-top:16px">
+          <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(20px,1.9vw,30px)">NØR Studio</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Branding / Digital</span></span>
+          <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">2026</span>
+        </div>
+      </a>
+      <a href="#proyectos" data-work="1" data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease .12s,transform 1s cubic-bezier(.2,.7,.2,1) .12s;display:block;color:#F4F1EB;align-self:end">
+        <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#0d0d0d"><image-slot id="loc-work-2" shape="rect" placeholder="Casa Brava — gastronomía premium, low light"></image-slot></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid rgba(244,241,235,.16);margin-top:16px">
+          <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(20px,1.9vw,30px)">Casa Brava</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Branding / Social</span></span>
+          <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">2026</span>
+        </div>
+      </a>
+      <a href="#proyectos" data-work="1" data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease .24s,transform 1s cubic-bezier(.2,.7,.2,1) .24s;display:block;color:#F4F1EB">
+        <div style="position:relative;aspect-ratio:3/4;overflow:hidden;background:#0d0d0d"><image-slot id="loc-work-3" shape="rect" placeholder="Nómada — modern architecture, black"></image-slot></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid rgba(244,241,235,.16);margin-top:16px">
+          <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(20px,1.9vw,30px)">Nómada</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Strategy / Campaign</span></span>
+          <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">2025</span>
+        </div>
+      </a>
+    </div>
+
+    <a href="#proyectos" data-work="1" data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);display:block;color:#F4F1EB;margin-top:clamp(20px,2.6vw,44px)">
+      <div style="position:relative;aspect-ratio:16/7;overflow:hidden;background:#0d0d0d;min-height:220px"><image-slot id="loc-work-4" shape="rect" placeholder="Verso — nightlife elegante / campaign film still"></image-slot></div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid rgba(244,241,235,.16);margin-top:16px">
+        <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(22px,2.4vw,40px)">Verso</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Paid Media / Producción</span></span>
+        <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">2026</span>
+      </div>
+    </a>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,44px);margin-top:clamp(20px,2.6vw,44px)">
+      <a href="#proyectos" data-work="1" data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);display:block;color:#F4F1EB">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#0d0d0d"><image-slot id="loc-work-5" shape="rect" placeholder="Atria — minimal product photography"></image-slot></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid rgba(244,241,235,.16);margin-top:16px">
+          <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(20px,1.9vw,30px)">Atria</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Branding / Producto</span></span>
+          <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">2025</span>
+        </div>
+      </a>
+      <a href="#proyectos" data-work="1" data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease .12s,transform 1s cubic-bezier(.2,.7,.2,1) .12s;display:block;color:#F4F1EB">
+        <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#0d0d0d"><image-slot id="loc-work-6" shape="rect" placeholder="Hoja Negra — hospitality, interior premium"></image-slot></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid rgba(244,241,235,.16);margin-top:16px">
+          <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(20px,1.9vw,30px)">Hoja Negra</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Hospitality / Social</span></span>
+          <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">2026</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section style="background:#0B0B0B;border-top:1px solid rgba(185,148,85,.18);padding:clamp(90px,14vh,170px) clamp(20px,4vw,64px)">
+  <div style="max-width:1440px;margin:0 auto">
+    <span style="display:block;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#B99455;font-weight:600">No somos otra agencia</span>
+    <h2 data-reveal="1" style="opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);margin:clamp(18px,3vh,32px) 0 0;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(40px,8vw,130px);line-height:.96;letter-spacing:-.03em">Somos <em style="font-style:italic">La Otra Cara.</em></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;margin-top:clamp(48px,9vh,110px);border-top:1px solid rgba(244,241,235,.16)">
+      <div style="padding:clamp(26px,4vh,44px) clamp(20px,2.4vw,40px) clamp(26px,4vh,44px) 0;border-bottom:1px solid rgba(244,241,235,.16)">
+        <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">I</span>
+        <p style="margin:16px 0 0;font-family:'DM Serif Display',serif;font-size:clamp(22px,2.2vw,34px);line-height:1.2;color:#F4F1EB">Estrategia antes que estética.</p>
+        <p style="margin:14px 0 0;font-size:14px;line-height:1.65;color:rgba(244,241,235,.5);font-weight:300">Nada se diseña sin una decisión de negocio detrás.</p>
+      </div>
+      <div style="padding:clamp(26px,4vh,44px) clamp(20px,2.4vw,40px);border-bottom:1px solid rgba(244,241,235,.16);border-left:1px solid rgba(244,241,235,.16)">
+        <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">II</span>
+        <p style="margin:16px 0 0;font-family:'DM Serif Display',serif;font-size:clamp(22px,2.2vw,34px);line-height:1.2;color:#F4F1EB">Ideas antes que tendencias.</p>
+        <p style="margin:14px 0 0;font-size:14px;line-height:1.65;color:rgba(244,241,235,.5);font-weight:300">Lo que hoy es viral, mañana es ruido. La idea permanece.</p>
+      </div>
+      <div style="padding:clamp(26px,4vh,44px) 0 clamp(26px,4vh,44px) clamp(20px,2.4vw,40px);border-bottom:1px solid rgba(244,241,235,.16);border-left:1px solid rgba(244,241,235,.16)">
+        <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">III</span>
+        <p style="margin:16px 0 0;font-family:'DM Serif Display',serif;font-size:clamp(22px,2.2vw,34px);line-height:1.2;color:#F4F1EB">Resultados antes que ruido.</p>
+        <p style="margin:14px 0 0;font-size:14px;line-height:1.65;color:rgba(244,241,235,.5);font-weight:300">Medimos lo que importa y ajustamos sin ego.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#080808;padding:clamp(90px,14vh,170px) clamp(20px,4vw,64px)">
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px">
+      <h2 style="margin:0;max-width:16ch;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(32px,4.6vw,72px);line-height:1.04;letter-spacing:-.02em">Las ideas tienen <em style="font-style:italic;color:#B99455">responsables.</em></h2>
+      <p style="margin:0;max-width:34ch;font-size:clamp(14px,1.1vw,17px);line-height:1.65;color:rgba(244,241,235,.55);font-weight:300">“Estrategia, creatividad y ejecución bajo una misma visión.”</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,2.6vw,44px);margin-top:clamp(40px,7vh,80px)">
+      <div data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1)">
+        <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#0d0d0d"><image-slot id="loc-founder-1" shape="rect" placeholder="founder portrait — b&amp;w, contrasted light"></image-slot></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;margin-top:16px;border-top:1px solid rgba(244,241,235,.16)">
+          <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(20px,2vw,30px)">Nombre Apellido</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Dirección Creativa</span></span>
+          <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">01</span>
+        </div>
+      </div>
+      <div data-reveal="1" style="opacity:0;transform:translateY(24px);transition:opacity 1s ease .14s,transform 1s cubic-bezier(.2,.7,.2,1) .14s">
+        <div style="position:relative;aspect-ratio:4/5;overflow:hidden;background:#0d0d0d"><image-slot id="loc-founder-2" shape="rect" placeholder="founder portrait — b&amp;w, studio background"></image-slot></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-top:16px;margin-top:16px;border-top:1px solid rgba(244,241,235,.16)">
+          <span><span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(20px,2vw,30px)">Nombre Apellido</span><span style="display:block;margin-top:6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,235,.45)">Estrategia &amp; Medios</span></span>
+          <span style="font-family:'DM Serif Display',serif;font-size:13px;color:#B99455">02</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F4F1EB;color:#080808;padding:clamp(90px,14vh,170px) clamp(20px,4vw,64px)">
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:clamp(32px,6vh,64px)">
+      <span style="display:block;width:56px;height:1px;background:rgba(8,8,8,.24)"></span>
+      <span style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:#77736D;font-weight:600">Proceso</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:clamp(28px,3vw,56px)">
+      <div data-reveal="1" style="opacity:0;transform:translateY(20px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);border-top:1px solid rgba(8,8,8,.18);padding-top:22px">
+        <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(52px,6vw,92px);line-height:.9">01</span>
+        <span style="display:block;margin-top:18px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600">Descubrir</span>
+        <p style="margin:12px 0 0;font-size:14px;line-height:1.65;color:#57534d;font-weight:300">Entendemos la marca, su mercado y sus objetivos.</p>
+      </div>
+      <div data-reveal="1" style="opacity:0;transform:translateY(20px);transition:opacity .9s ease .1s,transform .9s cubic-bezier(.2,.7,.2,1) .1s;border-top:1px solid rgba(8,8,8,.18);padding-top:22px">
+        <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(52px,6vw,92px);line-height:.9">02</span>
+        <span style="display:block;margin-top:18px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600">Definir</span>
+        <p style="margin:12px 0 0;font-size:14px;line-height:1.65;color:#57534d;font-weight:300">Convertimos información en estrategia.</p>
+      </div>
+      <div data-reveal="1" style="opacity:0;transform:translateY(20px);transition:opacity .9s ease .2s,transform .9s cubic-bezier(.2,.7,.2,1) .2s;border-top:1px solid rgba(8,8,8,.18);padding-top:22px">
+        <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(52px,6vw,92px);line-height:.9">03</span>
+        <span style="display:block;margin-top:18px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600">Crear</span>
+        <p style="margin:12px 0 0;font-size:14px;line-height:1.65;color:#57534d;font-weight:300">Construimos una identidad y comunicación propias.</p>
+      </div>
+      <div data-reveal="1" style="opacity:0;transform:translateY(20px);transition:opacity .9s ease .3s,transform .9s cubic-bezier(.2,.7,.2,1) .3s;border-top:1px solid rgba(8,8,8,.18);padding-top:22px">
+        <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(52px,6vw,92px);line-height:.9">04</span>
+        <span style="display:block;margin-top:18px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600">Escalar</span>
+        <p style="margin:12px 0 0;font-size:14px;line-height:1.65;color:#57534d;font-weight:300">Ejecutamos, medimos y optimizamos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#080808;padding:clamp(70px,11vh,130px) clamp(20px,4vw,64px)">
+  <div style="max-width:1440px;margin:0 auto">
+    <p style="margin:0 0 clamp(32px,5vh,56px);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(244,241,235,.45);font-weight:500">Marcas que confiaron en ver las cosas diferente.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:1px solid rgba(244,241,235,.14);border-left:1px solid rgba(244,241,235,.14)">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:110px;border-right:1px solid rgba(244,241,235,.14);border-bottom:1px solid rgba(244,241,235,.14)"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.3)">logo cliente 01</span></div>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:110px;border-right:1px solid rgba(244,241,235,.14);border-bottom:1px solid rgba(244,241,235,.14)"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.3)">logo cliente 02</span></div>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:110px;border-right:1px solid rgba(244,241,235,.14);border-bottom:1px solid rgba(244,241,235,.14)"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.3)">logo cliente 03</span></div>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:110px;border-right:1px solid rgba(244,241,235,.14);border-bottom:1px solid rgba(244,241,235,.14)"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.3)">logo cliente 04</span></div>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:110px;border-right:1px solid rgba(244,241,235,.14);border-bottom:1px solid rgba(244,241,235,.14)"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.3)">logo cliente 05</span></div>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:110px;border-right:1px solid rgba(244,241,235,.14);border-bottom:1px solid rgba(244,241,235,.14)"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.3)">logo cliente 06</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#0B0B0B;padding:clamp(100px,18vh,210px) clamp(20px,4vw,64px);border-top:1px solid rgba(185,148,85,.18)">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <span style="display:block;font-family:'DM Serif Display',serif;font-size:clamp(48px,7vw,110px);line-height:.6;color:#B99455">“</span>
+    <blockquote data-reveal="1" style="opacity:0;transform:translateY(22px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);margin:clamp(18px,3vh,34px) 0 0;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(26px,4vw,60px);line-height:1.16;letter-spacing:-.01em;color:#F4F1EB;text-wrap:pretty">No solo entendieron nuestra marca. Entendieron <em style="font-style:italic">en qué podía convertirse.</em></blockquote>
+    <div style="margin-top:clamp(32px,5vh,56px);display:flex;flex-direction:column;align-items:center;gap:8px">
+      <span style="display:block;width:40px;height:1px;background:#B99455;margin-bottom:12px"></span>
+      <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#F4F1EB;font-weight:600">Nombre Apellido</span>
+      <span style="font-size:12px;color:rgba(244,241,235,.45);font-weight:300">Founder — Casa Brava</span>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" style="position:relative;background:#F4F1EB;color:#080808;overflow:hidden;padding:clamp(90px,16vh,190px) clamp(20px,4vw,64px)">
+  <div style="position:absolute;right:0;bottom:0;width:clamp(180px,26vw,420px);aspect-ratio:3/4;overflow:hidden;transform:translateY(12%)">
+    <image-slot id="loc-cta" shape="rect" placeholder="editorial portrait — invade la esquina"></image-slot>
+  </div>
+  <div style="position:relative;max-width:1440px;margin:0 auto">
+    <span style="display:block;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#8D6B3E;font-weight:600">Siguiente paso</span>
+    <h2 data-reveal="1" style="opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.2,1);margin:clamp(20px,4vh,40px) 0 0;max-width:22ch;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(38px,6.6vw,110px);line-height:.98;letter-spacing:-.025em;text-wrap:pretty">¿Le mostramos al mundo <em style="font-style:italic;color:#8D6B3E">la otra cara</em> de tu marca?</h2>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:28px;margin-top:clamp(36px,6vh,72px)">
+      <a href="mailto:hola@laotracara.com" style="display:inline-flex;align-items:center;gap:14px;min-height:60px;padding:0 38px;background:#080808;color:#F4F1EB;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;transition:background .4s,color .4s" style-hover="background:#B99455;color:#080808">Hablemos →</a>
+      <a href="mailto:hola@laotracara.com" style="font-family:'DM Serif Display',serif;font-size:clamp(16px,1.5vw,22px);color:#080808;border-bottom:1px solid rgba(8,8,8,.3);padding-bottom:3px">hola@laotracara.com</a>
+    </div>
+  </div>
+</section>
+
+<footer style="position:relative;background:#080808;overflow:hidden;padding:clamp(64px,10vh,110px) clamp(20px,4vw,64px) 0">
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(32px,4vw,72px);padding-bottom:clamp(44px,7vh,90px)">
+      <div>
+        <img src="./loc-logo-trim.png" alt="La Otra Cara" style="height:58px;width:auto;display:block" />
+        <p style="margin:22px 0 0;max-width:26ch;font-size:13px;line-height:1.7;color:rgba(244,241,235,.45);font-weight:300">Agencia boutique de marketing, branding y crecimiento digital.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#B99455;font-weight:600;margin-bottom:6px">Navegación</span>
+        <a href="#top" style="color:rgba(244,241,235,.7);font-size:13px">Inicio</a>
+        <a href="#agencia" style="color:rgba(244,241,235,.7);font-size:13px">Agencia</a>
+        <a href="#servicios" style="color:rgba(244,241,235,.7);font-size:13px">Servicios</a>
+        <a href="#proyectos" style="color:rgba(244,241,235,.7);font-size:13px">Proyectos</a>
+        <a href="#contacto" style="color:rgba(244,241,235,.7);font-size:13px">Contacto</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#B99455;font-weight:600;margin-bottom:6px">Contacto</span>
+        <a href="mailto:hola@laotracara.com" style="color:rgba(244,241,235,.7);font-size:13px">hola@laotracara.com</a>
+        <a href="https://wa.me/" style="color:rgba(244,241,235,.7);font-size:13px">WhatsApp</a>
+        <a href="https://instagram.com/" style="color:rgba(244,241,235,.7);font-size:13px">Instagram</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#B99455;font-weight:600;margin-bottom:6px">Estudio</span>
+        <span style="color:rgba(244,241,235,.7);font-size:13px">Ciudad — País</span>
+        <span style="color:rgba(244,241,235,.45);font-size:13px;font-weight:300">Trabajamos con marcas en toda LATAM.</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;border-top:1px solid rgba(244,241,235,.14)">
+      <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.35)">© 2026 La Otra Cara</span>
+      <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,235,.35)">Agencia de Marketing</span>
+    </div>
+    <div aria-hidden="true" style="font-family:'DM Serif Display',serif;font-size:clamp(120px,27vw,400px);line-height:.68;letter-spacing:-.03em;color:rgba(244,241,235,.07);text-align:center;user-select:none;margin-bottom:-.16em">LOC</div>
+  </div>
+</footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { menuOpen: false, desktop: true };
+
+  componentDidMount() {
+    const root = document;
+    this._root = root;
+
+    const setBP = () => {
+      const d = window.innerWidth >= 900;
+      if (d !== this.state.desktop) this.setState({ desktop: d, menuOpen: d ? false : this.state.menuOpen });
+    };
+    setBP();
+    this._onResize = setBP;
+    window.addEventListener('resize', setBP);
+
+    // scrolling ancestor (host may scroll a wrapper, not the window)
+    let sc = root.querySelector('#top');
+    while (sc && sc !== document.body) {
+      const ov = getComputedStyle(sc).overflowY;
+      if ((ov === 'auto' || ov === 'scroll') && sc.scrollHeight > sc.clientHeight + 4) break;
+      sc = sc.parentElement;
+    }
+    const scroller = sc && sc !== document.body ? sc : null;
+    this._scroller = scroller;
+
+    // scroll reveals
+    const reveal = (el) => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; };
+    const targets = Array.from(root.querySelectorAll('[data-reveal]'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+    }, { root: scroller, threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    targets.forEach((el) => io.observe(el));
+    this._io = io;
+    let live = true;
+    this._safety = setTimeout(() => {
+      live = false;
+      document.querySelectorAll('[data-reveal]').forEach(reveal);
+      io.disconnect();
+    }, 1600);
+    // nodes added by later template re-renders still need revealing
+    const mo = new MutationObserver(() => {
+      document.querySelectorAll('[data-reveal]').forEach((el) => {
+        if (el.style.opacity === '1') return;
+        if (live) { io.observe(el); } else { reveal(el); }
+      });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+    this._mo = mo;
+
+    // header state + hero parallax
+    const hdr = root.querySelector('[data-hdr]');
+    const par = root.querySelector('[data-parallax]');
+    const onScroll = () => {
+      const y = (this._scroller ? this._scroller.scrollTop : window.scrollY) || 0;
+      if (hdr) {
+        const on = y > 40;
+        hdr.style.background = on ? 'rgba(8,8,8,.82)' : 'transparent';
+        hdr.style.backdropFilter = on ? 'saturate(140%) blur(14px)' : 'none';
+        hdr.style.borderBottomColor = on ? 'rgba(244,241,235,.12)' : 'rgba(244,241,235,0)';
+        hdr.style.paddingTop = on ? '14px' : '22px';
+        hdr.style.paddingBottom = on ? '14px' : '22px';
+      }
+      if (par && y < window.innerHeight * 1.4) par.style.transform = 'translateY(' + (y * 0.12).toFixed(1) + 'px)';
+    };
+    onScroll();
+    this._onScroll = onScroll;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (scroller) scroller.addEventListener('scroll', onScroll, { passive: true });
+
+    // services hover imagery
+    // delegated so it survives template re-renders
+    const show = (n) => {
+      document.querySelectorAll('[data-svc-img]').forEach((el) => {
+        el.style.opacity = el.getAttribute('data-svc-img') === String(n) ? '1' : '0';
+      });
+    };
+    if (!document.__locSvcHover) {
+      document.__locSvcHover = true;
+      document.addEventListener('mouseover', (e) => {
+        const t = e.target;
+        if (!t || !t.closest) return;
+        const row = t.closest('[data-svc]');
+        if (row) { show(row.getAttribute('data-svc')); return; }
+        const stage = document.querySelector('[data-svc-stage]');
+        const wrap = stage && stage.parentElement;
+        if (wrap && !wrap.contains(t)) show(5);
+      });
+    }
+    show(5);
+
+    // discreet portfolio cursor
+    const cur = document.createElement('div');
+    cur.setAttribute('style', 'position:fixed;z-index:80;top:0;left:0;width:96px;height:96px;border:1px solid #B99455;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"DM Sans",sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#B99455;background:rgba(8,8,8,.25);pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.6);transition:opacity .35s ease,transform .35s cubic-bezier(.2,.7,.2,1)');
+    cur.textContent = 'Ver';
+    document.body.appendChild(cur);
+    this._cursor = cur;
+    const move = (e) => { cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px'; };
+    root.querySelectorAll('[data-work]').forEach((card) => {
+      card.addEventListener('mouseenter', () => {
+        if (!this.state.desktop) return;
+        cur.style.opacity = '1'; cur.style.transform = 'translate(-50%,-50%) scale(1)';
+        window.addEventListener('mousemove', move);
+      });
+      card.addEventListener('mouseleave', () => {
+        cur.style.opacity = '0'; cur.style.transform = 'translate(-50%,-50%) scale(.6)';
+        window.removeEventListener('mousemove', move);
+      });
+      const slot = card.querySelector('image-slot');
+      if (slot) {
+        card.addEventListener('mouseenter', () => { slot.style.transition = 'transform 1.1s cubic-bezier(.2,.7,.2,1)'; slot.style.transform = 'scale(1.045)'; });
+        card.addEventListener('mouseleave', () => { slot.style.transform = 'scale(1)'; });
+      }
+    });
+    this._move = move;
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('scroll', this._onScroll);
+    if (this._scroller) this._scroller.removeEventListener('scroll', this._onScroll);
+    clearTimeout(this._safety);
+    window.removeEventListener('mousemove', this._move);
+    if (this._io) this._io.disconnect();
+    if (this._cursor && this._cursor.parentNode) this._cursor.parentNode.removeChild(this._cursor);
+  }
+
+  renderVals() {
+    return {
+      hideVideo: function (e) { if (e && e.target) { e.target.style.display = 'none'; } },
+      desktop: this.state.desktop,
+      heroInset: this.state.desktop ? '-8% 0 -8% 44%' : '-6% 0 54% 0',
+      mobile: !this.state.desktop,
+      menuOpen: this.state.menuOpen,
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
