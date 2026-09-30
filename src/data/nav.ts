@@ -15,18 +15,25 @@ export const footerColumns: FooterColumn[] = [
   {
     titulo: 'Contacto',
     items: [
-      { label: 'hola@laotracara.com', href: 'mailto:hola@laotracara.com' },
-      // TODO: número real de WhatsApp y handle de Instagram.
-      { label: 'WhatsApp', href: 'https://wa.me/' },
+      { label: 'Email', href: 'mailto:hola@laotracara.com' },
+      // TODO: handle real de Instagram.
       { label: 'Instagram', href: 'https://instagram.com/' },
     ],
   },
   {
-    titulo: 'Estudio',
+    titulo: 'Ubicación',
     items: [
-      // TODO: ciudad y país reales.
-      { label: 'Ciudad — País' },
-      { label: 'Trabajamos con marcas en toda LATAM.', muted: true },
+      { label: 'Madrid · España.' },
+      { label: 'Trabajamos con empresas de Latam', muted: true },
+    ],
+  },
+  {
+    titulo: 'Legal',
+    items: [
+      // TODO: crear las páginas legales; por ahora los href apuntan a rutas que no existen.
+      { label: 'Aviso Legal', href: '/aviso-legal' },
+      { label: 'Privacidad', href: '/privacidad' },
+      { label: 'Cookies', href: '/cookies' },
     ],
   },
 ];

@@ -1,8 +1,7 @@
 ---
 import { site } from '../data/site';
-import Button from './ui/Button.astro';
+import ContactoForm from './ContactoForm.astro';
 import Eyebrow from './ui/Eyebrow.astro';
-import ImagePlaceholder from './ui/ImagePlaceholder.astro';
 import SectionShell from './ui/SectionShell.astro';
 
 const mailto = `mailto:${site.email}`;
@@ -14,35 +13,36 @@ const mailto = `mailto:${site.email}`;
   class="relative overflow-hidden bg-bone text-ink"
   innerClass="relative z-10"
 >
-  {/* Retrato que invade la esquina inferior derecha a propósito: va por debajo
-      del texto (z-0 contra el z-10 del contenido). */}
-  <div
-    slot="bleed"
-    class="absolute right-0 bottom-0 z-0 aspect-[3/4] w-[clamp(180px,26vw,420px)] translate-y-[12%] overflow-hidden"
-  >
-    <ImagePlaceholder label="Retrato editorial" />
-  </div>
+  <div class="grid items-start gap-[clamp(44px,6vw,96px)] lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
+    <div>
+      <Eyebrow data-reveal class="reveal" tone="gold-deep" tracking="tracking-[.3em]"
+        >Siguiente paso</Eyebrow
+      >
 
-  <Eyebrow data-reveal class="reveal" tone="gold-deep" tracking="tracking-[.3em]"
-    >Siguiente paso</Eyebrow
-  >
+      <h2
+        data-reveal
+        class="reveal mt-[clamp(20px,4vh,40px)] mb-0 max-w-[22ch] font-display text-h2-cta font-normal text-pretty [--reveal-delay:.1s] [--reveal-y:26px]"
+      >
+        ¿Mostramos al mundo <em class="text-gold-deep italic">la otra cara</em> de tu marca?
+      </h2>
 
-  <h2
-    data-reveal
-    class="reveal mt-[clamp(20px,4vh,40px)] mb-0 max-w-[22ch] font-display text-h2-cta font-normal text-pretty [--reveal-delay:.1s] [--reveal-y:26px]"
-  >
-    ¿Le mostramos al mundo <em class="text-gold-deep italic">la otra cara</em> de tu marca?
-  </h2>
+      <p
+        data-reveal
+        class="reveal mt-[clamp(24px,4vh,44px)] mb-0 max-w-[40ch] text-body font-light text-pretty text-graphite [--reveal-delay:.16s]"
+      >
+        Cuéntanos qué tienes entre manos y te respondemos con una primera lectura del proyecto.
+      </p>
 
-  <div
-    data-reveal
-    class="reveal mt-[clamp(36px,6vh,72px)] flex flex-wrap items-center gap-7 [--reveal-delay:.22s]"
-  >
-    <Button href={mailto} variant="solid-ink">Hablemos →</Button>
-    <a
-      href={mailto}
-      class="border-b border-hair-ink-link pb-[3px] font-display text-mail text-ink hover:text-ink focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold-deep"
-      >{site.email}</a
-    >
+      <a
+        data-reveal
+        href={mailto}
+        class="reveal mt-[clamp(20px,3vh,32px)] inline-block border-b border-hair-ink-link pb-[3px] font-display text-mail text-ink [--reveal-delay:.22s] hover:text-ink focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold-deep"
+        >{site.email}</a
+      >
+    </div>
+
+    <div data-reveal class="reveal [--reveal-delay:.28s] [--reveal-y:26px]">
+      <ContactoForm />
+    </div>
   </div>
 </SectionShell>

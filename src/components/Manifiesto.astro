@@ -50,24 +50,25 @@ import SectionShell from './ui/SectionShell.astro';
       Trabajamos con un número limitado de marcas para poder implicarnos realmente en cada proyecto. Combinamos estrategia, creatividad, contenido y tecnología para ayudar a nuestros clientes a construir marcas más relevantes y hacer crecer su negocio.
     </p>
     <p data-reveal class="reveal m-0 text-body font-light text-graphite [--reveal-delay:.2s]">
-      Porque una marca siempre tiene más de una cara. Nuestro trabajo es encontrar la que merece ser vista.
-Menos clientes. Más implicación.
-      
+      Porque una marca siempre tiene más de una cara. Nuestro trabajo es encontrar la que
+      merece ser vista. Menos clientes. Más implicación.
     </p>
-    <div data-reveal class="reveal flex flex-col gap-[22px] [--reveal-delay:.3s]">
-      <div class="flex items-baseline gap-[14px]">
-        <span class="font-display text-metric text-ink">06</span>
-        <span class="text-[11px] tracking-[.18em] text-stone uppercase">Marcas al año</span>
+    {/* Dos datos con el mismo patrón: cifra o frase en display + rótulo + apoyo. */}
+    <div data-reveal class="reveal flex flex-col gap-[clamp(26px,4vh,40px)] [--reveal-delay:.3s]">
+      <div>
+        <div class="flex items-baseline gap-[14px]">
+          <span class="font-display text-metric text-ink">06</span>
+          <span class="text-[11px] tracking-[.18em] text-stone uppercase">Marcas al año</span>
+        </div>
+        <p class="mt-[10px] mb-0 max-w-[30ch] text-[14px]/[1.6] font-light text-graphite-soft">
+          Menos volumen. Más atención.
+        </p>
       </div>
-      <div class="flex items-baseline gap-[14px]">
-        <span class="text-[11px] tracking-[.18em] text-stone uppercase">Menos volumen. Más atención.</span>
-      </div>
-      <div class="flex items-baseline gap-[14px]">
-        <span class="font-display text-metric text-ink">Implicación directa</span>
-        <!-- <span class="text-[11px] tracking-[.18em] text-stone uppercase">Disciplinas</span> -->
-      </div>
-      <div class="flex items-baseline gap-[14px]">
-        <span class="text-[11px] tracking-[.18em] text-stone uppercase">Sin capas innecesarias entre tu marca y nosotros.</span>
+      <div class="border-t border-hair-ink pt-[clamp(22px,3.2vh,32px)]">
+        <span class="block font-display text-metric-sm text-ink">Implicación directa</span>
+        <p class="mt-[10px] mb-0 max-w-[30ch] text-[14px]/[1.6] font-light text-graphite-soft">
+          Sin capas innecesarias entre tu marca y nosotros.
+        </p>
       </div>
     </div>
   </div>

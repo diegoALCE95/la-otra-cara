@@ -8,7 +8,8 @@ import produccion from '../assets/img/svc-05-produccion.png';
 
 export type Servicio = {
   titulo: string;
-  descripcion: string;
+  /** Cuerpo del acordeón: se despliega al abrir la fila. */
+  texto: string;
   imagen: ImageMetadata;
   /** Filtro CSS por imagen: parte de la identidad visual, no un extra. */
   filtro: string;
@@ -20,34 +21,38 @@ export type Servicio = {
  */
 export const servicios: Servicio[] = [
   {
-    titulo: 'Producción de Contenido',
-    descripcion: 'Fotografía, video, dirección creativa y piezas para campañas.',
+    titulo: 'Producción Audiovisual',
+    texto:
+      'No hacemos contenido para rellenar un feed. Creamos imágenes que construyen marca.',
     imagen: produccion,
     filtro: 'sepia(.06) saturate(1.08) contrast(1.04) brightness(1.04)',
   },
   {
     titulo: 'Social Media + Estrategia',
-    descripcion: 'Posicionamiento, identidad de marca, dirección visual y sistemas gráficos.',
+    texto:
+      'Estrategia, contenido y gestión de redes para construir una presencia digital reconocible, coherente y con algo que decir. Porque estar en redes es fácil. Tener una razón para que te presten atención es otra historia.',
     imagen: branding,
     filtro: 'sepia(.08) saturate(1.08) contrast(1.04) brightness(1.08)',
   },
   {
     titulo: 'Email Marketing',
-    descripcion: 'Estrategia, contenido, dirección creativa y gestión de comunidades.',
+    texto:
+      'Estrategia, campañas y automatizaciones para convertir la base de datos en una relación comercial más rentable.',
     imagen: social,
     filtro: 'sepia(.08) saturate(1.08) contrast(1.04) brightness(1.08)',
   },
   {
-    titulo: 'Diseño & Desarrollo Web',
-    descripcion: 'Experiencias digitales enfocadas en marca, conversión y posicionamiento.',
+    titulo: 'Diseño y Desarrollo Web',
+    texto:
+      'Diseñamos y desarrollamos webs que enseñan la mejor cara de una marca y, sobre todo, ayudan a convertir visitas en oportunidades.',
     imagen: web,
     filtro: 'sepia(.06) saturate(1.08) contrast(1.04) brightness(1.06)',
   },
   {
     titulo: 'Automatizaciones & IA',
-    descripcion: 'Campañas digitales orientadas a crecimiento, adquisición y performance.',
+    texto:
+      'Automatizamos tareas, conectamos herramientas y aplicamos inteligencia artificial para que tu equipo dedique menos tiempo a repetir y más tiempo a decidir.',
     imagen: paid,
     filtro: 'sepia(.06) saturate(1.10) contrast(1.06) brightness(1.18)',
   },
-  
 ];

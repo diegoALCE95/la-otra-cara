@@ -4,11 +4,6 @@ import Lightbox from './Lightbox.astro';
 import WorkCard from './WorkCard.astro';
 import SectionShell from './ui/SectionShell.astro';
 
-const delays = ['', '[--reveal-delay:.12s]', '[--reveal-delay:.24s]'];
-
-/** Orden de lectura del grid: fila 1, destacado, fila 2. Es el del visor. */
-const galeria = [...proyectos.fila1, proyectos.destacado, ...proyectos.fila2];
-
 /**
  * Proporción numérica derivada de la clase `aspect-[w/h]` del grid, para el
  * espaciador del visor. Se deriva en vez de duplicarse en `proyectos.ts` para
@@ -19,11 +14,6 @@ const proporcion = (ratio: string) => {
   // Escaladas a px "intrínsecos": es lo que permite que max-w/max-h contengan
   // la caja conservando el ratio, como haría una imagen real.
   return { width: Number(w) * 200, height: Number(h) * 200 };
-};
-const indice = {
-  fila1: 0,
-  destacado: proyectos.fila1.length,
-  fila2: proyectos.fila1.length + 1,
 };
 ---
 
@@ -37,7 +27,6 @@ const indice = {
     class="reveal flex flex-wrap items-end justify-between gap-6 border-b border-hair pb-[clamp(32px,5vh,56px)]"
   >
     <h2 class="m-0 font-display text-h2 font-normal">
-      <!-- Selected <em class="text-gold italic">Work</em> -->
       <span class="text-gold">Proyectos</span>
     </h2>
     <span class="max-w-[32ch] text-[13px]/[1.6] font-light text-bone-50">
@@ -45,28 +34,53 @@ const indice = {
     </span>
   </div>
 
-  <div data-cursor-zone="work">
-    <div
-      class="mt-[clamp(28px,5vh,56px)] grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid"
-    >
-      {
-        proyectos.fila1.map((proyecto, i) => (
-          <WorkCard proyecto={proyecto} index={indice.fila1 + i} delay={delays[i]} />
-        ))
-      }
+  {/* El reveal va en el carrusel entero: las piezas fuera de vista quedan
+      recortadas por el viewport y un observer por card no llegaría a dispararse. */}
+  <div
+    data-cursor-zone="work"
+    data-carrusel
+    data-reveal
+    role="group"
+    aria-label="Proyectos"
+    class="reveal mt-[clamp(28px,5vh,56px)] [--reveal-y:24px]"
+  >
+    <div data-carrusel-viewport class="overflow-hidden">
+      <ul
+        data-carrusel-track
+        role="list"
+        class="m-0 flex list-none touch-pan-y gap-grid p-0 transition-transform duration-[900ms] ease-editorial will-change-transform"
+      >
+        {
+          proyectos.map((proyecto, i) => (
+            <li data-carrusel-slide class="carrusel-slide min-w-0">
+              <WorkCard proyecto={proyecto} index={i} />
+            </li>
+          ))
+        }
+      </ul>
     </div>
 
-    <WorkCard
-      proyecto={proyectos.destacado}
-      index={indice.destacado}
-      wide
-      class="mt-grid"
-    />
-
-    <div class="mt-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid">
+    {/* Un punto por posición posible; `carrusel.ts` oculta los que sobran
+        según cuántas columnas quepan. */}
+    <div
+      data-carrusel-dots
+      aria-label="Paginación de proyectos"
+      class="mt-[clamp(20px,3.5vh,36px)] flex items-center justify-center"
+    >
       {
-        proyectos.fila2.map((proyecto, i) => (
-          <WorkCard proyecto={proyecto} index={indice.fila2 + i} delay={delays[i]} />
+        proyectos.map((_, i) => (
+          <button
+            type="button"
+            data-carrusel-dot={i}
+            aria-current={i === 0 ? 'true' : 'false'}
+            aria-label={`Ir al grupo ${i + 1}`}
+            class="group flex size-[44px] cursor-pointer items-center justify-center border-0 bg-transparent focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gold"
+          >
+            <span
+              aria-hidden="true"
+              class="block size-[7px] rounded-full bg-bone-30 transition-[background-color,transform] duration-500 ease-editorial group-hover:bg-bone-55 group-aria-[current=true]:scale-[1.45] group-aria-[current=true]:bg-gold"
+            />
+          </button>
         ))
       }
     </div>
@@ -83,9 +97,9 @@ const indice = {
   Ver
 </div>
 
-<Lightbox id="work" label="Selected Work" count={galeria.length}>
+<Lightbox id="work" label="Selected Work" count={proyectos.length}>
   {
-    galeria.map((proyecto) => (
+    proyectos.map((proyecto) => (
       <figure
         data-lb-slide
         hidden

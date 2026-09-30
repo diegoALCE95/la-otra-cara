@@ -1,19 +1,23 @@
 ---
 /**
- * Botón-enlace del sistema. Cada variante reproduce una medida concreta de la
+ * Botón del sistema. Cada variante reproduce una medida concreta de la
  * referencia (padding, min-height y estados de hover incluidos).
+ * Con `href` renderiza un enlace; sin `href`, un `<button>` real (el submit
+ * del formulario de contacto).
  */
 interface Props {
-  href: string;
+  href?: string;
+  type?: 'button' | 'submit';
   variant: 'outline-gold' | 'solid-bone' | 'outline-bone' | 'solid-gold' | 'solid-ink';
   class?: string;
-  'data-menu-close'?: string;
+  /** El resto de atributos (p. ej. `data-menu-close`) va al elemento. */
+  [key: string]: unknown;
 }
 
-const { href, variant, class: extra = '', ...rest } = Astro.props;
+const { href, type = 'button', variant, class: extra = '', ...rest } = Astro.props;
 
 const base =
-  'items-center text-[11px] font-semibold uppercase transition-colors duration-[400ms] focus-visible:outline-1 focus-visible:outline-offset-4';
+  'items-center text-[11px] font-semibold uppercase transition-colors duration-[400ms] focus-visible:outline-1 focus-visible:outline-offset-4 disabled:cursor-wait disabled:opacity-70';
 
 const variants = {
   // Header: "Hablemos"
@@ -34,6 +38,14 @@ const variants = {
 }[variant];
 ---
 
-<a href={href} class:list={[base, variants, extra]} {...rest}>
-  <slot />
-</a>
+{
+  href ? (
+    <a href={href} class:list={[base, variants, extra]} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={[base, variants, 'cursor-pointer border-0', extra]} {...rest}>
+      <slot />
+    </button>
+  )
+}

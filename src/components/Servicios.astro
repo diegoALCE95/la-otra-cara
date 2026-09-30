@@ -23,29 +23,50 @@ import SectionShell from './ui/SectionShell.astro';
       class="min-w-0 flex-[1_1_520px] border-t border-hair"
     >
       {
-        /* Cada fila va envuelta: el reveal usa `transition`, y el <a> ya tiene
+        /* Cada fila va envuelta: el reveal usa `transition`, y el botón ya tiene
            la suya para el hover. Separarlas evita que compitan. */
         servicios.map((servicio, i) => (
           <div data-reveal class="reveal [--reveal-dur:.9s] [--reveal-y:20px]">
-            <a
-              href="#contacto"
-              data-svc={i + 1}
-              data-cursor-target
-              class="flex items-baseline gap-[clamp(16px,3vw,48px)] border-b border-hair px-1 py-[clamp(22px,3.4vh,38px)] transition-[padding-left,background-color] duration-500 ease-editorial hover:bg-wash hover:pl-[18px] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
-            >
-              <span class="w-[34px] flex-none font-display text-svc-index text-gold">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span class="min-w-0 flex-1">
-                <span class="block font-display text-svc text-bone">{servicio.titulo}</span>
-                <span class="mt-[10px] block max-w-[46ch] text-[14px]/[1.6] font-light text-bone-50">
-                  {servicio.descripcion}
+            <div class="border-b border-hair">
+              <button
+                type="button"
+                data-svc={i + 1}
+                data-svc-toggle
+                data-cursor-target
+                aria-expanded="false"
+                aria-controls={`svc-panel-${i + 1}`}
+                class="group flex w-full cursor-pointer items-baseline gap-[clamp(16px,3vw,48px)] border-0 bg-transparent py-[clamp(22px,3.4vh,38px)] pr-[clamp(14px,2.2vw,32px)] pl-1 text-left transition-[padding-left,background-color] duration-500 ease-editorial hover:bg-wash hover:pl-[18px] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+              >
+                <span class="w-[34px] flex-none font-display text-svc-index text-gold">
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-              </span>
-              <span aria-hidden="true" class="flex-none text-[14px] text-gold">
-                →
-              </span>
-            </a>
+                <span class="min-w-0 flex-1 font-display text-svc text-bone">
+                  {servicio.titulo}
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="flex-none text-[14px] text-gold transition-transform duration-500 ease-editorial group-aria-expanded:rotate-90"
+                >
+                  →
+                </span>
+              </button>
+
+              {/* Acordeón: `grid-template-rows` de 0fr a 1fr es lo único que anima
+                  una altura desconocida sin medirla en JS. */}
+              <div
+                id={`svc-panel-${i + 1}`}
+                data-svc-panel
+                data-open="false"
+                inert
+                class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[560ms] ease-editorial data-[open=true]:grid-rows-[1fr]"
+              >
+                <div class="overflow-hidden">
+                  <p class="m-0 max-w-[62ch] pr-[clamp(14px,2.2vw,32px)] pb-[clamp(24px,3.6vh,36px)] pl-1 text-[15px]/[1.75] font-light text-bone-55 lg:pl-[calc(34px_+_clamp(16px,3vw,48px)_+_4px)]">
+                    {servicio.texto}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         ))
       }
@@ -90,7 +111,9 @@ import SectionShell from './ui/SectionShell.astro';
 </div>
 
 <script>
+  import { initServiciosAcordeon } from '../scripts/servicios-acordeon';
   import { initServiceStage } from '../scripts/servicios-hover';
 
   initServiceStage();
+  initServiciosAcordeon();
 </script>

@@ -64,9 +64,7 @@ function bind(box: HTMLDialogElement) {
 
   // Al cerrar, ningún video sigue sonando ni consumiendo red de fondo.
   box.addEventListener('close', () => {
-    for (const media of box.querySelectorAll<HTMLVideoElement>('video[data-lb-media]')) {
-      media.pause();
-    }
+    for (const media of box.querySelectorAll<HTMLElement>('[data-lb-media]')) detener(media);
   });
 }
 
@@ -82,15 +80,32 @@ function show(box: HTMLDialogElement, index: number) {
   slides.forEach((slide, i) => {
     const active = i === current;
     slide.hidden = !active;
-    if (!active) return;
 
     const media = slide.querySelector<HTMLElement>('[data-lb-media]');
-    const src = media?.dataset.src;
-    if (media && src && !media.getAttribute('src')) media.setAttribute('src', src);
+    if (!media) return;
+
+    // Solo el slide activo tiene media cargado: al pasar de uno a otro el
+    // anterior se detiene, así nunca hay dos vídeos sonando a la vez.
+    if (!active) {
+      detener(media);
+      return;
+    }
+    const src = media.dataset.src;
+    if (src && !media.getAttribute('src')) media.setAttribute('src', src);
   });
 
   const counter = box.querySelector<HTMLElement>('[data-lb-counter]');
   if (counter) {
     counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
   }
+}
+
+/**
+ * Deja un media en reposo. Un `<video>` basta con pausarlo; un `<iframe>` de
+ * YouTube sigue reproduciendo aunque su slide esté oculto, así que se le quita
+ * el `src` — `show()` lo repone desde `data-src` la próxima vez que se active.
+ */
+function detener(media: HTMLElement) {
+  if (media instanceof HTMLVideoElement) media.pause();
+  else media.removeAttribute('src');
 }

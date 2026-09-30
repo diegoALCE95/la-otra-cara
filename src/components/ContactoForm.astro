@@ -1,0 +1,165 @@
+---
+import { serviciosOpciones, tamanosOrganizacion } from '../data/contacto';
+import { site } from '../data/site';
+import Button from './ui/Button.astro';
+
+/**
+ * Formulario de contacto. Validación y envío en `contacto-form.ts`: el
+ * formulario lleva `novalidate` para dar nuestros propios mensajes, y la
+ * confirmación sustituye al formulario en el mismo hueco (sin salto de layout
+ * hacia arriba, el foco se mueve al panel de éxito).
+ */
+
+const campos = [
+  { name: 'nombre', label: 'Nombre', type: 'text', required: true, autocomplete: 'name' },
+  {
+    name: 'empresa',
+    label: 'Empresa / Marca',
+    type: 'text',
+    required: true,
+    autocomplete: 'organization',
+  },
+  { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' },
+  { name: 'telefono', label: 'Teléfono', type: 'tel', required: false, autocomplete: 'tel' },
+] as const;
+
+const selects = [
+  { name: 'tamano', label: 'Tamaño de la organización', opciones: tamanosOrganizacion },
+  { name: 'servicio', label: 'Servicio de interés', opciones: serviciosOpciones },
+] as const;
+
+const labelClass =
+  'block text-[11px] font-semibold uppercase tracking-[.2em] text-stone';
+const controlClass =
+  'mt-[10px] block w-full min-h-[52px] border border-hair-ink bg-transparent px-[14px] py-[14px] font-sans text-[15px] font-light text-ink transition-colors duration-300 hover:border-hair-ink-strong focus-visible:border-gold-deep focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gold-deep aria-[invalid=true]:border-gold-deep';
+const errorClass = 'mt-[6px] text-[12px] font-medium text-gold-deep';
+---
+
+<div class="relative">
+  <form data-contacto-form novalidate class="grid gap-[clamp(18px,2.4vw,26px)] lg:grid-cols-2">
+    {
+      campos.map((campo) => (
+        <div>
+          <label class={labelClass} for={`contacto-${campo.name}`}>
+            {campo.label}
+            {campo.required && (
+              <span aria-hidden="true" class="text-gold-deep">
+                {' '}
+                *
+              </span>
+            )}
+          </label>
+          <input
+            data-campo
+            id={`contacto-${campo.name}`}
+            name={campo.name}
+            type={campo.type}
+            required={campo.required}
+            autocomplete={campo.autocomplete}
+            aria-describedby={`contacto-${campo.name}-error`}
+            class={controlClass}
+          />
+          <p id={`contacto-${campo.name}-error`} data-error-de={campo.name} hidden class={errorClass} />
+        </div>
+      ))
+    }
+
+    {
+      selects.map((select) => (
+        <div>
+          <label class={labelClass} for={`contacto-${select.name}`}>
+            {select.label}
+          </label>
+          {/* `appearance-none` + chevron propio: el control nativo trae esquinas
+              y flechas del sistema, y el diseño es de esquina recta. */}
+          <div class="relative">
+            <select
+              data-campo
+              id={`contacto-${select.name}`}
+              name={select.name}
+              aria-describedby={`contacto-${select.name}-error`}
+              class={`${controlClass} cursor-pointer appearance-none pr-[46px]`}
+            >
+              <option value="">Selecciona una opción</option>
+              {select.opciones.map((opcion) => (
+                <option value={opcion}>{opcion}</option>
+              ))}
+            </select>
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute top-1/2 right-[16px] mt-[5px] block size-[9px] -translate-y-1/2 rotate-45 border-r border-b border-gold-deep"
+            />
+          </div>
+          <p id={`contacto-${select.name}-error`} data-error-de={select.name} hidden class={errorClass} />
+        </div>
+      ))
+    }
+
+    <div class="lg:col-span-2">
+      <label class={labelClass} for="contacto-mensaje">
+        Mensaje
+        <span aria-hidden="true" class="text-gold-deep"> *</span>
+      </label>
+      <textarea
+        data-campo
+        id="contacto-mensaje"
+        name="mensaje"
+        rows="5"
+        required
+        aria-describedby="contacto-mensaje-error"
+        class={`${controlClass} min-h-[150px] resize-y leading-[1.7]`}></textarea>
+      <p id="contacto-mensaje-error" data-error-de="mensaje" hidden class={errorClass} />
+    </div>
+
+    {/* Trampa de bots: invisible y fuera del tabulador. */}
+    <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" class="hidden" />
+
+    <div class="flex flex-wrap items-center gap-6 lg:col-span-2">
+      <Button variant="solid-ink" type="submit" data-contacto-submit>
+        <span data-label>Cuéntanos tu proyecto →</span>
+      </Button>
+      <p class="m-0 max-w-[30ch] text-[12px] font-light text-graphite-soft">
+        Los campos con <span class="text-gold-deep">*</span> son obligatorios.
+      </p>
+    </div>
+
+    <p
+      data-contacto-estado
+      role="status"
+      aria-live="polite"
+      class="m-0 border border-hair-ink px-[16px] py-[14px] text-[13px] font-medium text-ink empty:hidden lg:col-span-2"
+    >
+    </p>
+  </form>
+
+  {/* Confirmación: sustituye al formulario y recibe el foco. */}
+  <div
+    data-contacto-exito
+    hidden
+    tabindex="-1"
+    role="status"
+    class="border border-hair-ink-strong p-[clamp(24px,3.4vw,40px)] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold-deep"
+  >
+    <p class="m-0 text-[11px] font-semibold tracking-[.3em] text-gold-deep uppercase">
+      Mensaje enviado
+    </p>
+    <p class="mt-[clamp(14px,2vh,22px)] mb-0 max-w-[30ch] font-display text-card font-normal text-pretty text-ink">
+      Gracias. Ya tenemos tu proyecto sobre la mesa.
+    </p>
+    <p class="mt-[clamp(12px,1.8vh,18px)] mb-0 max-w-[46ch] text-[15px]/[1.7] font-light text-pretty text-graphite">
+      Te escribimos al email que nos dejaste para entender bien qué necesitas. Si prefieres
+      adelantarnos algo, contéstanos directamente a{' '}
+      <a
+        href={`mailto:${site.email}`}
+        class="border-b border-hair-ink-link pb-[2px] text-ink hover:text-gold-deep focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold-deep"
+        >{site.email}</a
+      >.
+    </p>
+  </div>
+</div>
+
+<script>
+  import { initContactoForm } from '../scripts/contacto-form';
+
+  initContactoForm();
+</script>

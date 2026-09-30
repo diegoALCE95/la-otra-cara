@@ -18,11 +18,3 @@ export const equipo: Editorialista[] = [
     placeholder: 'Retrato fundador 02',
   },
 ];
-
-/** TODO: atribución real del testimonio. */
-export const testimonio = {
-  cita: 'No solo entendieron nuestra marca. Entendieron ',
-  citaEnfasis: 'en qué podía convertirse.',
-  autor: 'Nombre Apellido',
-  cargo: 'Founder — Casa Brava',
-};

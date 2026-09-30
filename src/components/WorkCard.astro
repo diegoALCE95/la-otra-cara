@@ -6,14 +6,10 @@ interface Props {
   proyecto: Proyecto;
   /** Posición en la galería del visor (`data-lb-open="work:<índice>"`). */
   index: number;
-  /** Clase de delay del reveal, p.ej. '[--reveal-delay:.12s]'. */
-  delay?: string;
-  /** El destacado ancho usa la escala de título mayor. */
-  wide?: boolean;
   class?: string;
 }
 
-const { proyecto, index, delay = '', wide = false, class: extra = '' } = Astro.props;
+const { proyecto, index, class: extra = '' } = Astro.props;
 ---
 
 <a
@@ -21,11 +17,8 @@ const { proyecto, index, delay = '', wide = false, class: extra = '' } = Astro.p
   data-lb-open={`work:${index}`}
   data-cursor-target
   aria-haspopup="dialog"
-  data-reveal
   class:list={[
-    'group reveal block text-bone [--reveal-y:24px]',
-    proyecto.desfasado && 'self-end',
-    delay,
+    'group block text-bone focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold',
     extra,
   ]}
 >
@@ -36,16 +29,9 @@ const { proyecto, index, delay = '', wide = false, class: extra = '' } = Astro.p
       <ImagePlaceholder label={proyecto.placeholder} />
     </div>
   </div>
-  <div
-    class:list={[
-      'mt-4 flex items-baseline justify-between gap-4 border-t border-hair pt-4',
-      wide && 'flex-wrap',
-    ]}
-  >
+  <div class="mt-4 flex items-baseline justify-between gap-4 border-t border-hair pt-4">
     <span>
-      <span class:list={['block font-display', wide ? 'text-card-wide' : 'text-card']}
-        >{proyecto.titulo}</span
-      >
+      <span class="block font-display text-card">{proyecto.titulo}</span>
       <span class="mt-1.5 block text-[11px] tracking-[.2em] text-bone-45 uppercase"
         >{proyecto.categoria}</span
       >

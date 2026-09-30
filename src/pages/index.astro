@@ -2,6 +2,7 @@
 import Clientes from '../components/Clientes.astro';
 import CtaFinal from '../components/CtaFinal.astro';
 import Equipo from '../components/Equipo.astro';
+import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
@@ -31,6 +32,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <Proceso />
     <Clientes />
     <Testimonio />
+    <Faq />
     <CtaFinal />
   </main>
 
@@ -38,10 +40,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
+  import { initCarrusel } from '../scripts/carrusel';
   import { initHoverCursors } from '../scripts/hover-cursor';
   import { initReveals } from '../scripts/reveal';
 
   initReveals();
   // El cursor cubre dos secciones (Proyectos y Servicios): se inicializa aquí.
   initHoverCursors();
+  // El carrusel, otras dos (Proyectos y Testimonios): una sola llamada monta
+  // ambos, y así ninguno se monta por duplicado.
+  initCarrusel();
 </script>

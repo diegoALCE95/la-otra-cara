@@ -10,7 +10,7 @@ import Button from './ui/Button.astro';
   {/* Capa de media difuminada con drift. Sin video, el gradiente es el fallback del diseño. */}
   <div
     aria-hidden="true"
-    class="absolute inset-[-8%] z-0 animate-hero-drift bg-[radial-gradient(70%_60%_at_40%_35%,#2a2419_0%,#141210_45%,#080808_100%)] [transform:scale(1.12)] brightness-[.62] saturate-[.72] blur-[26px]"
+    class="absolute inset-[-8%] z-0 animate-hero-drift bg-[radial-gradient(70%_60%_at_40%_35%,#2a2419_0%,#141210_45%,#080808_100%)] [transform:scale(1.12)] brightness-[.62] saturate-[.72] blur-[6px]"
   >
     {
       heroMedia.video && (
@@ -42,7 +42,7 @@ import Button from './ui/Button.astro';
   </div>
 
   <div
-    class="section-x relative z-[2] flex w-full max-w-[1180px] flex-col items-center pt-[clamp(120px,18vh,190px)] pb-[clamp(96px,14vh,150px)]"
+    class="section-x relative z-[2] flex w-full max-w-[1180px] flex-col items-center pt-[clamp(112px,11vh,132px)] pb-[clamp(96px,14vh,150px)]"
   >
     <div
       data-reveal
@@ -80,10 +80,21 @@ import Button from './ui/Button.astro';
 
   <div
     aria-hidden="true"
-    class="absolute inset-x-0 bottom-[clamp(24px,5vh,44px)] z-[2] flex flex-col items-center gap-[10px]"
+    class="absolute inset-x-0 bottom-[clamp(24px,5vh,44px)] z-[2] flex justify-center"
   >
-    <span class="block h-[44px] w-px animate-scroll-hint bg-gold"></span>
-    <span class="text-[10px] tracking-[.24em] text-bone-45 uppercase">Scroll</span>
+    <svg
+      viewBox="0 0 24 24"
+      width="26"
+      height="26"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="block animate-scroll-chevron text-gold opacity-45"
+    >
+      <path d="M5 9l7 7 7-7"></path>
+    </svg>
   </div>
 </section>
 

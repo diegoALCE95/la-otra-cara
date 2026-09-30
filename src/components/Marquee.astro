@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+
+import rombo from '../assets/img/rombo-blanco-trim.png';
+
 type Disciplina = { texto: string; estilo: 'serif' | 'serif-italic' | 'label' };
 
 const disciplinas: Disciplina[] = [
@@ -32,9 +36,16 @@ const estilos = {
           {disciplinas.map((d) => (
             <>
               <span class:list={['whitespace-nowrap', estilos[d.estilo]]}>{d.texto}</span>
-              <span aria-hidden="true" class="text-gold">
-                ◆
-              </span>
+              <Image
+                src={rombo}
+                alt=""
+                height={18}
+                densities={[1, 2]}
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                class="block h-[clamp(13px,1.1vw,17px)] w-auto flex-none"
+              />
             </>
           ))}
         </div>

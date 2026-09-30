@@ -1,32 +1,158 @@
 ---
-import { testimonio } from '../data/equipo';
+import { testimonios } from '../data/testimonios';
+import Lightbox from './Lightbox.astro';
+
+/**
+ * Tres testimonios en carrusel de uno en uno (`carrusel.ts`, el mismo motor y
+ * los mismos puntos dorados que Proyectos). Cada card es miniatura + cita +
+ * atribución, y la miniatura es el botón que abre el vídeo en el visor modal.
+ *
+ * Los vídeos no existen hasta que alguien pulsa: el `<iframe>` de YouTube se
+ * declara con `data-lb-media` + `data-src` y `lightbox.ts` solo le pone el
+ * `src` al slide activo. Nunca hay dos reproduciéndose.
+ */
+const playButton =
+  'flex size-[clamp(46px,4.6vw,58px)] items-center justify-center border border-hair-menu bg-scrim text-bone transition-colors duration-500 ease-editorial group-hover:border-gold group-hover:text-gold';
 ---
 
-<section
-  class="section-x border-t border-hair-gold bg-ink-soft py-[clamp(100px,18vh,210px)]"
->
-  <div class="mx-auto max-w-[1100px] text-center">
-    <span
-      data-reveal
-      aria-hidden="true"
-      class="reveal block font-display text-openquote text-gold [--reveal-y:12px]"
-      >“</span
-    >
-    <blockquote
-      data-reveal
-      class="reveal m-0 mt-[clamp(18px,3vh,34px)] font-display text-quote font-normal text-pretty text-bone [--reveal-delay:.1s] [--reveal-y:22px]"
-    >
-      {testimonio.cita}<em class="italic">{testimonio.citaEnfasis}</em>
-    </blockquote>
+<section class="section-x border-t border-hair-gold bg-ink-soft py-[clamp(100px,18vh,210px)]">
+  <div class="mx-auto max-w-[1100px]">
+    {/* El reveal envuelve al carrusel entero: los slides fuera de vista quedan
+        recortados por el viewport y un observer por card no dispararía. */}
     <div
+      data-carrusel
+      data-carrusel-por-vista="1"
       data-reveal
-      class="reveal mt-[clamp(32px,5vh,56px)] flex flex-col items-center gap-2 [--reveal-delay:.28s]"
+      role="group"
+      aria-label="Testimonios"
+      class="reveal [--reveal-y:22px]"
     >
-      <span aria-hidden="true" class="mb-3 block h-px w-[40px] bg-gold"></span>
-      <span class="text-[12px] font-semibold tracking-[.2em] text-bone uppercase"
-        >{testimonio.autor}</span
+      <div data-carrusel-viewport class="overflow-hidden">
+        <ul
+          data-carrusel-track
+          role="list"
+          class="m-0 flex list-none touch-pan-y gap-grid p-0 transition-transform duration-[900ms] ease-editorial will-change-transform"
+        >
+          {
+            testimonios.map((testimonio, i) => (
+              <li data-carrusel-slide class="w-full min-w-0 flex-none">
+                <figure class="m-0 flex flex-col items-center text-center">
+                  {/* TODO: sustituir el hueco por `<Image>` 4/5 cuando lleguen
+                      los retratos; el botón y el overlay se quedan igual. */}
+                  <button
+                    type="button"
+                    data-lb-open={`testimonio:${i}`}
+                    aria-label={`Ver el testimonio en vídeo de ${testimonio.autor}`}
+                    class="group relative block w-[clamp(132px,16vw,196px)] cursor-pointer border border-hair bg-ink-well p-0 aspect-[4/5] overflow-hidden transition-colors duration-500 ease-editorial hover:border-gold-55 focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+                  >
+                    <span class="absolute inset-0 flex items-center justify-center">
+                      <span aria-hidden="true" class={playButton}>
+                        <svg
+                          viewBox="0 0 9 10"
+                          width="9"
+                          height="10"
+                          aria-hidden="true"
+                          class="block translate-x-px fill-current"
+                        >
+                          <path d="M0 0v10l9-5z" />
+                        </svg>
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="absolute inset-x-0 bottom-3 font-mono text-[10px] tracking-[.14em] text-bone-30 uppercase"
+                    >
+                      {testimonio.placeholder}
+                    </span>
+                  </button>
+
+                  <span
+                    aria-hidden="true"
+                    class="mt-[clamp(26px,4vh,46px)] block font-display text-openquote text-gold"
+                  >
+                    “
+                  </span>
+                  <blockquote class="m-0 mt-[clamp(18px,3vh,34px)] font-display text-quote font-normal text-pretty text-bone">
+                    {testimonio.cita}
+                    <em class="italic">{testimonio.citaEnfasis}</em>
+                  </blockquote>
+
+                  <figcaption class="mt-[clamp(32px,5vh,56px)] flex flex-col items-center gap-2">
+                    <span aria-hidden="true" class="mb-3 block h-px w-[40px] bg-gold" />
+                    <span class="text-[12px] font-semibold tracking-[.2em] text-bone uppercase">
+                      {testimonio.autor}
+                    </span>
+                    <span class="text-[12px] font-light text-bone-45">{testimonio.cargo}</span>
+                  </figcaption>
+                </figure>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div
+        data-carrusel-dots
+        aria-label="Paginación de testimonios"
+        class="mt-[clamp(20px,3.5vh,36px)] flex items-center justify-center"
       >
-      <span class="text-[12px] font-light text-bone-45">{testimonio.cargo}</span>
+        {
+          testimonios.map((_, i) => (
+            <button
+              type="button"
+              data-carrusel-dot={i}
+              aria-current={i === 0 ? 'true' : 'false'}
+              aria-label={`Ir al testimonio ${i + 1}`}
+              class="group flex size-[44px] cursor-pointer items-center justify-center border-0 bg-transparent focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            >
+              <span
+                aria-hidden="true"
+                class="block size-[7px] rounded-full bg-bone-30 transition-[background-color,transform] duration-500 ease-editorial group-hover:bg-bone-55 group-aria-[current=true]:scale-[1.45] group-aria-[current=true]:bg-gold"
+              />
+            </button>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
+
+<Lightbox id="testimonio" label="Testimonios" count={testimonios.length}>
+  {
+    testimonios.map((testimonio) => (
+      <figure
+        data-lb-slide
+        hidden
+        class="m-0 flex h-full w-full max-w-[1180px] flex-col gap-[clamp(14px,2.2vh,26px)]"
+      >
+        {/* El área es un container de tamaño para poder leer su alto con `cqh`:
+            el 16/9 se limita por los dos ejes a la vez tomando el menor entre
+            el ancho disponible y el que cabe a esa altura. Solo con `max-w` o
+            solo con `max-h` la proporción se rompe en uno de los dos casos. */}
+        <div
+          class="relative flex min-h-0 flex-1 items-center justify-center [container-type:size]"
+        >
+          <div class="relative aspect-video w-[min(100%,calc(100cqh*16/9))] bg-ink-well">
+            <iframe
+              data-lb-media
+              data-src={`https://www.youtube-nocookie.com/embed/${testimonio.video}?autoplay=1&rel=0&modestbranding=1`}
+              title={`Testimonio en vídeo de ${testimonio.autor}`}
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowfullscreen
+              class="absolute inset-0 size-full border-0"
+            />
+          </div>
+        </div>
+        <figcaption class="flex flex-none flex-wrap items-baseline justify-between gap-4 border-t border-hair pt-4">
+          <span class="font-display text-card text-bone">“{testimonio.citaVideo}”</span>
+          <span class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span class="text-[11px] font-semibold tracking-[.2em] text-bone uppercase">
+              {testimonio.autor}
+            </span>
+            <span class="text-[11px] font-light text-bone-45">{testimonio.cargo}</span>
+          </span>
+        </figcaption>
+      </figure>
+    ))
+  }
+</Lightbox>

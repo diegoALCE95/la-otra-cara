@@ -1,8 +1,8 @@
 /**
  * Carga del video del hero. Es decorativo: se difiere hasta después del `load`
  * para que no compita con el LCP del titular, y se omite del todo cuando no
- * aporta nada — en móvil (<900px) queda el poster, que bajo `blur(26px)` es
- * indistinguible del video.
+ * aporta nada — en móvil (<900px) queda el poster, que bajo el desenfoque del
+ * hero apenas se distingue del video.
  *
  * La reproducción la arranca el atributo `autoplay` en cuanto aparece el `src`,
  * así que aquí no hace falta llamar a `play()`.
