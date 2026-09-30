@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 
-import logoMark from '../assets/loc-logo-mark.png';
+import logoMark from '../assets/loc-logo-mark-metal.jpeg';
 import { navLinks } from '../data/nav';
 import Button from './ui/Button.astro';
 ---
@@ -18,10 +18,10 @@ import Button from './ui/Button.astro';
     <Image
       src={logoMark}
       alt="La Otra Cara"
-      height={40}
+      height={120}
       densities={[1, 2]}
       loading="eager"
-      class="block h-10 w-auto"
+      class="block h-20 w-auto"
     />
   </a>
 
@@ -40,7 +40,7 @@ import Button from './ui/Button.astro';
 
   {/* La visibilidad va en el contenedor: el `display` del botón lo fija su variante. */}
   <div class="hidden lg:block">
-    <Button href="#contacto" variant="outline-gold">Hablemos</Button>
+    <Button href="#contacto" variant="outline-gold">Escríbenos</Button>
   </div>
 
   <button

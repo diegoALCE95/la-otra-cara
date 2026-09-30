@@ -26,22 +26,16 @@ export const servicios: Servicio[] = [
     filtro: 'sepia(.06) saturate(1.08) contrast(1.04) brightness(1.04)',
   },
   {
-    titulo: 'Branding & Estrategia',
+    titulo: 'Social Media + Estrategia',
     descripcion: 'Posicionamiento, identidad de marca, dirección visual y sistemas gráficos.',
     imagen: branding,
     filtro: 'sepia(.08) saturate(1.08) contrast(1.04) brightness(1.08)',
   },
   {
-    titulo: 'Social Media',
+    titulo: 'Email Marketing',
     descripcion: 'Estrategia, contenido, dirección creativa y gestión de comunidades.',
     imagen: social,
     filtro: 'sepia(.08) saturate(1.08) contrast(1.04) brightness(1.08)',
-  },
-  {
-    titulo: 'Paid Media',
-    descripcion: 'Campañas digitales orientadas a crecimiento, adquisición y performance.',
-    imagen: paid,
-    filtro: 'sepia(.06) saturate(1.10) contrast(1.06) brightness(1.18)',
   },
   {
     titulo: 'Diseño & Desarrollo Web',
@@ -49,4 +43,11 @@ export const servicios: Servicio[] = [
     imagen: web,
     filtro: 'sepia(.06) saturate(1.08) contrast(1.04) brightness(1.06)',
   },
+  {
+    titulo: 'Automatizaciones & IA',
+    descripcion: 'Campañas digitales orientadas a crecimiento, adquisición y performance.',
+    imagen: paid,
+    filtro: 'sepia(.06) saturate(1.10) contrast(1.06) brightness(1.18)',
+  },
+  
 ];

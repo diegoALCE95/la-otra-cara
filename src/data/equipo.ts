@@ -7,14 +7,14 @@ export type Editorialista = { indice: string; nombre: string; rol: string; place
 export const equipo: Editorialista[] = [
   {
     indice: '01',
-    nombre: 'Nombre Apellido',
-    rol: 'Dirección Creativa',
+    nombre: 'Borja Fernández',
+    rol: 'Estrategia · Clientes · Desarrollo de negocio',
     placeholder: 'Retrato fundador 01',
   },
   {
     indice: '02',
-    nombre: 'Nombre Apellido',
-    rol: 'Estrategia & Medios',
+    nombre: 'Pablo Guillén',
+    rol: 'Dirección creativa · Fotografía · Vídeo',
     placeholder: 'Retrato fundador 02',
   },
 ];
