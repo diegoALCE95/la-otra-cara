@@ -109,7 +109,7 @@
   --font-sans: "DM Sans", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, Menlo, monospace;
 
-  --text-hero: clamp(42px, 7.4vw, 124px);
+  --text-hero: clamp(42px, 5.7vw, 124px);
   --text-hero--line-height: 1;
   --text-hero--letter-spacing: -0.022em;
 
