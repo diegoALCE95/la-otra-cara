@@ -1,0 +1,63 @@
+---
+/**
+ * Variante B de la banda de restaurantes: sin rombo, los logos se separan
+ * solo por el hueco de la pista. Idéntica a RestaurantesRombo salvo por el
+ * divisor; se mantienen las dos para comparar y borrar la que no se elija.
+ */
+import { Image } from 'astro:assets';
+
+import { restaurantes } from '../data/restaurantes';
+
+const pistas = [false, true];
+---
+
+<section
+  id="restaurantes-espaciado"
+  data-reveal
+  class="reveal border-y border-hair-gold bg-ink py-[clamp(52px,8vh,88px)] [--reveal-dur:.9s] [--reveal-y:14px]"
+>
+  <div class="section-x">
+    <div class="shell">
+      <h2
+        class="mb-[clamp(30px,4.5vh,50px)] text-center text-[11px] font-medium tracking-[.24em] text-bone-45 uppercase"
+      >
+        Restaurantes con los que hemos trabajado
+      </h2>
+    </div>
+  </div>
+
+  <div class="group overflow-hidden py-[10px] [--logo-h:clamp(24px,2.5vw,33px)]">
+    <div
+      class="flex w-max animate-marquee group-focus-within:[animation-play-state:paused] group-hover:[animation-play-state:paused]"
+    >
+      {
+        /* La segunda pista es un duplicado decorativo: la animación recorre -50%. */
+        pistas.map((duplicada) => (
+          <div
+            aria-hidden={duplicada ? 'true' : undefined}
+            class="flex items-center gap-[clamp(56px,8vw,128px)] pr-[clamp(56px,8vw,128px)]"
+          >
+            {restaurantes.map((restaurante) => (
+              <a
+                href={restaurante.href}
+                tabindex={duplicada ? -1 : undefined}
+                class="flex flex-none items-center justify-center opacity-55 transition duration-500 ease-editorial hover:scale-105 hover:opacity-100 focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+              >
+                <Image
+                  src={restaurante.logo}
+                  alt={restaurante.nombre}
+                  height={140}
+                  densities={[1, 2]}
+                  loading="lazy"
+                  decoding="async"
+                  class="block w-auto object-contain"
+                  style={`height: calc(var(--logo-h) * ${restaurante.escala ?? 1});`}
+                />
+              </a>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

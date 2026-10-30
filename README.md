@@ -19,7 +19,7 @@ La tarea es **recrear el diseño en Astro + Tailwind** con componentes `.astro`,
 
 ## Fidelity
 
-**Alta fidelidad (hifi).** Colores, tipografías, escalas `clamp()`, espaciados, transiciones y estados están definidos y deben reproducirse con precisión. Lo único intencionalmente pendiente es el **contenido real**: fotografías del hero/portafolio/fundadores, logos de clientes, nombres reales y el video del hero. Ver "Assets pendientes".
+**Alta fidelidad (hifi).** Colores, tipografías, escalas `clamp()`, espaciados, transiciones y estados están definidos y deben reproducirse con precisión. Lo único intencionalmente pendiente es el **contenido real**: fotografías del hero y del portafolio, logos de clientes, nombres reales y el video del hero. Ver "Assets pendientes". El equipo ya es contenido real (sección 9).
 
 ---
 
@@ -34,7 +34,7 @@ La tarea es **recrear el diseño en Astro + Tailwind** con componentes `.astro`,
 | 5 | `#servicios` | Negro | Lista de 5 servicios + imagen sticky en hover (03) |
 | 6 | `#proyectos` | Negro | Selected Work — 6 proyectos, grid asimétrico |
 | 7 | — | `#0B0B0B` | "Somos La Otra Cara" + 3 principios (I / II / III) |
-| 8 | — | Negro | Editorialistas / equipo (2 retratos) |
+| 8 | `#equipo` | Negro | Equipo — portadilla centrada + 3 cards con reveal en hover |
 | 9 | — | Crema | Proceso (01–04) |
 | 10 | — | Negro | Logos de clientes (grid 6) |
 | 11 | — | `#0B0B0B` | Testimonio |
@@ -119,7 +119,7 @@ H2 manifiesto | `clamp(34px,5.4vw,92px); lh 1.03; ls -.02em; max-width:20ch` |
 H2 sección (Servicios / Work) | `clamp(34px,5vw,80px); lh 1; ls -.02em` |
 H2 "Somos La Otra Cara" | `clamp(40px,8vw,130px); lh .96; ls -.03em` |
 H2 CTA final | `clamp(38px,6.6vw,110px); lh .98; ls -.025em; max-width:22ch` |
-H2 editorialistas | `clamp(32px,4.6vw,72px); lh 1.04; ls -.02em; max-width:16ch` |
+H2 equipo | `clamp(32px,4.6vw,72px); lh 1.04; ls -.02em; max-width:18ch` (centrado) |
 Título de servicio | `clamp(24px,3.1vw,46px); lh 1.08` |
 Título de proyecto | `clamp(20px,1.9vw,30px)` (destacado ancho: `clamp(22px,2.4vw,40px)`) |
 Blockquote testimonio | `clamp(26px,4vw,60px); lh 1.16; ls -.01em` |
@@ -166,7 +166,7 @@ sticky de servicios  top: 120px; flex: 0 0 clamp(280px,26vw,420px); aspect-ratio
 
 ### Ratios de imagen
 
-`3/4` (proyecto vertical, sticky de servicios, CTA), `4/5` (proyecto, retratos de equipo), `4/3` (proyectos inferiores), `16/7` (proyecto destacado ancho, `min-height:220px`).
+`3/4` (proyecto vertical, sticky de servicios, CTA), `4/5` (proyecto), `5/7` (retratos de equipo), `4/3` (proyectos inferiores), `16/7` (proyecto destacado ancho, `min-height:220px`).
 
 ### Filtros CSS de las imágenes de servicio
 
@@ -262,9 +262,23 @@ Numeración romana serif dorada (I, II, III), frase serif `clamp(22px,2.2vw,34px
 - **II — Ideas antes que tendencias.** Lo que hoy es viral, mañana es ruido. La idea permanece.
 - **III — Resultados antes que ruido.** Medimos lo que importa y ajustamos sin ego.
 
-### 9. Editorialistas / equipo
+### 9. Equipo (`#equipo`)
 
-H2 "Las ideas tienen *responsables.*" + cita "“Estrategia, creatividad y ejecución bajo una misma visión.”" (`max-width:34ch`). Grid de 2 (`minmax(300px,1fr)`): retrato 4/5 + pie (nombre serif, rol uppercase, índice `01`/`02` serif dorado). **Nombres y roles son placeholder.**
+Portadilla **centrada** — la única de la home que no cuelga del margen izquierdo. Es deliberado: marca el alto antes de la rejilla, como en la referencia del cliente. Eyebrow "Equipo y responsabilidades" → H2 "Tres miradas, *una misma mesa.*" (`max-width:18ch`) → bajada "Olfato, vista y gusto…" (`max-width:46ch`). El texto dentro de las cards sigue **a bandera izquierda**: un titular se escanea, un párrafo se lee.
+
+Grid de 1 columna que pasa a 3 en 900px, gap `clamp(20px,2.6vw,44px)`. Card: retrato 5/7 con un scrim fijo que lo funde en el fondo (`#0d0d0d` al 100%), y bloque de texto con `margin-top` negativo de `clamp(62px,7vw,96px)` para que el nombre descanse sobre la zona ya fundida. Dentro: nombre serif `text-card-team`, rol dorado 10px `tracking:.18em` con `min-height:30px` — los roles ocupan 1 o 2 líneas y sin eso la raya baila de una card a otra — y párrafo 14px tras un hairline.
+
+Estados, solo bajo `(min-width:900px) and (hover:hover) and (pointer:fine)` — las mismas condiciones que el cursor "Ver" de servicios:
+
+- **Reposo** — velo `rgb(8 8 8 / .58)` sobre el retrato, sin nada de texto, y un "+" centrado en la card: aro de `clamp(68px,7.2vw,94px)` en `gold-55` con dos hairlines de 1px de `clamp(26px,2.8vw,38px)` en dorado pleno (hairlines, no SVG: es lo que lo hace nítido).
+- **Hover / `:focus-visible`** — el velo se levanta y el retrato se aclara, el "+" se desvanece escalando a 1.15, el texto sube 14px hasta su sitio y la imagen hace zoom al 1.04.
+- **Por debajo de 900px, o con puntero grueso** — la card entera a la vista: sin velo, sin "+" y texto siempre visible. No es solo por el táctil, donde no habría forma de descubrir el texto: una ventana de escritorio estrecha se ve igual que un móvil, en una sola columna, y ahí el reveal tampoco aporta. Las cards llevan `tabindex="0"` para que con teclado el `:focus-visible` revele lo mismo que el hover.
+
+La opacidad del velo vive solo en el `<style>` del componente. Astro envuelve los estilos scoped en `:where()`, así que una utilidad `opacity-0` de Tailwind empataría en especificidad y ganaría ella.
+
+Encuadre de los retratos **horneado en el asset, no en CSS**: recorte 5/7 con la cabeza al 8% del alto y el borde inferior del original conservado (así se ven los brazos cruzados), salida a 1400px de ancho. Los originales están en `design/source-media/retratos-equipo/`, fuera de git.
+
+**Falta el retrato de Leslie Salazar** (placeholder "Retrato fundador 03"). Al añadirlo, rehacer los tres encuadres a la vez para que compartan escala.
 
 ### 10. Proceso (crema)
 
@@ -365,7 +379,7 @@ Sin data fetching. Sin backend. El formulario de contacto **no existe**: hoy los
 
 1. `hero-video.mp4` — personas reunidas, se muestra difuminado (`blur(26px)`); con poster de fallback. Idealmente < 3 MB, sin audio.
 2. Seis imágenes de portafolio: NØR Studio, Casa Brava, Nómada, Verso (16/7), Atria, Hoja Negra.
-3. Dos retratos de fundadores (4/5, b/n, luz contrastada) + nombres y roles reales.
+3. Retrato de Leslie Salazar (b/n, mismo encuadre y luz que los de Borja y Pablo). Los otros dos ya están; ver el encuadre en la sección 9.
 4. Retrato editorial para el CTA final (3/4).
 5. Seis logos de clientes (SVG monocromo preferible).
 6. Datos reales: ciudad/país, WhatsApp, handle de Instagram, atribución del testimonio.

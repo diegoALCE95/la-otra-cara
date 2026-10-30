@@ -1,41 +1,150 @@
 ---
+import { Image } from 'astro:assets';
+
 import { equipo } from '../data/equipo';
+import Eyebrow from './ui/Eyebrow.astro';
 import ImagePlaceholder from './ui/ImagePlaceholder.astro';
 import SectionShell from './ui/SectionShell.astro';
 
-const delays = ['', '[--reveal-delay:.14s]'];
+const delays = ['', '[--reveal-delay:.12s]', '[--reveal-delay:.24s]'];
+
+/* Dos capas sobre el retrato. El scrim siempre está: funde la foto en la card
+   y sostiene el nombre. El velo solo está en reposo y se levanta al hacer
+   hover, así el retrato se aclara al descubrir el texto. */
+const scrim =
+  'bg-[linear-gradient(180deg,rgba(8,8,8,.14)_0%,rgba(8,8,8,.26)_34%,rgba(13,13,13,.72)_62%,rgba(13,13,13,.97)_84%,#0d0d0d_100%)]';
+const velo = 'bg-[rgb(8_8_8/.58)]';
 ---
 
 <SectionShell class="bg-ink" id="equipo">
-  <div data-reveal class="reveal flex flex-wrap items-end justify-between gap-6">
-    <h2 class="m-0 max-w-[16ch] font-display text-h2-team font-normal">
-      Dos caras, <em class="text-gold italic">una misma dirección.</em>
-    </h2>
-    <p class="m-0 max-w-[34ch] text-lede font-light text-bone-55">
-      “Estrategia, creatividad y ejecución bajo una misma visión.”
-    </p>
-  </div>
+  {/* Portadilla centrada: es la única sección de la home que no cuelga del
+      margen izquierdo, y lo hace a propósito — marca el alto antes de la
+      rejilla, como en la referencia. El texto de las cards sigue a bandera. */}
+  <Eyebrow data-reveal class="reveal justify-center">Equipo y responsabilidades</Eyebrow>
 
-  <div
-    class="mt-[clamp(40px,7vh,80px)] grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-grid"
+  <h2
+    data-reveal
+    class="reveal mx-auto mt-[clamp(18px,3vh,32px)] mb-0 max-w-[18ch] text-center font-display text-h2-team font-normal text-pretty [--reveal-delay:.08s] [--reveal-y:26px]"
   >
+    Tres miradas, <em class="text-gold italic">una misma mesa.</em>
+  </h2>
+
+  <p
+    data-reveal
+    class="reveal mx-auto mt-[clamp(16px,2.4vh,26px)] mb-0 max-w-[46ch] text-center text-lede font-light text-pretty text-bone-55 [--reveal-delay:.14s] [--reveal-y:20px]"
+  >
+    Olfato, vista y gusto: tres perspectivas que se complementan para comunicar mejor
+    cada restaurante.
+  </p>
+
+  <div class="mt-[clamp(40px,7vh,80px)] grid grid-cols-1 gap-grid lg:grid-cols-3">
     {
       equipo.map((persona, i) => (
-        <div data-reveal class:list={['reveal [--reveal-y:24px]', delays[i]]}>
-          <div class="relative aspect-[4/5] overflow-hidden bg-ink-well">
-            <ImagePlaceholder label={persona.placeholder} />
+        <article
+          data-reveal
+          tabindex="0"
+          class:list={[
+            'equipo-card reveal group relative flex flex-col border border-hair bg-ink-well [--reveal-y:24px] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold',
+            delays[i],
+          ]}
+        >
+          <div class="relative aspect-[5/7] overflow-hidden bg-ink-well">
+            {persona.foto ? (
+              <Image
+                src={persona.foto}
+                alt={`${persona.nombre}, ${persona.rol} en La Otra Cara`}
+                widths={[320, 480, 640, 860]}
+                sizes="(min-width: 900px) 33vw, 100vw"
+                loading="lazy"
+                decoding="async"
+                class="size-full object-cover object-center grayscale brightness-95 contrast-[1.06] transition-[scale] duration-[1100ms] ease-editorial group-hover:scale-[1.04]"
+              />
+            ) : (
+              <ImagePlaceholder label={persona.placeholder} />
+            )}
+            <div aria-hidden="true" class:list={['absolute inset-0', scrim]} />
+            <div
+              data-equipo-velo
+              aria-hidden="true"
+              class:list={[
+                'absolute inset-0 transition-opacity duration-[520ms] ease-editorial',
+                velo,
+              ]}
+            />
           </div>
-          <div class="mt-4 flex items-baseline justify-between gap-4 border-t border-hair pt-4">
-            <span>
-              <span class="block font-display text-card-team">{persona.nombre}</span>
-              <span class="mt-1.5 block text-[11px] tracking-[.2em] text-bone-45 uppercase">
+
+          {/* Afordancia de reposo: un "+" de hairlines de 1px, centrado en la
+              card, dentro del círculo del cursor de servicios. */}
+          <span
+            data-equipo-mas
+            aria-hidden="true"
+            class="pointer-events-none absolute inset-0 m-auto flex size-[clamp(68px,7.2vw,94px)] items-center justify-center rounded-full border border-gold-55 bg-[rgb(8_8_8/.2)] text-gold transition-[opacity,transform] duration-[450ms] ease-editorial"
+          >
+            <span class="absolute h-px w-[clamp(26px,2.8vw,38px)] bg-current" />
+            <span class="absolute h-[clamp(26px,2.8vw,38px)] w-px bg-current" />
+          </span>
+
+          {/* El bloque de texto sube sobre el scrim: el nombre descansa en la
+              zona ya fundida del retrato, igual que en la referencia. */}
+          <div class="relative -mt-[clamp(62px,7vw,96px)] flex flex-1 flex-col px-[clamp(18px,1.9vw,30px)] pb-[clamp(24px,2.6vw,34px)]">
+            <div data-equipo-texto class="transition-[opacity,transform] duration-[520ms] ease-editorial">
+              <h3 class="m-0 font-display text-card-team font-normal text-bone">{persona.nombre}</h3>
+              {/* `min-h` de dos líneas: los roles ocupan 1 o 2 líneas y sin esto
+                  la raya y el párrafo bailarían de una card a otra. */}
+              <p class="mt-2.5 mb-0 min-h-[30px] text-[10px]/[1.5] font-semibold tracking-[.18em] text-gold uppercase">
                 {persona.rol}
-              </span>
-            </span>
-            <span class="font-display text-[13px] text-gold">{persona.indice}</span>
+              </p>
+              <p class="mt-[18px] mb-0 border-t border-hair pt-[18px] text-[14px]/[1.65] font-light text-pretty text-bone-55">
+                {persona.responsabilidad}
+              </p>
+            </div>
           </div>
-        </div>
+        </article>
       ))
     }
   </div>
 </SectionShell>
+
+<style>
+  /* El estado base es la card entera a la vista: texto visible, sin velo y sin
+     "+". El reveal solo existe en la rejilla de 3 columnas con puntero fino —
+     las mismas condiciones que el cursor "Ver" de servicios. Por debajo de
+     900px no hay reveal aunque haya ratón: una ventana estrecha se ve igual
+     que un móvil.
+     La opacidad del velo vive solo aquí: con una utilidad `opacity-0` de
+     Tailwind empatarían en especificidad y ganaría la utilidad. */
+  [data-equipo-velo] {
+    opacity: 0;
+  }
+  [data-equipo-mas] {
+    display: none;
+  }
+
+  @media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+    [data-equipo-mas] {
+      display: flex;
+    }
+    [data-equipo-velo] {
+      opacity: 1;
+    }
+    [data-equipo-texto] {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    .equipo-card:hover [data-equipo-texto],
+    .equipo-card:focus-visible [data-equipo-texto] {
+      opacity: 1;
+      transform: none;
+    }
+    /* El velo se levanta: el retrato se aclara justo al aparecer el texto. */
+    .equipo-card:hover [data-equipo-velo],
+    .equipo-card:focus-visible [data-equipo-velo] {
+      opacity: 0;
+    }
+    .equipo-card:hover [data-equipo-mas],
+    .equipo-card:focus-visible [data-equipo-mas] {
+      opacity: 0;
+      transform: scale(1.15);
+    }
+  }
+</style>

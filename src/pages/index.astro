@@ -1,5 +1,7 @@
 ---
-import Clientes from '../components/Clientes.astro';
+// Clientes ("Han confiado en nosotros") y Testimonio: ocultas a la espera de
+// logos y de un testimonio real. Los componentes siguen en src/components/.
+// import Clientes from '../components/Clientes.astro';
 import CtaFinalModal from '../components/CtaFinalModal.astro';
 import Equipo from '../components/Equipo.astro';
 import Faq from '../components/Faq.astro';
@@ -7,13 +9,17 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import Manifiesto from '../components/Manifiesto.astro';
-import Marquee from '../components/Marquee.astro';
+// Marquesina de disciplinas: oculta mientras se decide la banda de
+// restaurantes. Copia intacta en design/backups/Marquee.astro.bak.
+// import Marquee from '../components/Marquee.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import Principios from '../components/Principios.astro';
 import Proceso from '../components/Proceso.astro';
+import RestaurantesEspaciado from '../components/RestaurantesEspaciado.astro';
+import RestaurantesRombo from '../components/RestaurantesRombo.astro';
 import SelectedWork from '../components/SelectedWork.astro';
 import Servicios from '../components/Servicios.astro';
-import Testimonio from '../components/Testimonio.astro';
+// import Testimonio from '../components/Testimonio.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -23,15 +29,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <main id="main" data-outside>
     <Hero />
-    <Marquee />
+    {/* Las dos variantes conviven solo para compararlas: queda una. */}
+    <RestaurantesRombo />
+    <RestaurantesEspaciado />
     <Manifiesto />
     <Servicios />
-    <SelectedWork />
     <Principios />
+    <SelectedWork />
     <Equipo />
     <Proceso />
-    <Clientes />
-    <Testimonio />
     <Faq />
     <CtaFinalModal />
   </main>
@@ -47,7 +53,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   initReveals();
   // El cursor cubre dos secciones (Proyectos y Servicios): se inicializa aquí.
   initHoverCursors();
-  // El carrusel, otras dos (Proyectos y Testimonios): una sola llamada monta
-  // ambos, y así ninguno se monta por duplicado.
+  // El carrusel monta Proyectos (y Testimonios cuando vuelva a la página) con
+  // una sola llamada, y así ninguno se monta por duplicado.
   initCarrusel();
 </script>

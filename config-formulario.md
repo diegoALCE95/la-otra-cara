@@ -1,5 +1,18 @@
 # Envío del formulario de contacto
 
+## Pendientes
+
+- **Dónde se hospeda la web.** Sin decidir. Todo lo de abajo da por hecho Vercel, pero las
+  variables se configuran en el panel del hosting que se acabe eligiendo, así que esto se queda
+  como está hasta que haya decisión. Mientras tanto no llega ningún mensaje: el formulario
+  valida, avisa de que el envío no está configurado y ofrece el email, sin dar nada por enviado.
+- **Reserva de fecha y hora.** No existe y el cliente la ha pedido. Lo más probable es montarla
+  con **Calendly** —o un script de calendario equivalente, como Cal.com— incrustado en el modal
+  del CTA final, en lugar de construir disponibilidad, antisolapes, zonas horarias y
+  recordatorios dentro del repo. Ver "Reserva de citas" al final.
+
+---
+
 El formulario (`src/components/ContactoForm.astro` + `src/scripts/contacto-form.ts`) ya hace
 `POST` en JSON a la URL que pongas en `PUBLIC_CONTACTO_ENDPOINT`, y añade `access_key` al
 cuerpo si defines `PUBLIC_CONTACTO_ACCESS_KEY`.
@@ -9,14 +22,11 @@ Cuerpo que envía:
 ```json
 {
   "nombre": "…",
-  "empresa": "…",
+  "restaurante": "…",
   "email": "…",
-  "telefono": "…",
-  "tamano": "…",
-  "servicio": "…",
   "mensaje": "…",
   "botcheck": "",
-  "subject": "Nuevo contacto — <nombre> (<empresa>)",
+  "subject": "Nuevo contacto — <nombre> (<restaurante>)",
   "access_key": "solo si PUBLIC_CONTACTO_ACCESS_KEY está definida"
 }
 ```
@@ -118,4 +128,44 @@ quieres es el registro en hoja, no el aviso.
    "MENSAJE ENVIADO" y llegar el correo.
 2. Provocar un fallo (una URL mala en `PUBLIC_CONTACTO_ENDPOINT`): el formulario debe conservar los
    datos y mostrar el aviso de error con el email, sin confirmación.
-3. Enviar vacío: siete campos validados, foco en el primero con error.
+3. Enviar vacío: los cuatro campos validados, foco en el primero con error.
+
+---
+
+## Reserva de citas (pendiente de montar)
+
+Reservar fecha y hora no es una sección más: necesita disponibilidad leída de un calendario
+real, escritura sin colisiones entre dos personas que miran el mismo hueco, zonas horarias
+(se trabaja con toda LATAM), invitación `.ics` con enlace de videollamada, cancelar y
+reprogramar, recordatorio previo y un panel para bloquear festivos. Construirlo aquí significa
+estrenar la parte de servidor del proyecto —adaptador, base de datos, OAuth con Google
+Calendar y envío transaccional—, y mantenerla. Por eso la vía prevista es incrustar una
+herramienta existente.
+
+**Decisión provisional:** Calendly, o un script de calendario equivalente. Cal.com es la
+alternativa directa. El plan gratuito de Calendly permite un tipo de cita y un calendario, que
+es justo lo que pide la consultoría de 30 minutos; quitar la marca del proveedor exige plan de
+pago en ambos.
+
+Lo que tiene que preparar el cliente, sin tocar código:
+
+1. Cuenta en el proveedor.
+2. Conectar el calendario real donde ya apunta sus compromisos.
+3. Crear el tipo de cita "Consultoría gratuita — 30 min" con sus horas disponibles y el enlace
+   de videollamada automático.
+
+Lo que toca en el repo:
+
+1. El enlace del evento en una variable `PUBLIC_` más, como el endpoint del formulario.
+2. Incrustarlo en el modal de `CtaFinalModal.astro`, con **carga diferida al abrir el modal**:
+   el script no entra en la carga inicial, así que no toca el presupuesto de ~10 KB de JS ni la
+   puntuación de Lighthouse.
+3. Fallback si el script de terceros no carga: enlace a la página pública de reserva. Nunca un
+   hueco vacío.
+4. El formulario se queda como segunda vía, para quien prefiera escribir antes de comprometerse
+   a una hora.
+
+Datos que hay que pedir antes de montarlo: de quién es el calendario que manda, horas
+disponibles reales y zona horaria, antelación mínima para reservar, máximo de citas al día,
+Meet / Zoom / teléfono, quién recibe el aviso de cada reserva, y si la marca del proveedor en
+el widget es aceptable o hay presupuesto para quitarla.

@@ -130,7 +130,7 @@ Reglas de estructura:
 - `BaseLayout.astro` centraliza `title`, `description`, canonical, Open Graph, Twitter card y `JSON-LD` de tipo `Organization`/`ProfessionalService`.
 - `sitemap` (`@astrojs/sitemap`) y `robots.txt`.
 - Objetivo: Lighthouse ≥ 95 en las cuatro categorías, **0 KB de JS de framework**. El JS total de la página debe quedar por debajo de ~10 KB.
-- Cero fuentes o scripts de terceros sin aprobación explícita (nada de analytics, chat widgets o pixels añadidos por iniciativa propia).
+- Cero fuentes o scripts de terceros sin aprobación explícita (nada de analytics, chat widgets o pixels añadidos por iniciativa propia). La única excepción prevista es el script de reservas del CTA final —Calendly o equivalente—, ya aprobado y pendiente de montar: va con carga diferida al abrir el modal, nunca en la carga inicial. Ver `config-formulario.md`.
 
 ## 11. Cómo trabajar (proceso del agente)
 
