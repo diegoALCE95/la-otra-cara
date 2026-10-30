@@ -16,7 +16,9 @@ import MobileMenu from '../components/MobileMenu.astro';
 import Principios from '../components/Principios.astro';
 import Proceso from '../components/Proceso.astro';
 import RestaurantesEspaciado from '../components/RestaurantesEspaciado.astro';
-import RestaurantesRombo from '../components/RestaurantesRombo.astro';
+// Variante A (logos separados por el rombo): descartada a favor de la de
+// espaciado. El componente sigue en src/components/RestaurantesRombo.astro.
+// import RestaurantesRombo from '../components/RestaurantesRombo.astro';
 import SelectedWork from '../components/SelectedWork.astro';
 import Servicios from '../components/Servicios.astro';
 // import Testimonio from '../components/Testimonio.astro';
@@ -29,8 +31,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <main id="main" data-outside>
     <Hero />
-    {/* Las dos variantes conviven solo para compararlas: queda una. */}
-    <RestaurantesRombo />
     <RestaurantesEspaciado />
     <Manifiesto />
     <Servicios />

@@ -32,14 +32,14 @@ export const equipo: Editorialista[] = [
   },
   {
     /**
-     * TODO: falta el retrato de Leslie. El marco de la card es 5/7 y el
+     * TODO: falta el retrato de Lesley. El marco de la card es 5/7 y el
      * encuadre va horneado en el asset, no en CSS: recorte 5/7 con la cabeza
      * al 8% del alto, borde inferior del original conservado (así se ven los
      * brazos) y salida a 1400px de ancho. Los originales de Borja y Pablo
      * están en `design/source-media/retratos-equipo/` (fuera de git) para
      * poder rehacer los tres encuadres a la vez.
      */
-    nombre: 'Leslie Salazar',
+    nombre: 'Lesley Salazar',
     rol: 'Responsable de Growth y Desarrollo de Negocio',
     responsabilidad:
       'Desarrolla oportunidades comerciales, campañas y seguimiento de prospectos, y participa en la consultoría para restaurantes.',

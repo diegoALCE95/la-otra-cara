@@ -43,8 +43,10 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical.href} />
 
-    <link rel="icon" href="/favicon-loc.jpg" sizes="32x32" />
-    <link rel="icon" href="/favicon-loc.jpg" type="image/svg+xml" />
+    {/* Los tres iconos salen del mismo lockup: ver public/favicon-loc.png. */}
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-loc.png" type="image/png" sizes="256x256" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <link
       rel="preload"
