@@ -1,0 +1,102 @@
+---
+import ContactoForm from './ContactoForm.astro';
+import Button from './ui/Button.astro';
+import SectionShell from './ui/SectionShell.astro';
+
+/**
+ * Variante centrada del CTA final (la otra es `CtaFinal.astro`, con el
+ * formulario siempre a la vista en dos columnas). Aquí la sección repite la
+ * composición del hero —eyebrow entre rayas, titular, párrafo y CTA, todo
+ * centrado— y el formulario vive en un modal que abre el botón.
+ *
+ * El diálogo es un `<dialog>` + `showModal()`: trap de foco, Escape, `inert`
+ * del resto de la página y devolución del foco al botón son nativos. La
+ * animación de entrada y salida es CSS (`@starting-style`), en `global.css`.
+ */
+---
+
+<SectionShell
+  id="contacto"
+  py="py-[clamp(90px,16vh,190px)]"
+  class="relative overflow-hidden bg-bone text-ink"
+  innerClass="relative z-10 flex flex-col items-center text-center"
+>
+  <div data-reveal class="reveal flex items-center justify-center gap-[.875rem]">
+    <span aria-hidden="true" class="block h-px w-[clamp(1.5rem,4vw,3.5rem)] bg-gold-deep"></span>
+    <span class="text-[11px] font-semibold tracking-[.3em] text-gold-deep uppercase"
+      >Siguiente paso</span
+    >
+    <span aria-hidden="true" class="block h-px w-[clamp(1.5rem,4vw,3.5rem)] bg-gold-deep"></span>
+  </div>
+
+  <h2
+    data-reveal
+    class="reveal mt-[clamp(20px,4vh,40px)] mb-0 max-w-[20ch] font-display text-h2-cta font-normal text-balance [--reveal-delay:.1s] [--reveal-y:26px]"
+  >
+    Hablemos de <em class="text-gold-deep italic">tu restaurante</em>
+  </h2>
+
+  <p
+    data-reveal
+    class="reveal mt-[clamp(24px,4vh,44px)] mb-0 max-w-[58ch] text-body font-light text-pretty text-graphite [--reveal-delay:.16s]"
+  >
+    Cuéntanos qué quieres mejorar: cómo comunicas tu propuesta, cómo se ve tu contenido o cómo
+    atraes y fidelizas comensales. Tendremos una primera conversación gratuita de 30 minutos para
+    conocer tu negocio y ver por dónde empezar.
+  </p>
+
+  <div data-reveal class="reveal mt-[clamp(30px,5vh,52px)] [--reveal-delay:.24s]">
+    <Button variant="solid-ink" data-contacto-modal-open aria-haspopup="dialog">
+      Consultoría Gratuita
+    </Button>
+  </div>
+
+  <p
+    data-reveal
+    class="reveal mt-[25px] mb-0 text-[14px]/[1.6] font-light text-graphite-soft [--reveal-delay:.32s]"
+  >
+    Videollamada gratuita de 30 minutos · Confirmación por email.
+  </p>
+</SectionShell>
+
+<dialog
+  data-contacto-modal
+  aria-labelledby="contacto-modal-titulo"
+  class="hidden size-full max-h-none max-w-none items-center justify-center border-0 bg-transparent p-[clamp(16px,4vw,48px)] open:flex"
+>
+  <div
+    data-contacto-modal-panel
+    class="max-h-[min(88vh,56rem)] w-full max-w-[42.5rem] overflow-y-auto border border-hair-ink-strong bg-bone p-[clamp(24px,4vw,48px)] text-ink"
+  >
+    <div class="flex items-start justify-between gap-6">
+      <div>
+        <p class="m-0 text-[11px] font-semibold tracking-[.3em] text-gold-deep uppercase">
+          Consultoría gratuita
+        </p>
+        <h2
+          id="contacto-modal-titulo"
+          class="mt-[14px] mb-0 max-w-[20ch] font-display text-card font-normal text-pretty"
+        >
+          Hablemos de <em class="text-gold-deep italic">tu restaurante</em>
+        </h2>
+      </div>
+      <button
+        type="button"
+        data-contacto-modal-close
+        aria-label="Cerrar formulario"
+        class="size-[44px] flex-none cursor-pointer border border-hair-ink bg-transparent text-[18px] text-ink transition-colors duration-500 ease-editorial hover:border-gold-deep hover:text-gold-deep focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold-deep"
+        >✕</button
+      >
+    </div>
+
+    <div class="mt-[clamp(24px,3.4vw,36px)]">
+      <ContactoForm submitLabel="Enviar mensaje" nota={null} />
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { initContactoModal } from '../scripts/contacto-modal';
+
+  initContactoModal();
+</script>

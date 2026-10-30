@@ -1,10 +1,7 @@
 ---
-import { site } from '../data/site';
 import ContactoForm from './ContactoForm.astro';
 import Eyebrow from './ui/Eyebrow.astro';
 import SectionShell from './ui/SectionShell.astro';
-
-const mailto = `mailto:${site.email}`;
 ---
 
 <SectionShell
@@ -23,22 +20,17 @@ const mailto = `mailto:${site.email}`;
         data-reveal
         class="reveal mt-[clamp(20px,4vh,40px)] mb-0 max-w-[22ch] font-display text-h2-cta font-normal text-pretty [--reveal-delay:.1s] [--reveal-y:26px]"
       >
-        ¿Mostramos al mundo <em class="text-gold-deep italic">la otra cara</em> de tu marca?
+        Hablemos de <em class="text-gold-deep italic">tu restaurante</em>
       </h2>
 
       <p
         data-reveal
         class="reveal mt-[clamp(24px,4vh,44px)] mb-0 max-w-[40ch] text-body font-light text-pretty text-graphite [--reveal-delay:.16s]"
       >
-        Cuéntanos qué tienes entre manos y te respondemos con una primera lectura del proyecto.
+        Cuéntanos qué quieres mejorar: cómo comunicas tu propuesta, cómo se ve tu contenido o
+        cómo atraes y fidelizas comensales. Tendremos una primera conversación gratuita de 30
+        minutos para conocer tu negocio y ver por dónde empezar.
       </p>
-
-      <a
-        data-reveal
-        href={mailto}
-        class="reveal mt-[clamp(20px,3vh,32px)] inline-block border-b border-hair-ink-link pb-[3px] font-display text-mail text-ink [--reveal-delay:.22s] hover:text-ink focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold-deep"
-        >{site.email}</a
-      >
     </div>
 
     <div data-reveal class="reveal [--reveal-delay:.28s] [--reveal-y:26px]">

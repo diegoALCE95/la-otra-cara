@@ -1,5 +1,3 @@
-import { site } from './site';
-
 export type Pregunta = { pregunta: string; respuesta: string };
 
 /**
@@ -7,37 +5,37 @@ export type Pregunta = { pregunta: string; respuesta: string };
  * llamada. Lo demás va a una página de FAQ propia, si algún día existe.
  *
  * TODO: validar con el cliente las condiciones comerciales que se afirman aquí
- * (sin permanencia, propuesta con precio cerrado) y la ciudad — `site.location`
- * sigue siendo placeholder y estas respuestas dicen Madrid.
+ * (precios de referencia de social media y web, qué entra en cada servicio).
  */
 export const faq: Pregunta[] = [
   {
-    pregunta: '¿Con qué tipo de empresas trabajáis?',
+    pregunta: '¿Con qué tipo de restaurantes trabajáis?',
     respuesta:
-      'Con negocios que ya funcionan y quieren competir en otra categoría: pequeñas y medianas empresas, de producto o de servicio, con alguien capaz de tomar decisiones al otro lado. No hace falta que tengas un departamento de marketing; hace falta que haya un objetivo de negocio detrás.',
+      'Somos una agencia especializada en marketing gastronómico para restaurantes. Trabajamos principalmente con restaurantes que quieren comunicar mejor su propuesta, mejorar su presencia digital y conectar con nuevos comensales. También valoramos proyectos de cafeterías, bares y hoteles cuando nuestros servicios encajan con sus necesidades.',
   },
   {
-    pregunta: '¿Qué servicios se pueden combinar?',
+    pregunta: '¿Qué servicios de marketing gastronómico ofrecéis?',
     respuesta:
-      'Todos. Branding, producción audiovisual, social media, paid media y web son piezas del mismo sistema y casi siempre rinden mejor juntas. Lo habitual es empezar por la marca y sumar después lo recurrente, pero el orden lo marca lo que el negocio necesite primero.',
+      'Unimos estrategia y gestión de redes sociales, producción audiovisual, diseño web y email marketing. También ofrecemos consultoría sobre comunicación digital, eficiencia y digitalización del restaurante. Los servicios pueden contratarse por separado o combinarse; antes de empezar, definimos qué incluye cada propuesta y qué acciones se realizarán.',
   },
   {
-    pregunta: '¿Existe permanencia en los servicios recurrentes?',
+    pregunta: '¿La gestión de redes sociales incluye fotografía y vídeo profesional?',
     respuesta:
-      'No. Los servicios recurrentes se renuevan mes a mes y puedes pararlos avisando con antelación, sin penalización. Preferimos que la relación se sostenga por los resultados y no por una cláusula.',
+      'La gestión de redes sociales puede incluir estrategia, planificación, calendario de contenidos, redacción y publicación, según el plan contratado. La fotografía gastronómica, la grabación de vídeo y la edición de reels no se incluyen automáticamente: se contratan como servicio audiovisual o dentro de un pack personalizado.',
   },
   {
-    pregunta: '¿Cómo empieza un proyecto con La Otra Cara?',
+    pregunta: '¿Cómo puede el marketing digital ayudar a atraer nuevos comensales?',
     respuesta:
-      'Con una conversación de media hora para entender el contexto, el objetivo y el punto de partida. Después recibes una propuesta con alcance, plazos y precio cerrado. Si encaja, arrancamos con una fase de inmersión antes de tocar nada visual.',
+      'Trabajamos el alcance, el interés y la confianza. Primero, buscamos que nuevas personas descubran el restaurante; después, mostramos sus platos, su espacio y la experiencia que ofrece; por último, cuidamos la información digital para facilitar que el cliente valore la propuesta y dé el siguiente paso. El objetivo es aumentar la visibilidad y el interés, sin prometer un número concreto de reservas.',
   },
   {
-    pregunta: '¿Trabajáis únicamente en Madrid?',
+    pregunta: '¿Cuánto cuesta contratar marketing para un restaurante?',
     respuesta:
-      'Estamos en Madrid y allí rodamos y nos vemos cuando el proyecto lo pide, pero el trabajo del día a día es remoto. Tenemos clientes fuera de la ciudad y fuera del país; solo la producción audiovisual depende de dónde esté el rodaje.',
+      'El precio depende de los servicios, la frecuencia de los contenidos y la producción necesaria. Como referencia, la gestión de redes sociales con estrategia tiene un valor desde 490 € + IVA al mes y el diseño de una web para restaurante a partir de 890 € + IVA. La producción audiovisual y los demás servicios se presupuestan según el alcance acordado.',
   },
   {
-    pregunta: '¿Cómo puedo solicitar un presupuesto?',
-    respuesta: `Escríbenos a ${site.email} contándonos qué necesitas y en qué plazo. Con eso te damos una primera orientación de precio y, si tiene sentido, agendamos una llamada para cerrar el alcance.`,
+    pregunta: '¿Cuánto se tarda en ver resultados con el marketing gastronómico?',
+    respuesta:
+      'No existe un plazo igual para todos los restaurantes. La visibilidad, las visitas al perfil y las consultas pueden mostrar señales antes que el efecto en reservas o recurrencia. Influyen la ubicación, la propuesta gastronómica, la reputación y la experiencia del local. Por eso acordamos qué indicadores revisar y ajustamos las acciones según lo que observemos, sin garantizar resultados concretos.',
   },
 ];

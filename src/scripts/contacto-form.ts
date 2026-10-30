@@ -13,14 +13,12 @@ import { site } from '../data/site';
 const mensajes = {
   requerido: 'Completa este campo para poder responderte.',
   email: 'Revisa el email: debe tener la forma nombre@empresa.com.',
-  telefono: 'Revisa el teléfono: solo números, espacios, guiones, + y paréntesis.',
   corto: 'Cuéntanos un poco más (al menos 10 caracteres).',
 };
 
 type Campo = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
 const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const patronTelefono = /^[+()\d\s.-]{6,}$/;
 
 /** Devuelve el mensaje de error del campo, o `null` si es válido. */
 function validar(campo: Campo): string | null {
@@ -29,7 +27,6 @@ function validar(campo: Campo): string | null {
   if (campo.required && !valor) return mensajes.requerido;
   if (!valor) return null;
   if (campo.type === 'email' && !patronEmail.test(valor)) return mensajes.email;
-  if (campo.type === 'tel' && !patronTelefono.test(valor)) return mensajes.telefono;
   if (campo instanceof HTMLTextAreaElement && valor.length < 10) return mensajes.corto;
 
   return null;
@@ -115,7 +112,7 @@ export function initContactoForm() {
         body: JSON.stringify({
           ...datos,
           ...(accessKey ? { access_key: accessKey } : {}),
-          subject: `Nuevo contacto — ${datos.nombre} (${datos.empresa})`,
+          subject: `Nuevo contacto — ${datos.nombre} (${datos.restaurante})`,
         }),
       });
 

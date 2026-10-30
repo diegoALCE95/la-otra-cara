@@ -1,5 +1,3 @@
-import { servicios } from './servicios';
-
 /**
  * Datos del formulario de contacto.
  *
@@ -13,14 +11,3 @@ export const endpoint = (import.meta.env.PUBLIC_CONTACTO_ENDPOINT ?? '') as stri
 /** Clave pública del proveedor de formularios (Web3Forms y similares). */
 export const accessKey = (import.meta.env.PUBLIC_CONTACTO_ACCESS_KEY ?? '') as string;
 
-/** El desplegable de servicios se alimenta de los títulos reales. */
-export const serviciosOpciones = servicios.map((servicio) => servicio.titulo);
-
-/** TODO: validar los tramos con el cliente. */
-export const tamanosOrganizacion = [
-  'Solo yo',
-  '2 – 10 personas',
-  '11 – 50 personas',
-  '51 – 200 personas',
-  'Más de 200 personas',
-];

@@ -1,0 +1,72 @@
+---
+/**
+ * Dial decorativo de la sección de proceso: cuatro cuadrantes, uno por paso.
+ * El arco dorado se dibuja y salta de cuadrante con `steps(4)` mientras la
+ * aguja gira en continuo; la rotación vive en los `div`, no en los nodos SVG,
+ * para no depender de `transform-box` en el elemento.
+ */
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none absolute top-[clamp(20px,4vh,64px)] right-0 z-0 hidden aspect-square w-[clamp(200px,22vw,330px)] lg:block"
+>
+  {/* Anillo exterior punteado, giro lento. */}
+  <div class="absolute inset-0 animate-spin-slow">
+    <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+      <circle
+        cx="100"
+        cy="100"
+        r="98"
+        stroke="rgba(8,8,8,.12)"
+        stroke-width=".6"
+        stroke-dasharray="2 10"></circle>
+    </svg>
+  </div>
+
+  {/* Marcas de cuadrante y anillo medio: la retícula fija contra la que se lee
+      el movimiento. */}
+  <div class="absolute inset-0">
+    <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+      <g stroke="rgba(8,8,8,.22)" stroke-width=".8">
+        <path d="M100 4v13"></path>
+        <path d="M196 100h-13"></path>
+        <path d="M100 196v-13"></path>
+        <path d="M4 100h13"></path>
+      </g>
+      <circle cx="100" cy="100" r="66" stroke="rgba(8,8,8,.1)" stroke-width=".6"></circle>
+    </svg>
+  </div>
+
+  {/* Arco dorado: se dibuja en 9s y el contenedor lo salta al cuadrante
+      siguiente justo al terminar. */}
+  <div class="absolute inset-0 animate-quadrant">
+    <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+      <path
+        d="M100 2 A98 98 0 0 1 198 100"
+        stroke="#8D6B3E"
+        stroke-width="1"
+        stroke-linecap="round"
+        stroke-dasharray="1200"
+        class="animate-draw"></path>
+      <circle cx="198" cy="100" r="2.6" fill="#8D6B3E"></circle>
+    </svg>
+  </div>
+
+  {/* Aguja en giro continuo, a contramano del anillo exterior. */}
+  <div class="absolute inset-0 animate-spin-rev">
+    <svg viewBox="0 0 200 200" width="100%" height="100%" fill="none">
+      <path d="M100 100V36" stroke="rgba(8,8,8,.14)" stroke-width=".8"></path>
+      <circle cx="100" cy="36" r="1.8" fill="rgba(141,107,62,.55)"></circle>
+    </svg>
+  </div>
+
+  <div
+    class="absolute inset-[38%] animate-breathe rounded-full border border-[rgba(8,8,8,.12)]"
+  >
+  </div>
+  <div
+    class="absolute top-1/2 left-1/2 -mt-[2px] -ml-[2px] size-[4px] rounded-full bg-gold-deep"
+  >
+  </div>
+</div>

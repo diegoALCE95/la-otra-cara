@@ -13,7 +13,7 @@ import SectionShell from './ui/SectionShell.astro';
 <SectionShell id="faq" class="border-t border-hair-gold bg-ink">
   <div data-reveal class="reveal flex flex-wrap items-end justify-between gap-6">
     <h2 class="m-0 max-w-[24ch] font-display text-h2-team font-normal text-pretty">
-      Las dudas también tienen <em class="text-gold italic">otra cara</em>: una respuesta clara.
+      Preguntas frecuentes sobre <em class="text-gold italic">marketing gastronómico</em>.
     </h2>
     <Eyebrow tracking="tracking-[.3em]">Preguntas frecuentes</Eyebrow>
   </div>
@@ -37,7 +37,7 @@ import SectionShell from './ui/SectionShell.astro';
                 aria-controls={`faq-panel-${i + 1}`}
                 class="group flex w-full cursor-pointer items-center gap-[clamp(16px,3vw,48px)] border-0 bg-transparent py-[clamp(20px,3vh,32px)] pr-[clamp(14px,2.2vw,32px)] pl-1 text-left transition-[padding-left,background-color] duration-500 ease-editorial hover:bg-wash hover:pl-[18px] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
               >
-                <span class="min-w-0 flex-1 font-display text-card font-normal text-bone">
+                <span class="min-w-0 flex-1 font-display text-[clamp(24px,2.2vw,34px)] font-normal text-bone">
                   {item.pregunta}
                 </span>
                 {/* + que se convierte en − al abrir: dos hairlines cruzadas, la
@@ -61,7 +61,7 @@ import SectionShell from './ui/SectionShell.astro';
               class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-[560ms] ease-editorial data-[open=true]:grid-rows-[1fr]"
             >
               <div class="overflow-hidden">
-                <p class="m-0 max-w-[62ch] pr-[clamp(14px,2.2vw,32px)] pb-[clamp(22px,3.4vh,34px)] pl-1 text-[15px]/[1.75] font-light text-pretty text-bone-55">
+                <p class="m-0 max-w-[80ch] pr-[clamp(14px,2.2vw,32px)] pb-[clamp(22px,3.4vh,34px)] pl-1 text-[17px]/[1.75] font-light text-pretty text-bone-55">
                   {item.respuesta}
                 </p>
               </div>

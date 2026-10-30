@@ -1,8 +1,26 @@
 export type Paso = { numero: string; titulo: string; apoyo: string };
 
 export const proceso: Paso[] = [
-  { numero: '01', titulo: 'Descubrir', apoyo: 'Entendemos tu marca, negocio, contexto y objetivos.' },
-  { numero: '02', titulo: 'Darle la vuelta', apoyo: 'Construimos la estrategia y priorizamos qué hacer primero.' },
-  { numero: '03', titulo: 'Darle forma', apoyo: 'Convertimos la estrategia en contenido, diseño y acciones.' },
-  { numero: '04', titulo: 'Hacerla crecer', apoyo: 'Medimos, aprendemos y optimizamos lo que funciona.' },
+  {
+    numero: '01',
+    titulo: 'Conocer',
+    apoyo:
+      'Conocemos el restaurante. Entendemos su propuesta, su público, sus objetivos y lo que necesita mejorar.',
+  },
+  {
+    numero: '02',
+    titulo: 'Definir',
+    apoyo: 'Definimos el enfoque. Acordamos qué comunicar, a quién y en qué canales.',
+  },
+  {
+    numero: '03',
+    titulo: 'Crear',
+    apoyo:
+      'Creamos y activamos. Desarrollamos los contenidos y las acciones incluidos en el servicio contratado.',
+  },
+  {
+    numero: '04',
+    titulo: 'Analizar',
+    apoyo: 'Revisamos y ajustamos. Analizamos la evolución y proponemos los siguientes pasos.',
+  },
 ];

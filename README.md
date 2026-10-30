@@ -187,7 +187,7 @@ svc-05 producción    sepia(.06) saturate(1.08) contrast(1.04) brightness(1.04)
 ### 1. Header (fixed)
 
 - `position: fixed; inset: 0 0 auto; z-index: 60`, `display:flex; justify-content:space-between; align-items:center; gap:24px`.
-- Izquierda: `loc-logo-mark.png`, `height:40px` (menú móvil: 42px), link a `#top`.
+- Izquierda: `logo-la-otra-cara-new-trim.png`, `height:62px` (sticky y <900px: 52px; menú móvil: 52px), link a `#top`.
 - Centro (≥900px): nav con Inicio · Agencia · Servicios · Proyectos · Contacto.
 - Derecha (≥900px): botón outline "Hablemos" — `padding:13px 26px`, borde `rgba(185,148,85,.55)`, hover `background:#B99455; border-color:#B99455; color:#080808`.
 - <900px: botón hamburguesa `52×52px`, borde `rgba(244,241,235,.2)`, dos barras de 1px (`#F4F1EB` y `#B99455`, `gap:6px`, padding lateral 12px).
@@ -288,7 +288,7 @@ Retrato en la esquina inferior derecha (`width: clamp(180px,26vw,420px)`, `aspec
 
 Grid de 4 (`auto-fit, minmax(200px,1fr)`, gap `clamp(32px,4vw,72px)`):
 
-1. `loc-logo-trim.png` (`height:58px`) + "Agencia boutique de marketing, branding y crecimiento digital." (`max-width:26ch`).
+1. `logo-la-otra-cara-new-trim.png` (`height:58px`) + "Agencia boutique de marketing, branding y crecimiento digital." (`max-width:26ch`).
 2. **Navegación** — Inicio, Agencia, Servicios, Proyectos, Contacto.
 3. **Contacto** — hola@laotracara.com, WhatsApp (`https://wa.me/…`), Instagram.
 4. **Estudio** — "Ciudad — País" + "Trabajamos con marcas en toda LATAM."
@@ -357,7 +357,7 @@ Sin data fetching. Sin backend. El formulario de contacto **no existe**: hoy los
 
 ### Incluidos (`assets/`)
 
-- `loc-logo.png`, `loc-logo-mark.png` (header/menú, 40–42px de alto), `loc-logo-trim.png` (footer, 58px de alto).
+- `logo-la-otra-cara-new.png` (original, 1254×1254 con márgenes transparentes) y `logo-la-otra-cara-new-trim.png` (recortado a 1082×521, el que se usa): header 62/52px, menú móvil 52px, footer 58px.
 - `img/svc-01-branding-b.png`, `svc-02-social.png`, `svc-03-paid.png`, `svc-04-web.png`, `svc-05-produccion.png` — imágenes de servicio. Paleta común: negro `#080808`, dorado `#B99455`, luz dura, low-key. Aplicar los filtros CSS de arriba.
 - Fuentes: **DM Serif Display** y **DM Sans** (Google Fonts / `@fontsource`, licencia OFL).
 

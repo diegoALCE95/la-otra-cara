@@ -1,5 +1,4 @@
 ---
-import { serviciosOpciones, tamanosOrganizacion } from '../data/contacto';
 import { site } from '../data/site';
 import Button from './ui/Button.astro';
 
@@ -8,24 +7,39 @@ import Button from './ui/Button.astro';
  * formulario lleva `novalidate` para dar nuestros propios mensajes, y la
  * confirmación sustituye al formulario en el mismo hueco (sin salto de layout
  * hacia arriba, el foco se mueve al panel de éxito).
+ *
+ * Las dos secciones de contacto lo comparten y solo cambian el rótulo del
+ * submit y la nota: dentro del modal el botón envía y la nota ya está en la
+ * sección, así que se oculta.
  */
+interface Props {
+  submitLabel?: string;
+  /** Nota bajo el botón. `null` la oculta. */
+  nota?: string | null;
+}
 
+const {
+  submitLabel = 'Consultoría Gratuita',
+  nota = 'Videollamada gratuita de 30 minutos · Confirmación por email.',
+} = Astro.props;
+
+/** `ancho` marca los campos que ocupan la fila entera en escritorio. */
 const campos = [
-  { name: 'nombre', label: 'Nombre', type: 'text', required: true, autocomplete: 'name' },
+  { name: 'nombre', label: 'Nombre', type: 'text', autocomplete: 'name', ancho: false },
   {
-    name: 'empresa',
-    label: 'Empresa / Marca',
+    name: 'restaurante',
+    label: 'Restaurante',
     type: 'text',
-    required: true,
     autocomplete: 'organization',
+    ancho: false,
   },
-  { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' },
-  { name: 'telefono', label: 'Teléfono', type: 'tel', required: false, autocomplete: 'tel' },
-] as const;
-
-const selects = [
-  { name: 'tamano', label: 'Tamaño de la organización', opciones: tamanosOrganizacion },
-  { name: 'servicio', label: 'Servicio de interés', opciones: serviciosOpciones },
+  {
+    name: 'email',
+    label: 'Correo electrónico',
+    type: 'email',
+    autocomplete: 'email',
+    ancho: true,
+  },
 ] as const;
 
 const labelClass =
@@ -39,22 +53,16 @@ const errorClass = 'mt-[6px] text-[12px] font-medium text-gold-deep';
   <form data-contacto-form novalidate class="grid gap-[clamp(18px,2.4vw,26px)] lg:grid-cols-2">
     {
       campos.map((campo) => (
-        <div>
+        <div class={campo.ancho ? 'lg:col-span-2' : undefined}>
           <label class={labelClass} for={`contacto-${campo.name}`}>
             {campo.label}
-            {campo.required && (
-              <span aria-hidden="true" class="text-gold-deep">
-                {' '}
-                *
-              </span>
-            )}
           </label>
           <input
             data-campo
             id={`contacto-${campo.name}`}
             name={campo.name}
             type={campo.type}
-            required={campo.required}
+            required
             autocomplete={campo.autocomplete}
             aria-describedby={`contacto-${campo.name}-error`}
             class={controlClass}
@@ -64,41 +72,9 @@ const errorClass = 'mt-[6px] text-[12px] font-medium text-gold-deep';
       ))
     }
 
-    {
-      selects.map((select) => (
-        <div>
-          <label class={labelClass} for={`contacto-${select.name}`}>
-            {select.label}
-          </label>
-          {/* `appearance-none` + chevron propio: el control nativo trae esquinas
-              y flechas del sistema, y el diseño es de esquina recta. */}
-          <div class="relative">
-            <select
-              data-campo
-              id={`contacto-${select.name}`}
-              name={select.name}
-              aria-describedby={`contacto-${select.name}-error`}
-              class={`${controlClass} cursor-pointer appearance-none pr-[46px]`}
-            >
-              <option value="">Selecciona una opción</option>
-              {select.opciones.map((opcion) => (
-                <option value={opcion}>{opcion}</option>
-              ))}
-            </select>
-            <span
-              aria-hidden="true"
-              class="pointer-events-none absolute top-1/2 right-[16px] mt-[5px] block size-[9px] -translate-y-1/2 rotate-45 border-r border-b border-gold-deep"
-            />
-          </div>
-          <p id={`contacto-${select.name}-error`} data-error-de={select.name} hidden class={errorClass} />
-        </div>
-      ))
-    }
-
     <div class="lg:col-span-2">
       <label class={labelClass} for="contacto-mensaje">
-        Mensaje
-        <span aria-hidden="true" class="text-gold-deep"> *</span>
+        ¿Qué necesita mejorar?
       </label>
       <textarea
         data-campo
@@ -114,13 +90,17 @@ const errorClass = 'mt-[6px] text-[12px] font-medium text-gold-deep';
     {/* Trampa de bots: invisible y fuera del tabulador. */}
     <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" class="hidden" />
 
-    <div class="flex flex-wrap items-center gap-6 lg:col-span-2">
+    <div class="lg:col-span-2">
       <Button variant="solid-ink" type="submit" data-contacto-submit>
-        <span data-label>Cuéntanos tu proyecto →</span>
+        <span data-label>{submitLabel}</span>
       </Button>
-      <p class="m-0 max-w-[30ch] text-[12px] font-light text-graphite-soft">
-        Los campos con <span class="text-gold-deep">*</span> son obligatorios.
-      </p>
+      {
+        nota && (
+          <p class="mt-[14px] mb-0 max-w-[40ch] text-[12px] font-light text-graphite-soft">
+            {nota}
+          </p>
+        )
+      }
     </div>
 
     <p

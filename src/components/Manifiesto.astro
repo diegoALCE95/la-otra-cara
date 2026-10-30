@@ -18,8 +18,6 @@ import SectionShell from './ui/SectionShell.astro';
     cara
   </div>
 
-  <ManifiestoRings />
-
   <!-- <Eyebrow
     data-reveal
     numero="02"
@@ -27,12 +25,20 @@ import SectionShell from './ui/SectionShell.astro';
     tone="stone"
     class="reveal relative mb-[clamp(32px,6vh,64px)]">AGENCIA</Eyebrow
   > -->
-  <Eyebrow
-    data-reveal
-    ruleClass="bg-hair-ink-rule"
-    tone="stone"
-    class="reveal relative mb-[clamp(32px,6vh,64px)]">AGENCIA</Eyebrow
+  {/* El bloque de encabezado da la altura de referencia: los anillos se centran
+      en ella, de modo que titular y animación comparten eje y no rozan la
+      hairline de abajo. */}
+  <div
+    class="relative lg:flex lg:min-h-[calc(clamp(240px,27vw,440px)+clamp(56px,9vh,112px))] lg:flex-col lg:justify-center"
   >
+    <ManifiestoRings />
+
+    <Eyebrow
+      data-reveal
+      ruleClass="bg-hair-ink-rule"
+      tone="stone"
+      class="reveal relative mb-[clamp(32px,6vh,64px)]">AGENCIA</Eyebrow
+    >
 
   <!-- <h2
     data-reveal
@@ -43,12 +49,13 @@ import SectionShell from './ui/SectionShell.astro';
     >
   </h2> -->
 
-  <h2
-    data-reveal
-    class="reveal relative m-0 max-w-[18ch] lg:min-h-[8ch] font-display text-h2-manifesto font-normal text-pretty [--reveal-delay:.08s] [--reveal-y:26px]"
-  >
-    ¿Qué hace que elijan <em class="text-gold-deep italic">tu restaurante?</em>
-  </h2>
+    <h2
+      data-reveal
+      class="reveal relative m-0 max-w-[18ch] font-display text-h2-manifesto font-normal text-pretty [--reveal-delay:.08s] [--reveal-y:26px]"
+    >
+      ¿Qué hace que elijan <em class="text-gold-deep italic">tu restaurante?</em>
+    </h2>
+  </div>
 
   <div
     class="mt-[clamp(44px,8vh,96px)] grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-column border-t border-hair-ink pt-[clamp(28px,4vh,44px)]"

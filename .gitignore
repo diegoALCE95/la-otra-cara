@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# másters de video sin comprimir (fuente de public/hero-video.mp4)
+design/source-media/

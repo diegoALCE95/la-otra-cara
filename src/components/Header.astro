@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 
-import logoMark from '../assets/loc-logo-mark-metal.jpeg';
+import logoLockup from '../assets/logo-la-otra-cara-new-trim.png';
 import { navLinks } from '../data/nav';
 import Button from './ui/Button.astro';
 ---
@@ -9,19 +9,19 @@ import Button from './ui/Button.astro';
 <header
   data-header
   data-scrolled="false"
-  class="section-x fixed inset-x-0 top-0 z-[60] flex items-center justify-between gap-6 border-b border-transparent bg-transparent py-[22px] transition-[background-color,backdrop-filter,border-color,padding] duration-500 ease-editorial data-[scrolled=true]:border-hair-scroll data-[scrolled=true]:bg-scrim data-[scrolled=true]:py-[14px] data-[scrolled=true]:backdrop-blur-[14px] data-[scrolled=true]:backdrop-saturate-[1.4]"
+  class="group section-x fixed inset-x-0 top-0 z-[60] flex items-center justify-between gap-6 border-b border-transparent bg-transparent py-[22px] transition-[background-color,backdrop-filter,border-color,padding] duration-500 ease-editorial data-[scrolled=true]:border-hair-scroll data-[scrolled=true]:bg-scrim data-[scrolled=true]:py-[14px] data-[scrolled=true]:backdrop-blur-[14px] data-[scrolled=true]:backdrop-saturate-[1.4]"
 >
   <a
     href="#top"
     class="flex items-center gap-[14px] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
   >
     <Image
-      src={logoMark}
+      src={logoLockup}
       alt="La Otra Cara"
-      height={120}
+      height={124}
       densities={[1, 2]}
       loading="eager"
-      class="block h-20 w-auto"
+      class="block h-[52px] w-auto transition-[height] duration-500 ease-editorial min-[900px]:h-[62px] min-[900px]:group-data-[scrolled=true]:h-[52px]"
     />
   </a>
 

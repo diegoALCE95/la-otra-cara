@@ -202,6 +202,9 @@
   --animate-spin-rev: spin-rev 46s linear infinite;
   --animate-draw: draw 9s var(--ease-draw) infinite;
   --animate-draw-slow: draw 11s var(--ease-draw) infinite .8s;
+  /* El arco dorado del dial de proceso salta de cuadrante cada 9s: los mismos
+     9s que dura `draw`, así que se redibuja entero en cada paso. */
+  --animate-quadrant: spin-slow 36s steps(4, end) infinite;
   --animate-breathe: breathe 7s ease-in-out infinite;
   --animate-sweep: sweep 6.5s var(--ease-sweep) infinite;
   --animate-scroll-chevron: scroll-chevron 2.8s var(--ease-editorial) infinite;
@@ -256,6 +259,7 @@
 
   /* Bloqueo de scroll mientras el overlay móvil está abierto. */
   body:has([data-menu][data-open="true"]),
+  body:has(dialog[data-contacto-modal][open]),
   body:has(dialog[data-lightbox][open]) { overflow: hidden; }
 
   /* El visor ocupa el viewport completo; el UA lo centraría con márgenes.
@@ -277,6 +281,46 @@
     dialog[data-lightbox][open] { opacity: 0; }
   }
   dialog[data-lightbox]::backdrop { background: var(--color-ink); }
+
+  /* Modal del formulario de contacto: misma mecánica que el visor, pero el
+     panel entra además desde abajo. Al cerrar, `allow-discrete` mantiene el
+     diálogo en el top layer hasta que termina la transición. */
+  dialog[data-contacto-modal] {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition:
+      opacity 320ms var(--ease-editorial),
+      display 320ms allow-discrete,
+      overlay 320ms allow-discrete;
+  }
+  dialog[data-contacto-modal][open] { opacity: 1; }
+  @starting-style {
+    dialog[data-contacto-modal][open] { opacity: 0; }
+  }
+
+  dialog[data-contacto-modal]::backdrop {
+    background: var(--color-scrim);
+    opacity: 0;
+    transition:
+      opacity 320ms var(--ease-editorial),
+      display 320ms allow-discrete,
+      overlay 320ms allow-discrete;
+  }
+  dialog[data-contacto-modal][open]::backdrop { opacity: 1; }
+  @starting-style {
+    dialog[data-contacto-modal][open]::backdrop { opacity: 0; }
+  }
+
+  [data-contacto-modal-panel] {
+    transform: translateY(18px);
+    transition: transform 420ms var(--ease-editorial);
+  }
+  dialog[data-contacto-modal][open] [data-contacto-modal-panel] { transform: none; }
+  @starting-style {
+    dialog[data-contacto-modal][open] [data-contacto-modal-panel] { transform: translateY(18px); }
+  }
 }
 
 /* ── Utilidades de composición ───────────────────────── */
