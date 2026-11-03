@@ -45,14 +45,21 @@ const delays = ['', '[--reveal-delay:.1s]', '[--reveal-delay:.2s]', '[--reveal-d
   </p>
 
   <div
-    class="relative mt-[clamp(48px,9vh,110px)] grid grid-cols-2 gap-[clamp(28px,3vw,56px)] lg:grid-cols-4"
+    class="relative mt-[clamp(48px,9vh,110px)] grid grid-cols-2 gap-x-[clamp(28px,3vw,56px)] lg:grid-cols-4"
   >
     {
+      // Subgrid: número, título y apoyo comparten filas entre pasos, así los
+      // párrafos arrancan a la misma altura aunque un título se parta en dos
+      // líneas y los demás no (pasa en columnas estrechas, ~900–1100px).
+      // La rejilla no lleva row-gap (el subgrid lo heredaría entre número,
+      // título y apoyo): la separación entre filas de pasos en móvil va como
+      // margen en la segunda fila.
       proceso.map((paso, i) => (
         <div
           data-reveal
           class:list={[
-            'reveal group relative border-t border-hair-ink-strong pt-[26px] [--reveal-dur:.9s] [--reveal-y:20px]',
+            'reveal group relative row-span-3 grid grid-rows-subgrid border-t border-hair-ink-strong pt-[26px] [--reveal-dur:.9s] [--reveal-y:20px]',
+            i >= 2 && 'max-lg:mt-[clamp(28px,3vw,56px)]',
             delays[i],
           ]}
         >

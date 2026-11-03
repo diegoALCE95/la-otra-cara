@@ -1,20 +1,18 @@
 ---
+import { getImage } from 'astro:assets';
+
 import { proyectos } from '../data/proyectos';
 import Lightbox from './Lightbox.astro';
 import WorkCard from './WorkCard.astro';
 import SectionShell from './ui/SectionShell.astro';
 
 /**
- * Proporción numérica derivada de la clase `aspect-[w/h]` del grid, para el
- * espaciador del visor. Se deriva en vez de duplicarse en `proyectos.ts` para
- * que no puedan desincronizarse.
+ * El `poster` del `<video>` no pasa por `<Image>`, así que se optimiza aparte
+ * (WebP al ancho real del vídeo) para no servir el JPG original.
  */
-const proporcion = (ratio: string) => {
-  const [, w = '1', h = '1'] = ratio.match(/aspect-\[(\d+)\/(\d+)\]/) ?? [];
-  // Escaladas a px "intrínsecos": es lo que permite que max-w/max-h contengan
-  // la caja conservando el ratio, como haría una imagen real.
-  return { width: Number(w) * 200, height: Number(h) * 200 };
-};
+const posters = await Promise.all(
+  proyectos.map((proyecto) => getImage({ src: proyecto.poster, width: 1080, format: 'webp' })),
+);
 ---
 
 <SectionShell
@@ -50,7 +48,7 @@ const proporcion = (ratio: string) => {
       <ul
         data-carrusel-track
         role="list"
-        class="m-0 flex list-none touch-pan-y gap-grid p-0 transition-transform duration-[900ms] ease-editorial will-change-transform"
+        class="m-0 flex list-none touch-pan-y gap-grid p-0 select-none transition-transform duration-[900ms] ease-editorial will-change-transform"
       >
         {
           proyectos.map((proyecto, i) => (
@@ -101,38 +99,40 @@ const proporcion = (ratio: string) => {
 
 <Lightbox id="work" label="Selected Work" count={proyectos.length}>
   {
-    proyectos.map((proyecto) => (
+    proyectos.map((proyecto, i) => (
       <figure
         data-lb-slide
         hidden
         class="m-0 flex h-full w-full max-w-[1180px] flex-col gap-[clamp(14px,2.2vh,26px)]"
       >
-        {/* El SVG es solo el espaciador que fija la proporción: siendo elemento
-            reemplazado, al recortarlo `max-h-full` conserva el ratio en vez de
-            deformarse como lo haría un div con `aspect-*`.
-            TODO: al llegar las imágenes finales, este bloque se sustituye por
-            `<Image ... class="max-h-full w-auto object-contain" />`. */}
-        <div class="relative flex min-h-0 flex-1 items-center justify-center">
-          <svg
-            {...proporcion(proyecto.ratio)}
-            aria-hidden="true"
-            class="block h-auto max-h-full w-auto max-w-full bg-ink-well"
-          />
-          <span
-            aria-hidden="true"
-            class="absolute font-mono text-[10px] tracking-[.14em] text-bone-30 uppercase"
-          >
-            {proyecto.placeholder}
-          </span>
+        {/* El área es un container de tamaño para leer su alto con `cqh`: el
+            9/16 vertical se limita por los dos ejes tomando el menor entre el
+            ancho disponible y el que cabe a esa altura.
+            El vídeo no se descarga hasta abrir su slide (`data-src`). */}
+        <div class="relative flex min-h-0 flex-1 items-center justify-center [container-type:size]">
+          <div class="relative aspect-[9/16] w-[min(100%,calc(100cqh*9/16))] bg-ink-well">
+            <video
+              data-lb-media
+              data-src={proyecto.video}
+              poster={posters[i]?.src}
+              controls
+              playsinline
+              preload="none"
+              aria-label={`Vídeo de ${proyecto.titulo}`}
+              class="absolute inset-0 size-full object-contain"
+            />
+          </div>
         </div>
         <figcaption class="flex flex-none flex-wrap items-baseline justify-between gap-4 border-t border-hair pt-4">
           <span>
             <span class="block font-display text-card-wide text-bone">
               {proyecto.titulo}
             </span>
-            <span class="mt-1.5 block text-[11px] tracking-[.2em] text-bone-45 uppercase">
-              {proyecto.categoria}
-            </span>
+            {proyecto.categoria && (
+              <span class="mt-1.5 block text-[11px] tracking-[.2em] text-bone-45 uppercase">
+                {proyecto.categoria}
+              </span>
+            )}
           </span>
           <span class="font-display text-[13px] text-gold">{proyecto.anio}</span>
         </figcaption>

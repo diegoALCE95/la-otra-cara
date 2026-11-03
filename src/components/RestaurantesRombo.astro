@@ -13,10 +13,12 @@ import { restaurantes } from '../data/restaurantes';
 const pistas = [false, true];
 ---
 
+{/* `scroll-mt` = alto del header fijo ya compacto: la flecha del hero ancla
+    aquí y el título no debe quedar tapado. */}
 <section
   id="restaurantes-rombo"
   data-reveal
-  class="reveal border-y border-hair-gold bg-ink py-[clamp(52px,8vh,88px)] [--reveal-dur:.9s] [--reveal-y:14px]"
+  class="reveal scroll-mt-[91px] border-y border-hair-gold bg-ink py-[clamp(52px,8vh,88px)] [--reveal-dur:.9s] [--reveal-y:14px]"
 >
   <div class="section-x">
     <div class="shell">

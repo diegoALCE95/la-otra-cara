@@ -59,7 +59,7 @@ import Button from './ui/Button.astro';
       data-reveal
       class="reveal m-0 font-display text-hero font-normal text-balance text-white [--reveal-delay:.1s] [--reveal-dur:1.1s] [--reveal-y:1.75rem]"
     >
-      Mostramos <em class="text-bone italic">la otra cara</em> de <span class="text-gold">tu restaurante.</span>
+      Mostramos <em class="text-bone italic">la otra cara</em> de <span class="text-gold">tu restaurante</span>
     </h1>
 
     <p
@@ -77,26 +77,31 @@ import Button from './ui/Button.astro';
       <Button href="#proyectos" variant="outline-bone">Ver portafolio gastronómico</Button>
     </div>
 
-    <p data-reveal class="reveal [--reveal-delay:.55s] mt-[25px] mb-0 text-[14px]/[1.6] font-light text-graphite-soft">Videollamada gratuita de 30 minutos. Confirmación por email.</p>
+    <p data-reveal class="reveal [--reveal-delay:.55s] mt-[25px] mb-0 text-[14px]/[1.6] font-light text-graphite-soft">Videollamada gratuita de 30 minutos. Confirmación por email*</p>
   </div>
 
-  <div
-    aria-hidden="true"
-    class="absolute inset-x-0 bottom-[clamp(1.5rem,5vh,2.75rem)] z-[2] flex justify-center"
-  >
-    <svg
-      viewBox="0 0 24 24"
-      width="26"
-      height="26"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="block animate-scroll-chevron text-gold opacity-45"
+  <div class="absolute inset-x-0 bottom-[clamp(1.5rem,5vh,2.75rem)] z-[2] flex justify-center">
+    {/* Lleva a la banda de restaurantes. 44px de objetivo táctil alrededor del chevron. */}
+    <a
+      href="#restaurantes-rombo"
+      aria-label="Ir a la siguiente sección"
+      class="flex size-11 items-center justify-center text-gold opacity-45 transition-opacity duration-500 ease-editorial hover:text-gold hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
     >
-      <path d="M5 9l7 7 7-7"></path>
-    </svg>
+      <svg
+        viewBox="0 0 24 24"
+        width="26"
+        height="26"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        class="block animate-scroll-chevron"
+      >
+        <path d="M5 9l7 7 7-7"></path>
+      </svg>
+    </a>
   </div>
 </section>
 

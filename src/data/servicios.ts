@@ -4,7 +4,7 @@ import branding from '../assets/img/svc-01-branding-b.png';
 // import social from '../assets/img/svc-02-social.png'; // Email Marketing, oculto.
 import paid from '../assets/img/svc-03-paid.png';
 import web from '../assets/img/svc-04-web.png';
-import produccion from '../assets/img/svc-05-produccion.png';
+import produccion from '../assets/img/svc-05-produccion-pablo.jpg';
 
 /**
  * Bloques del cuerpo del acordeón. Un servicio puede alternar párrafos sueltos
@@ -24,10 +24,16 @@ export type Servicio = {
   imagen: ImageMetadata;
   /** Filtro CSS por imagen: parte de la identidad visual, no un extra. */
   filtro: string;
+  /**
+   * Opcional: `background` de un velo en `mix-blend-mode: multiply` sobre la
+   * imagen. Sirve para llevar a la paleta común (negro + dorado, low-key) una
+   * foto de estudio con fondo blanco, que con solo el filtro se ve plana.
+   */
+  velo?: string;
 };
 
 /**
- * El orden del array define la numeración (01–05) y el índice del stage sticky.
+ * El orden del array define el orden de las filas y el índice del stage sticky.
  * El servicio activo por defecto es el primero.
  */
 export const servicios: Servicio[] = [
@@ -42,7 +48,14 @@ export const servicios: Servicio[] = [
       },
     ],
     imagen: produccion,
-    filtro: 'sepia(.06) saturate(1.08) contrast(1.04) brightness(1.04)',
+    filtro: 'sepia(.12) saturate(1.06) contrast(1.12) brightness(.96)',
+    // Fondo blanco de estudio: tinte dorado que lo calienta, viñeta que lo
+    // apaga hacia los bordes y fundido a negro abajo, como el resto del stage.
+    velo: [
+      'linear-gradient(180deg, rgba(8,8,8,.38) 0%, rgba(8,8,8,0) 26%, rgba(8,8,8,0) 52%, rgba(8,8,8,.88) 100%)',
+      'radial-gradient(90% 70% at 62% 34%, rgba(185,148,85,0) 0%, rgba(185,148,85,.28) 60%, rgba(60,46,24,.7) 100%)',
+      'linear-gradient(rgba(185,148,85,.30), rgba(185,148,85,.30))',
+    ].join(', '),
   },
   {
     titulo: 'Social Media + Estrategia',

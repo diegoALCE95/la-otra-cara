@@ -24,6 +24,8 @@ export function initLightbox() {
     if (!box) return;
 
     event.preventDefault();
+    // `detail` es 0 cuando el clic lo genera el teclado (Enter sobre el enlace).
+    box.dataset.lbPointer = String((event as MouseEvent).detail > 0);
     show(box, Number(index) || 0);
     box.showModal();
   });
@@ -65,6 +67,13 @@ function bind(box: HTMLDialogElement) {
   // Al cerrar, ningún video sigue sonando ni consumiendo red de fondo.
   box.addEventListener('close', () => {
     for (const media of box.querySelectorAll<HTMLElement>('[data-lb-media]')) detener(media);
+
+    // `close()` devuelve el foco al disparador y el navegador lo pinta como
+    // foco visible. Con teclado ese anillo orienta y se conserva; si el visor
+    // se abrió con ratón solo queda como una línea suelta, así que se suelta.
+    if (box.dataset.lbPointer === 'true' && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   });
 }
 
@@ -92,6 +101,9 @@ function show(box: HTMLDialogElement, index: number) {
     }
     const src = media.dataset.src;
     if (src && !media.getAttribute('src')) media.setAttribute('src', src);
+    // Un `<video>` arranca al activarse su slide (el clic del usuario habilita
+    // el audio); si el navegador lo bloquea, quedan los controles nativos.
+    if (media instanceof HTMLVideoElement) media.play().catch(() => {});
   });
 
   const counter = box.querySelector<HTMLElement>('[data-lb-counter]');

@@ -20,20 +20,43 @@ const velo = 'bg-[rgb(8_8_8/.58)]';
   {/* Portadilla centrada: es la única sección de la home que no cuelga del
       margen izquierdo, y lo hace a propósito — marca el alto antes de la
       rejilla, como en la referencia. El texto de las cards sigue a bandera. */}
-  <Eyebrow data-reveal class="reveal justify-center">Equipo y responsabilidades</Eyebrow>
+  <Eyebrow data-reveal class="reveal justify-center">Equipo</Eyebrow>
 
   <h2
     data-reveal
     class="reveal mx-auto mt-[clamp(18px,3vh,32px)] mb-0 max-w-[18ch] text-center font-display text-h2-team font-normal text-pretty [--reveal-delay:.08s] [--reveal-y:26px]"
   >
-    Tres miradas, <em class="text-gold italic">una misma mesa.</em>
+    Tres miradas,<br /><em class="text-gold italic">una misma mesa</em>
   </h2>
+
+  {/* Subtítulo: los tres sentidos separados por barras doradas, que son
+      decorativas (el lector de pantalla lee "Gusto, Vista, Olfato"). */}
+  <p
+    data-reveal
+    class="reveal mt-[clamp(20px,3vh,32px)] mb-0 flex items-baseline justify-center gap-[clamp(14px,1.6vw,24px)] font-display text-[clamp(19px,1.6vw,23px)]/[1.3] text-bone [--reveal-delay:.12s] [--reveal-y:20px]"
+  >
+    {
+      ['Gusto', 'Vista', 'Olfato'].map((sentido, i) => (
+        <>
+          {i > 0 && (
+            <span aria-hidden="true" class="font-sans font-light text-gold">
+              |
+            </span>
+          )}
+          <span>
+            {sentido}
+            {i < 2 && <span class="sr-only">,</span>}
+          </span>
+        </>
+      ))
+    }
+  </p>
 
   <p
     data-reveal
-    class="reveal mx-auto mt-[clamp(16px,2.4vh,26px)] mb-0 max-w-[46ch] text-center text-lede font-light text-pretty text-bone-55 [--reveal-delay:.14s] [--reveal-y:20px]"
+    class="reveal mx-auto mt-[clamp(12px,1.8vh,18px)] mb-0 max-w-[46ch] text-center text-lede font-light text-pretty text-bone-55 [--reveal-delay:.18s] [--reveal-y:20px]"
   >
-    Olfato, vista y gusto: tres perspectivas que se complementan para comunicar mejor
+    Tres perspectivas que se complementan para<br class="hidden lg:inline" /> comunicar mejor
     cada restaurante.
   </p>
 

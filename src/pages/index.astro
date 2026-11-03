@@ -13,12 +13,14 @@ import Manifiesto from '../components/Manifiesto.astro';
 // restaurantes. Copia intacta en design/backups/Marquee.astro.bak.
 // import Marquee from '../components/Marquee.astro';
 import MobileMenu from '../components/MobileMenu.astro';
-import Principios from '../components/Principios.astro';
+// Nuestros principios: oculta. "Cómo trabajamos" (Proceso) ocupa su lugar.
+// El componente sigue en src/components/Principios.astro.
+// import Principios from '../components/Principios.astro';
 import Proceso from '../components/Proceso.astro';
-import RestaurantesEspaciado from '../components/RestaurantesEspaciado.astro';
-// Variante A (logos separados por el rombo): descartada a favor de la de
-// espaciado. El componente sigue en src/components/RestaurantesRombo.astro.
-// import RestaurantesRombo from '../components/RestaurantesRombo.astro';
+// Variante B (logos separados solo por espaciado): oculta a favor de la del
+// rombo. El componente sigue en src/components/RestaurantesEspaciado.astro.
+// import RestaurantesEspaciado from '../components/RestaurantesEspaciado.astro';
+import RestaurantesRombo from '../components/RestaurantesRombo.astro';
 import SelectedWork from '../components/SelectedWork.astro';
 import Servicios from '../components/Servicios.astro';
 // import Testimonio from '../components/Testimonio.astro';
@@ -31,13 +33,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <main id="main" data-outside>
     <Hero />
-    <RestaurantesEspaciado />
+    <RestaurantesRombo />
     <Manifiesto />
     <Servicios />
-    <Principios />
+    <Proceso />
     <SelectedWork />
     <Equipo />
-    <Proceso />
     <Faq />
     <CtaFinalModal />
   </main>

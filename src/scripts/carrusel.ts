@@ -10,6 +10,8 @@
  */
 const ARRASTRE_MIN = 8; // px a partir de los cuales el gesto es un arrastre
 const UMBRAL = 0.18; // fracción del paso que hace falta para cambiar de vista
+const LANZAMIENTO = 0.45; // px/ms: un gesto corto pero rápido también avanza
+const RESISTENCIA = 0.3; // fracción del arrastre que se aplica más allá de los extremos
 
 export function initCarrusel() {
   for (const raiz of document.querySelectorAll<HTMLElement>('[data-carrusel]')) montar(raiz);
@@ -25,6 +27,7 @@ function montar(raiz: HTMLElement) {
 
   let indice = 0;
   let paginas = 1;
+  let porVista = 1;
   // Columnas visibles a partir de 900px. Por debajo siempre es una.
   const columnas = Number(raiz.dataset.carruselPorVista) || 3;
 
@@ -38,7 +41,7 @@ function montar(raiz: HTMLElement) {
   };
 
   const medir = () => {
-    const porVista = matchMedia('(min-width: 900px)').matches ? columnas : 1;
+    porVista = matchMedia('(min-width: 900px)').matches ? columnas : 1;
     paginas = Math.max(1, slides.length - porVista + 1);
     indice = Math.min(indice, paginas - 1);
 
@@ -62,12 +65,20 @@ function montar(raiz: HTMLElement) {
 
   // ── Teclado: una card fuera de vista no puede quedarse escondida ──
   pista.addEventListener('focusin', (evento) => {
-    const slide = (evento.target as Element | null)?.closest<HTMLElement>('[data-carrusel-slide]');
+    const objetivo = evento.target as Element | null;
+    const slide = objetivo?.closest<HTMLElement>('[data-carrusel-slide]');
     if (!slide) return;
     // El navegador intenta revelar el foco desplazando el recorte; se deshace
     // y se resuelve moviendo el carrusel, que es lo que conserva el layout.
     viewport.scrollLeft = 0;
-    ir(slides.indexOf(slide));
+
+    // Solo el foco de teclado mueve el carrusel, y solo si la card está fuera
+    // de vista. Con ratón, el `<a>` también toma el foco al pulsar, y sin este
+    // filtro la vista saltaba a la card pulsada al empezar un arrastre.
+    if (!objetivo?.matches(':focus-visible')) return;
+    const i = slides.indexOf(slide);
+    if (i >= indice && i < indice + porVista) return;
+    ir(i < indice ? i : i - porVista + 1);
   });
 
   // ── Arrastre ────────────────────────────────────────
@@ -76,6 +87,15 @@ function montar(raiz: HTMLElement) {
   let delta = 0;
   let arrastrando = false;
   let movido = false;
+  // Última muestra del puntero, para medir la velocidad al soltar.
+  let ultimoX = 0;
+  let ultimoT = 0;
+  let velocidad = 0;
+
+  // Las cards son enlaces con imagen: con ratón, el navegador arrancaría su
+  // arrastre nativo de enlace/imagen, que cancela el puntero (`pointercancel`)
+  // y devuelve el carrusel a su sitio a los pocos píxeles.
+  pista.addEventListener('dragstart', (evento) => evento.preventDefault());
 
   pista.addEventListener('pointerdown', (evento) => {
     if (evento.pointerType === 'mouse' && evento.button !== 0) return;
@@ -86,6 +106,9 @@ function montar(raiz: HTMLElement) {
     inicio = evento.clientX;
     delta = 0;
     base = -offset(indice);
+    ultimoX = evento.clientX;
+    ultimoT = evento.timeStamp;
+    velocidad = 0;
   });
 
   pista.addEventListener(
@@ -94,23 +117,41 @@ function montar(raiz: HTMLElement) {
       if (!arrastrando) return;
       delta = evento.clientX - inicio;
 
+      const dt = evento.timeStamp - ultimoT;
+      if (dt > 0) velocidad = (evento.clientX - ultimoX) / dt;
+      ultimoX = evento.clientX;
+      ultimoT = evento.timeStamp;
+
       if (!movido) {
         if (Math.abs(delta) < ARRASTRE_MIN) return;
         movido = true;
         pista.setPointerCapture(evento.pointerId);
       }
-      colocar(base + delta, false);
+
+      // Más allá del primero o del último, el arrastre cede con resistencia.
+      const limite = -offset(paginas - 1);
+      let x = base + delta;
+      if (x > 0) x *= RESISTENCIA;
+      else if (x < limite) x = limite + (x - limite) * RESISTENCIA;
+      colocar(x, false);
     },
     { passive: true },
   );
 
-  const soltar = () => {
+  const soltar = (evento: PointerEvent) => {
     if (!arrastrando) return;
     arrastrando = false;
     if (!movido) return;
 
-    const salto = Math.abs(delta) > paso() * UMBRAL ? (delta < 0 ? 1 : -1) : 0;
-    ir(indice + salto);
+    // Una pausa antes de soltar anula el lanzamiento.
+    if (evento.timeStamp - ultimoT > 80) velocidad = 0;
+
+    // Se avanzan tantas vistas como pasos se hayan arrastrado; la última cuenta
+    // en cuanto se supera el umbral. Un gesto rápido avanza al menos una.
+    const pasos = Math.abs(delta) / paso();
+    let salto = Math.floor(pasos + (1 - UMBRAL));
+    if (salto === 0 && Math.abs(velocidad) > LANZAMIENTO) salto = 1;
+    ir(indice + (delta < 0 ? salto : -salto));
   };
 
   pista.addEventListener('pointerup', soltar);
