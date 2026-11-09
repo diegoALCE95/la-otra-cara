@@ -1,5 +1,7 @@
 ---
-import ManifiestoRings from './ManifiestoRings.astro';
+import { Image } from 'astro:assets';
+
+import fotoCartaMovil from '../assets/img/agencia-carta-movil.jpg';
 import Eyebrow from './ui/Eyebrow.astro';
 import SectionShell from './ui/SectionShell.astro';
 ---
@@ -25,13 +27,28 @@ import SectionShell from './ui/SectionShell.astro';
     tone="stone"
     class="reveal relative mb-[clamp(32px,6vh,64px)]">AGENCIA</Eyebrow
   > -->
-  {/* El bloque de encabezado da la altura de referencia: los anillos se centran
-      en ella, de modo que titular y animación comparten eje y no rozan la
-      hairline de abajo. */}
+  {/* El bloque de encabezado da la altura de referencia: en escritorio la foto
+      se centra en ella, de modo que titular y foto comparten eje y no rozan la
+      hairline de abajo. En móvil la foto va en flujo, debajo del titular. */}
   <div
-    class="relative lg:flex lg:min-h-[calc(clamp(240px,27vw,440px)+clamp(56px,9vh,112px))] lg:flex-col lg:justify-center"
+    class="relative flex flex-col lg:min-h-[calc(clamp(255px,33vw,540px)+clamp(56px,9vh,112px))] lg:justify-center"
   >
-    <ManifiestoRings />
+    {/* La foto se funde con el crema: máscara que la disuelve hacia el texto
+        y hacia arriba/abajo, y `multiply` para que sus blancos tomen el tono
+        del fondo. Pega con el borde derecho de la sección (sale del padding). */}
+    <div
+      class="foto-agencia pointer-events-none relative order-last -mx-[clamp(20px,4vw,64px)] mt-[clamp(28px,5vh,48px)] aspect-[4/3] mix-blend-multiply lg:absolute lg:top-1/2 lg:right-[calc(-1*clamp(20px,4vw,64px))] lg:z-0 lg:order-none lg:m-0 lg:w-[clamp(340px,44vw,720px)] lg:-translate-y-1/2"
+    >
+      <Image
+        src={fotoCartaMovil}
+        alt="Comensal consultando la carta del restaurante en el móvil, con un plato de pulpo a la brasa en la mesa."
+        widths={[480, 720, 1080, 1440]}
+        sizes="(min-width: 900px) clamp(340px, 44vw, 720px), 100vw"
+        loading="lazy"
+        decoding="async"
+        class="size-full object-cover sepia-[.06] saturate-[.94]"
+      />
+    </div>
 
     <Eyebrow
       data-reveal
@@ -96,3 +113,21 @@ import SectionShell from './ui/SectionShell.astro';
     </div>
   </div>
 </SectionShell>
+
+<style>
+  /* Móvil: se disuelve arriba y abajo para no cortar el crema en seco. */
+  .foto-agencia {
+    mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
+  }
+
+  /* Escritorio: se disuelve sobre todo hacia el titular (izquierda) y,
+     más suave, arriba y abajo. Las dos máscaras se intersectan. */
+  @media (min-width: 900px) {
+    .foto-agencia {
+      mask-image:
+        linear-gradient(90deg, transparent 0%, rgb(0 0 0 / .35) 18%, #000 42%),
+        linear-gradient(180deg, transparent 0%, #000 16%, #000 80%, transparent 100%);
+      mask-composite: intersect;
+    }
+  }
+</style>

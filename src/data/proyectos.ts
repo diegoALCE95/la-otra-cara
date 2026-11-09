@@ -3,7 +3,6 @@ import type { ImageMetadata } from 'astro';
 import posterArriero from '../assets/img/portfolio/01-arriero.jpg';
 import posterAgora from '../assets/img/portfolio/02-agora.jpg';
 import posterLasCumbres from '../assets/img/portfolio/03-las-cumbres.jpg';
-import posterTngiers from '../assets/img/portfolio/04-tngiers.jpg';
 import posterAkantojo from '../assets/img/portfolio/05-akantojo.jpg';
 import posterLasCumbresLocal from '../assets/img/portfolio/06-las-cumbres.jpg';
 
@@ -48,13 +47,6 @@ export const proyectos: Proyecto[] = [
     ratio: 'aspect-[3/4]',
     poster: posterLasCumbres,
     video: '/portfolio/03-las-cumbres.mp4',
-  },
-  {
-    titulo: 'Tngiers',
-    anio: '2023',
-    ratio: 'aspect-[3/4]',
-    poster: posterTngiers,
-    video: '/portfolio/04-tngiers.mp4',
   },
   {
     titulo: 'Akantojo',

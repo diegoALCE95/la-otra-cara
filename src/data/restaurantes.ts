@@ -24,10 +24,9 @@ export const restaurantes: Restaurante[] = [
   { nombre: 'Rubén Miralles', logo: logo01, href: '#', escala: 1 },
   { nombre: 'In Bocca al Lupo', logo: logo02, href: '#', escala: 1 },
   { nombre: 'La Mar de Bien', logo: logo03, href: '#', escala: 1.6 },
-  // TODO: 4.png es un disco claro opaco con el grafismo en gris de muy bajo
-  // contraste: sobre el fondo oscuro se lee como una mancha. Falta la versión
-  // monocroma blanca sobre transparente, como el resto de logos.
-  { nombre: 'Albert Guzmán Restaurant', logo: logo04, href: '#', escala: 2.6 },
+  // 4.png es un logotipo horizontal en mayúsculas de trazo grueso: pesa más
+  // que los manuscritos de al lado, así que va algo por debajo de la base.
+  { nombre: 'Albert Guzmán Restaurant', logo: logo04, href: '#', escala: 0.85 },
   { nombre: 'Santamaría Coctelería', logo: logo05, href: '#', escala: 2 },
   { nombre: 'Café del Art', logo: logo06, href: '#', escala: 2.1 },
 ];

@@ -1,9 +1,9 @@
 import type { ImageMetadata } from 'astro';
 
-import branding from '../assets/img/svc-01-branding-b.png';
+import consultoria from '../assets/img/svc-03-consultoria.jpg';
 // import social from '../assets/img/svc-02-social.png'; // Email Marketing, oculto.
-import paid from '../assets/img/svc-03-paid.png';
-import web from '../assets/img/svc-04-web.png';
+import socialMedia from '../assets/img/svc-02-social-media.jpg';
+import web from '../assets/img/svc-04-web-casa-brasa.jpg';
 import produccion from '../assets/img/svc-05-produccion-pablo.jpg';
 
 /**
@@ -91,8 +91,8 @@ export const servicios: Servicio[] = [
           'El email marketing se ofrece como un servicio específico de fidelización ya que diseñamos motivos para Volver. Diseñamos campañas de email para comunicar novedades, menús de temporada y acciones del restaurante. El objetivo es mantener el vínculo con los clientes y favorecer que vuelvan.',
       },
     ],
-    imagen: branding,
-    filtro: 'sepia(.08) saturate(1.08) contrast(1.04) brightness(1.08)',
+    imagen: socialMedia,
+    filtro: 'sepia(.06) saturate(1.04) contrast(1.04) brightness(1)',
   },
   /*
    * Email Marketing queda oculto: su propuesta se cuenta dentro de
@@ -123,7 +123,7 @@ export const servicios: Servicio[] = [
       },
     ],
     imagen: web,
-    filtro: 'sepia(.06) saturate(1.08) contrast(1.04) brightness(1.06)',
+    filtro: 'sepia(.06) saturate(1.04) contrast(1.04) brightness(1)',
   },
   {
     titulo: 'Consultoría y digitalización',
@@ -140,7 +140,8 @@ export const servicios: Servicio[] = [
           'A partir de ese análisis, proponemos mejoras para ahorrar tiempo, reducir tareas manuales e incorporar herramientas de inteligencia artificial cuando realmente encajen con el negocio. Cada solución se concreta según las necesidades y el alcance acordado.',
       },
     ],
-    imagen: paid,
-    filtro: 'sepia(.06) saturate(1.10) contrast(1.06) brightness(1.18)',
+    imagen: consultoria,
+    // Foto más clara que las otras: se baja un punto para igualar el stage.
+    filtro: 'sepia(.10) saturate(1.02) contrast(1.06) brightness(.92)',
   },
 ];
