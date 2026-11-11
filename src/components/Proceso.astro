@@ -73,7 +73,7 @@ const delays = ['', '[--reveal-delay:.1s]', '[--reveal-delay:.2s]', '[--reveal-d
             {paso.titulo}
           </span>
           <p class="mt-3 mb-0 max-w-[32ch] text-[14px]/[1.65] font-light text-graphite-soft">
-            {paso.apoyo}
+            {paso.apoyo}{paso.destacado && <strong class="font-semibold">{paso.destacado}</strong>}
           </p>
         </div>
       ))

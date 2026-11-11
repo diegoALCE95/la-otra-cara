@@ -8,7 +8,20 @@ import SectionShell from './ui/SectionShell.astro';
  * (`faq-acordeon.ts`, el mismo motor que el acordeón de servicios: el estado
  * vive en `aria-expanded` y la altura la anima el CSS de 0fr a 1fr).
  */
+
+// Mismas preguntas en datos estructurados, para que Google pueda leerlas como FAQ.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.pregunta,
+    acceptedAnswer: { '@type': 'Answer', text: item.respuesta },
+  })),
+};
 ---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 
 <SectionShell id="faq" class="border-t border-hair-gold bg-ink">
   <div data-reveal class="reveal flex flex-wrap items-end justify-between gap-6">

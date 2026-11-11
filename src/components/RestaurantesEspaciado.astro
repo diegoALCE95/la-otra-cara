@@ -38,11 +38,7 @@ const pistas = [false, true];
             class="flex items-center gap-[clamp(56px,8vw,128px)] pr-[clamp(56px,8vw,128px)]"
           >
             {restaurantes.map((restaurante) => (
-              <a
-                href={restaurante.href}
-                tabindex={duplicada ? -1 : undefined}
-                class="flex flex-none items-center justify-center opacity-55 transition duration-500 ease-editorial hover:scale-105 hover:opacity-100 focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
-              >
+              <div class="flex flex-none items-center justify-center opacity-55 transition duration-500 ease-editorial hover:scale-105 hover:opacity-100">
                 <Image
                   src={restaurante.logo}
                   alt={restaurante.nombre}
@@ -53,7 +49,7 @@ const pistas = [false, true];
                   class="block w-auto object-contain"
                   style={`height: calc(var(--logo-h) * ${restaurante.escala ?? 1});`}
                 />
-              </a>
+              </div>
             ))}
           </div>
         ))

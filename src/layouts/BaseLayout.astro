@@ -12,23 +12,47 @@ const { title = site.title, description = site.description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.jpg', Astro.site);
 
+const homeUrl = new URL('/', Astro.site).href;
+
+// Los perfiles sociales solo entran cuando son reales (no el placeholder sin handle).
+const perfilesSociales = [site.instagram].filter((url) => new URL(url).pathname.length > 1);
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
+  '@id': `${homeUrl}#organizacion`,
   name: site.name,
   description: site.description,
-  url: canonical.href,
+  url: homeUrl,
   email: site.email,
   image: ogImage.href,
-  areaServed: 'LATAM',
+  logo: new URL('/favicon-loc.png', Astro.site).href,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+  },
+  // Madrid primero: es el mercado prioritario para SEO.
+  // TODO: añadir los países de Latam cuando se concreten, como entradas
+  // `{ '@type': 'Country', name: 'México' }` en esta misma lista. "Latam" a secas
+  // no es un lugar que Google pueda interpretar. No crear un segundo bloque
+  // ProfessionalService: duplicaría la entidad.
+  areaServed: [
+    { '@type': 'City', name: 'Madrid' },
+    { '@type': 'Country', name: 'España' },
+  ],
   knowsLanguage: 'es',
   serviceType: [
-    'Producción de Contenido',
-    'Branding & Estrategia',
-    'Social Media',
-    'Paid Media',
-    'Diseño & Desarrollo Web',
+    'Marketing gastronómico',
+    'Gestión de redes sociales para restaurantes',
+    'Producción audiovisual',
+    'Fotografía gastronómica',
+    'Diseño web para restaurantes',
+    'Email marketing',
   ],
+  ...(perfilesSociales.length > 0 && { sameAs: perfilesSociales }),
+  // TODO: añadir `telephone` cuando haya número real.
 };
 ---
 
@@ -65,7 +89,7 @@ const jsonLd = {
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:locale" content="es_LA" />
+    <meta property="og:locale" content="es_ES" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />

@@ -10,8 +10,6 @@ import logo06 from '../assets/img/6.png';
 export type Restaurante = {
   nombre: string;
   logo: ImageMetadata;
-  /** TODO: URL real de cada restaurante; de momento todas apuntan a '#'. */
-  href: string;
   /**
    * Corrección óptica por logo: multiplica la altura base de la pista.
    * Los logos compactos o circulares necesitan más altura que los
@@ -21,12 +19,12 @@ export type Restaurante = {
 };
 
 export const restaurantes: Restaurante[] = [
-  { nombre: 'Rubén Miralles', logo: logo01, href: '#', escala: 1 },
-  { nombre: 'In Bocca al Lupo', logo: logo02, href: '#', escala: 1 },
-  { nombre: 'La Mar de Bien', logo: logo03, href: '#', escala: 1.6 },
+  { nombre: 'Rubén Miralles', logo: logo01, escala: 1 },
+  { nombre: 'In Bocca al Lupo', logo: logo02, escala: 1 },
+  { nombre: 'La Mar de Bien', logo: logo03, escala: 1.6 },
   // 4.png es un logotipo horizontal en mayúsculas de trazo grueso: pesa más
   // que los manuscritos de al lado, así que va algo por debajo de la base.
-  { nombre: 'Albert Guzmán Restaurant', logo: logo04, href: '#', escala: 0.85 },
-  { nombre: 'Santamaría Coctelería', logo: logo05, href: '#', escala: 2 },
-  { nombre: 'Café del Art', logo: logo06, href: '#', escala: 2.1 },
+  { nombre: 'Albert Guzmán Restaurant', logo: logo04, escala: 0.85 },
+  { nombre: 'Santamaría Coctelería', logo: logo05, escala: 2 },
+  { nombre: 'Café del Art', logo: logo06, escala: 2.1 },
 ];

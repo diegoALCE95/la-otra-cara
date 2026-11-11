@@ -1,0 +1,72 @@
+---
+import { Image } from 'astro:assets';
+
+import logoLockup from '../assets/logo-la-otra-cara.png';
+import Footer from '../components/Footer.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import { legal, site } from '../data/site';
+import BaseLayout from './BaseLayout.astro';
+
+/**
+ * Plantilla de las páginas legales: cabecera mínima (logo + vuelta a la home),
+ * texto corrido y el footer de la home. Los estilos del texto se aplican desde
+ * el `<article>` para que cada página sea solo `h2`, `p` y `ul`.
+ */
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={`${title} | ${site.name}`} description={description}>
+  <header class="section-x flex items-center justify-between gap-6 border-b border-hair-scroll py-[22px]">
+    <a
+      href="/"
+      class="flex items-center focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+    >
+      <Image
+        src={logoLockup}
+        alt="La Otra Cara — inicio"
+        height={124}
+        densities={[1, 2]}
+        loading="eager"
+        class="block h-[52px] w-auto"
+      />
+    </a>
+    <a
+      href="/"
+      class="flex min-h-11 items-center text-[11px] font-semibold tracking-[.2em] text-bone uppercase hover:text-gold focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold"
+    >
+      Volver al inicio
+    </a>
+  </header>
+
+  <main id="main" class="section-x py-[clamp(64px,10vh,120px)]">
+    <div class="shell">
+      <Eyebrow tracking="tracking-[.3em]">Legal</Eyebrow>
+      <h1 class="mt-6 mb-0 max-w-[20ch] font-display text-[clamp(40px,5vw,72px)]/[1.05] font-normal text-balance text-bone">
+        {title}
+      </h1>
+      <p class="mt-5 mb-0 text-[12px] tracking-[.14em] text-bone-45 uppercase">
+        Última actualización: {legal.actualizado}
+      </p>
+
+      <article
+        class="mt-[clamp(44px,8vh,80px)] max-w-[72ch] border-t border-hair pt-[clamp(32px,5vh,56px)] text-[17px]/[1.75] font-light text-pretty text-bone-76 [&_a]:text-gold [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:text-bone [&_a:focus-visible]:outline-1 [&_a:focus-visible]:outline-offset-4 [&_a:focus-visible]:outline-gold [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:font-display [&_h2]:text-[clamp(24px,2.2vw,32px)] [&_h2]:leading-[1.2] [&_h2]:font-normal [&_h2]:text-bone [&_li]:mt-2 [&_p]:my-4 [&_strong]:font-medium [&_strong]:text-bone [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6"
+      >
+        <slot />
+      </article>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  import { initReveals } from '../scripts/reveal';
+
+  // El footer usa reveals; sin esto se quedaría oculto hasta el failsafe.
+  initReveals();
+</script>

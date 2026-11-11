@@ -3,19 +3,36 @@
 export const site = {
   name: 'La Otra Cara',
   tagline: 'Agencia de Marketing',
-  title: 'La Otra Cara — Agencia Creativa & Marketing',
+  title: 'Agencia de Marketing Gastronómico en Madrid | La Otra Cara',
   description:
-    'Agencia boutique de marketing, branding y crecimiento digital. Estrategia, identidad y comunicación para marcas que quieren competir en otra categoría.',
+    'Marketing gastronómico para restaurantes en Madrid: redes sociales, fotografía y vídeo, diseño web y estrategia digital para atraer nuevos comensales.',
+  // TODO: email real. Este dominio se dedujo y probablemente no es el definitivo;
+  // cambiarlo aquí lo actualiza en el footer, el CTA, el JSON-LD y las páginas legales.
   email: 'hola@laotracara.com',
   // TODO: número real de WhatsApp (https://wa.me/<código+número>).
   whatsapp: 'https://wa.me/',
   // TODO: handle real de Instagram.
   instagram: 'https://instagram.com/',
-  // TODO: ciudad y país reales del estudio.
-  location: 'Ciudad — País',
-  locationNote: 'Trabajamos con marcas en toda LATAM.',
+  location: 'Madrid · España',
+  locationNote: 'Trabajamos con empresas de Latam',
+  /** Para el JSON-LD. TODO: calle y código postal si el estudio tiene sede física abierta al público. */
+  address: { locality: 'Madrid', region: 'Comunidad de Madrid', country: 'ES' },
   year: 2026,
 } as const;
+
+/**
+ * Titular del sitio para el Aviso Legal y la Política de Privacidad (LSSI art. 10
+ * y RGPD art. 13). TODO: todos son placeholder; sin estos datos las páginas
+ * legales no cumplen. Si el titular es una sociedad, añadir también los datos
+ * del Registro Mercantil.
+ */
+export const legal = {
+  titular: 'TODO: nombre completo o razón social del titular',
+  nif: 'TODO: NIF / CIF',
+  domicilio: 'TODO: domicilio completo, Madrid',
+  registro: null as string | null,
+  actualizado: '10 de noviembre de 2026',
+};
 
 /**
  * Media del hero. El video es decorativo: se difiere por JS tras el `load` y

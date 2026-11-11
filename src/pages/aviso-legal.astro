@@ -1,0 +1,73 @@
+---
+import { legal, site } from '../data/site';
+import LegalLayout from '../layouts/LegalLayout.astro';
+
+// TODO: revisar con asesoría legal antes de publicar. Los datos del titular
+// salen de `legal` en src/data/site.ts y siguen siendo placeholder.
+const dominio = new URL(Astro.site ?? 'https://laotracara.com').hostname;
+---
+
+<LegalLayout
+  title="Aviso Legal"
+  description="Aviso legal de La Otra Cara: datos del titular del sitio web, condiciones de uso, propiedad intelectual y legislación aplicable."
+>
+  <h2>1. Datos identificativos</h2>
+  <p>
+    En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de
+    la Información y de Comercio Electrónico (LSSI-CE), se informa de los datos del titular de este
+    sitio web:
+  </p>
+  <ul>
+    <li><strong>Titular:</strong> {legal.titular}</li>
+    <li><strong>Nombre comercial:</strong> {site.name}</li>
+    <li><strong>NIF:</strong> {legal.nif}</li>
+    <li><strong>Domicilio:</strong> {legal.domicilio}</li>
+    <li><strong>Email:</strong> <a href={`mailto:${site.email}`}>{site.email}</a></li>
+    <li><strong>Sitio web:</strong> {dominio}</li>
+    {legal.registro && <li><strong>Datos registrales:</strong> {legal.registro}</li>}
+  </ul>
+
+  <h2>2. Objeto y condiciones de uso</h2>
+  <p>
+    Este sitio web informa sobre los servicios de marketing gastronómico de {site.name} y permite
+    contactar con el equipo. El acceso es gratuito y atribuye la condición de usuario, que acepta este
+    Aviso Legal en la versión publicada en el momento del acceso.
+  </p>
+  <p>
+    El usuario se compromete a hacer un uso adecuado del sitio y de sus contenidos, a no emplearlos
+    para actividades ilícitas o contrarias a la buena fe y a no dañar los sistemas del titular ni de
+    terceros.
+  </p>
+
+  <h2>3. Propiedad intelectual e industrial</h2>
+  <p>
+    Los textos, fotografías, vídeos, logotipos, diseño gráfico y código de este sitio son titularidad
+    de {site.name} o de terceros que han autorizado su uso, y están protegidos por la normativa de
+    propiedad intelectual e industrial. Las imágenes y vídeos de proyectos se muestran con permiso de
+    los restaurantes correspondientes, que conservan los derechos sobre sus marcas.
+  </p>
+  <p>
+    Queda prohibida su reproducción, distribución, comunicación pública o transformación sin
+    autorización expresa del titular.
+  </p>
+
+  <h2>4. Responsabilidad</h2>
+  <p>
+    {site.name} procura que la información del sitio sea correcta y esté actualizada, pero no
+    garantiza la ausencia de errores ni la disponibilidad continua del sitio. Tampoco se hace
+    responsable de los contenidos de sitios de terceros a los que se pueda acceder mediante enlaces.
+  </p>
+
+  <h2>5. Protección de datos y cookies</h2>
+  <p>
+    El tratamiento de los datos personales se explica en la <a href="/privacidad/">Política de
+    Privacidad</a>, y el uso de cookies en la <a href="/cookies/">Política de Cookies</a>.
+  </p>
+
+  <h2>6. Legislación aplicable y jurisdicción</h2>
+  <p>
+    Este Aviso Legal se rige por la legislación española. Para cualquier controversia, las partes se
+    someten a los juzgados y tribunales de Madrid, salvo que la normativa de consumidores establezca
+    otro fuero.
+  </p>
+</LegalLayout>

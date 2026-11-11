@@ -1,3 +1,4 @@
+# TODO: actualizar el dominio cuando se confirme el de producción (ver astro.config.mjs).
 User-agent: *
 Allow: /
 

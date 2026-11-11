@@ -11,7 +11,7 @@ export const faq: Pregunta[] = [
   {
     pregunta: '¿Con qué tipo de restaurantes trabajáis?',
     respuesta:
-      'Somos una agencia especializada en marketing gastronómico para restaurantes. Trabajamos principalmente con restaurantes que quieren comunicar mejor su propuesta, mejorar su presencia digital y conectar con nuevos comensales. También valoramos proyectos de cafeterías, bares y hoteles cuando nuestros servicios encajan con sus necesidades.',
+      'Somos una agencia de Madrid especializada en marketing gastronómico para restaurantes. Trabajamos principalmente con restaurantes que quieren comunicar mejor su propuesta, mejorar su presencia digital y conectar con nuevos comensales. También valoramos proyectos de cafeterías, bares y hoteles cuando nuestros servicios encajan con sus necesidades.',
   },
   {
     pregunta: '¿Qué servicios de marketing gastronómico ofrecéis?',
