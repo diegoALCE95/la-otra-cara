@@ -6,9 +6,9 @@ export const site = {
   title: 'Agencia de Marketing Gastronómico en Madrid | La Otra Cara',
   description:
     'Marketing gastronómico para restaurantes en Madrid: redes sociales, fotografía y vídeo, diseño web y estrategia digital para atraer nuevos comensales.',
-  // TODO: email real. Este dominio se dedujo y probablemente no es el definitivo;
-  // cambiarlo aquí lo actualiza en el footer, el CTA, el JSON-LD y las páginas legales.
-  email: 'hola@laotracara.com',
+  // Provisional: Gmail hasta tener un buzón en laotracaramkt.es. Cambiarlo aquí lo
+  // actualiza en el footer, el CTA, el JSON-LD, las páginas legales y los avisos del formulario.
+  email: 'laotracaramkt@gmail.com',
   // TODO: número real de WhatsApp (https://wa.me/<código+número>).
   whatsapp: 'https://wa.me/',
   // TODO: handle real de Instagram.

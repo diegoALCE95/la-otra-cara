@@ -26,6 +26,13 @@ aviso con la API de Resend (`fetch`, sin dependencias) con `reply_to` = email de
 que basta con pulsar "Responder" en Gmail. Si algo falla responde un código ≠ 2xx y el front
 muestra el error con el email como salida; nunca una confirmación falsa.
 
+Si el aviso sale bien, la función manda además al usuario un **acuse de recibo** breve (saludo
+con su nombre y "nos pondremos en contacto pronto"), con "responder a" = la primera dirección de
+`CONTACTO_DESTINO`. El texto está en `acuseDeRecibo()` dentro de `api/contacto.ts`. No repite el
+mensaje del usuario, para que el formulario no sirva para mandar texto arbitrario a terceros. Si
+el acuse falla solo queda en los logs (`[contacto] acuse:`); el usuario ve igualmente el éxito,
+porque su mensaje sí nos llegó.
+
 Cuerpo que envía el front:
 
 ```json

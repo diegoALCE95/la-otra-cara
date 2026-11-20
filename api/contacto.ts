@@ -10,6 +10,10 @@
  *   CONTACTO_DESTINO   a quién llega el aviso (varias, separadas por comas)
  *   CONTACTO_REMITENTE opcional; por defecto el remitente de pruebas de Resend
  *
+ * Tras el aviso interno se envía al usuario un acuse de recibo breve, con
+ * "responder a" = la primera dirección de CONTACTO_DESTINO. Si el acuse falla
+ * solo se registra: el mensaje ya nos llegó, así que el front muestra éxito.
+ *
  * Cualquier respuesta que no sea 2xx hace que el front muestre el error con el
  * email como salida, así que aquí basta con no responder 200 si algo falla.
  */
@@ -37,6 +41,53 @@ const escaparHtml = (texto: string) =>
 
 /** Quita saltos de línea para que nada del usuario rompa las cabeceras del correo. */
 const enUnaLinea = (texto: string) => texto.replace(/[\r\n]+/g, ' ');
+
+interface Email {
+  from: string;
+  to: string[];
+  reply_to: string;
+  subject: string;
+  text: string;
+  html: string;
+}
+
+/** Envía un correo con la API de Resend. Devuelve `true` si lo aceptó. */
+async function enviarEmail(apiKey: string, email: Email, etiqueta: string): Promise<boolean> {
+  try {
+    const respuesta = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(email),
+    });
+    if (respuesta.ok) return true;
+    console.error(`[contacto] ${etiqueta}: Resend respondió`, respuesta.status, await respuesta.text());
+  } catch (error) {
+    console.error(`[contacto] ${etiqueta}: no se pudo contactar con Resend:`, error);
+  }
+  return false;
+}
+
+/**
+ * Acuse de recibo para quien escribe. Solo repite su nombre, nunca el mensaje,
+ * para que el formulario no sirva para mandar texto arbitrario a terceros.
+ */
+function acuseDeRecibo(nombre: string) {
+  const saludo = `Hola, ${nombre}:`;
+  const parrafos = [
+    'Gracias por escribirnos. Hemos recibido tu mensaje y ya lo tenemos sobre la mesa.',
+    'Nos pondremos en contacto contigo muy pronto para entender bien qué necesitas. Si quieres adelantarnos algo, puedes responder directamente a este correo.',
+  ];
+
+  return {
+    subject: 'Hemos recibido tu mensaje — La Otra Cara',
+    text: [saludo, '', ...parrafos.flatMap((p) => [p, '']), 'Un saludo,', 'El equipo de La Otra Cara'].join('\n'),
+    html: `
+      <p>${escaparHtml(saludo)}</p>
+      ${parrafos.map((p) => `<p>${p}</p>`).join('\n      ')}
+      <p>Un saludo,<br>El equipo de La Otra Cara</p>
+    `,
+  };
+}
 
 export async function POST(request: Request): Promise<Response> {
   const apiKey = process.env.RESEND_API_KEY;
@@ -93,31 +144,32 @@ export async function POST(request: Request): Promise<Response> {
     <p style="color:#888;font-size:12px">Enviado desde el formulario de la web. Responde a este correo para contestar directamente.</p>
   `;
 
-  try {
-    const respuesta = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: remitente,
-        to: destino.split(',').map((email: string) => email.trim()),
-        reply_to: campos.email,
-        subject: asunto,
-        text: texto,
-        html,
-      }),
-    });
+  const destinatarios = destino.split(',').map((email) => email.trim()).filter(Boolean);
 
-    if (!respuesta.ok) {
-      console.error('[contacto] Resend respondió', respuesta.status, await respuesta.text());
-      return responder(502, { ok: false, error: 'envio-fallido' });
-    }
-  } catch (error) {
-    console.error('[contacto] No se pudo contactar con Resend:', error);
-    return responder(502, { ok: false, error: 'envio-fallido' });
-  }
+  const avisoEnviado = await enviarEmail(
+    apiKey,
+    {
+      from: remitente,
+      to: destinatarios,
+      reply_to: campos.email,
+      subject: asunto,
+      text: texto,
+      html,
+    },
+    'aviso',
+  );
+  if (!avisoEnviado) return responder(502, { ok: false, error: 'envio-fallido' });
+
+  await enviarEmail(
+    apiKey,
+    {
+      from: remitente,
+      to: [campos.email],
+      reply_to: destinatarios[0],
+      ...acuseDeRecibo(enUnaLinea(campos.nombre)),
+    },
+    'acuse',
+  );
 
   return responder(200, { ok: true });
 }
