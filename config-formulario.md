@@ -2,10 +2,10 @@
 
 ## Pendientes
 
-- **Dónde se hospeda la web.** Sin decidir. Todo lo de abajo da por hecho Vercel, pero las
-  variables se configuran en el panel del hosting que se acabe eligiendo, así que esto se queda
-  como está hasta que haya decisión. Mientras tanto no llega ningún mensaje: el formulario
-  valida, avisa de que el envío no está configurado y ofrece el email, sin dar nada por enviado.
+- **Verificar `laotracaramkt.es` en Resend.** La web ya está en producción en
+  `www.laotracaramkt.es`, pero hasta verificar el dominio el aviso sale desde el remitente de
+  pruebas de Resend (`onboarding@resend.dev`), que solo entrega al email dueño de la cuenta
+  (`diegoalvarezc94@gmail.com`). Ver "Pasar a producción".
 - **Reserva de fecha y hora.** No existe y el cliente la ha pedido. Lo más probable es montarla
   con **Calendly** —o un script de calendario equivalente, como Cal.com— incrustado en el modal
   del CTA final, en lugar de construir disponibilidad, antisolapes, zonas horarias y
@@ -13,37 +13,70 @@
 
 ---
 
-El formulario (`src/components/ContactoForm.astro` + `src/scripts/contacto-form.ts`) ya hace
-`POST` en JSON a la URL que pongas en `PUBLIC_CONTACTO_ENDPOINT`, y añade `access_key` al
-cuerpo si defines `PUBLIC_CONTACTO_ACCESS_KEY`.
+## Montaje actual — función de Vercel + Resend
 
-Cuerpo que envía:
+El formulario (`src/components/ContactoForm.astro` + `src/scripts/contacto-form.ts`) hace `POST`
+en JSON a **`/api/contacto`**, que es `api/contacto.ts` en la raíz del repo: una función nativa de
+Vercel. Vercel la despliega sola junto al sitio estático de Astro, **sin adaptador** (el adaptador
+`@astrojs/vercel` se descartó porque en Windows `pnpm build` falla al crear los symlinks de pnpm
+dentro de la función).
+
+La función revalida los campos, descarta en silencio si viene el honeypot `botcheck`, y envía el
+aviso con la API de Resend (`fetch`, sin dependencias) con `reply_to` = email del formulario, así
+que basta con pulsar "Responder" en Gmail. Si algo falla responde un código ≠ 2xx y el front
+muestra el error con el email como salida; nunca una confirmación falsa.
+
+Cuerpo que envía el front:
 
 ```json
-{
-  "nombre": "…",
-  "restaurante": "…",
-  "email": "…",
-  "mensaje": "…",
-  "botcheck": "",
-  "subject": "Nuevo contacto — <nombre> (<restaurante>)",
-  "access_key": "solo si PUBLIC_CONTACTO_ACCESS_KEY está definida"
-}
+{ "nombre": "…", "restaurante": "…", "email": "…", "mensaje": "…", "botcheck": "",
+  "subject": "Nuevo contacto — <nombre> (<restaurante>)" }
 ```
 
-Sin `PUBLIC_CONTACTO_ENDPOINT` el formulario valida, no envía nada y avisa de que el envío no
-está configurado, ofreciendo el email. Nunca muestra una confirmación falsa.
+### Puesta en marcha (pruebas, a Gmail)
 
-Las variables se declaran en `.env` para local (está en `.gitignore`) y en
-**Vercel → Project → Settings → Environment Variables** para producción. Al llevar prefijo
-`PUBLIC_` se incrustan en el bundle del cliente: son públicas por diseño, no metas ahí nada
-secreto.
+1. Cuenta en **resend.com** creada con `diegoalvarezc94@gmail.com` (con el remitente de pruebas,
+   Resend solo entrega al email de la cuenta). **API Keys → Create** con permiso "Sending access".
+2. **Vercel → Project → Settings → Environment Variables** (Production y Preview):
+
+   ```
+   RESEND_API_KEY=re_…
+   CONTACTO_DESTINO=diegoalvarezc94@gmail.com
+   ```
+
+   `PUBLIC_CONTACTO_ENDPOINT` debe quedar **vacía o sin definir** (si no, el front envía allí).
+3. Redeploy y enviar el formulario desde la URL de Vercel. Si el correo no llega: revisar spam, y
+   en Vercel → Deployment → **Logs** buscar líneas `[contacto]` (falta de variables o el error
+   exacto que devolvió Resend). En Resend → **Emails** se ve cada envío y su estado.
+
+### Pasar a producción
+
+1. Resend → **Domains → Add** `laotracaramkt.es` y añadir en el DNS del dominio los registros que
+   indica (MX y TXT de SPF en el subdominio `send`, TXT de DKIM). Si el DNS lo gestiona Vercel:
+   Vercel → Domains → `laotracaramkt.es` → DNS Records. Esperar a "Verified".
+2. Variables en Vercel:
+
+   ```
+   CONTACTO_REMITENTE=Web La Otra Cara <web@laotracaramkt.es>
+   CONTACTO_DESTINO=<buzón definitivo>
+   ```
+
+   `web@` no necesita existir como buzón: es solo el remitente. `CONTACTO_DESTINO` admite varios
+   separados por comas; con el dominio verificado ya puede ser cualquier dirección, Gmail incluido.
+3. Actualizar la Política de Privacidad: Resend como encargado del tratamiento (EE. UU.).
+
+En local, `pnpm dev` no sirve `api/`: el formulario mostrará el estado de error, que es lo
+correcto. Para probar la función en local hace falta `vercel dev` (CLI de Vercel). El archivo
+`.env` local (en `.gitignore`) ya tiene `CONTACTO_DESTINO`; falta la clave.
+
+Extras que este montaje habilita cuando haga falta: Cloudflare Turnstile (la validación del token
+va en la función), rate-limit con Vercel KV, y copia de los envíos en una hoja, Airtable o Notion.
 
 ---
 
-## Opción 1 — Proveedor de formularios (el sitio sigue 100 % estático)
+## Alternativa — Proveedor de formularios externo
 
-Recomendada para salir a producción ya: no hace falta adaptador, ni servidor, ni tocar código.
+Si se prefiere no mantener la función: basta con definir `PUBLIC_CONTACTO_ENDPOINT` (y la clave, si la pide) y el front envía allí en lugar de a `/api/contacto`.
 
 **Web3Forms** (250 envíos/mes gratis):
 
@@ -69,47 +102,6 @@ aviso a Gmail, una hoja o el CRM (comprobar que el webhook responda con CORS abi
 
 Qué asumes: los datos pasan por un tercero y la clave es pública. El honeypot `botcheck` ya
 filtra bots simples; si llega spam, activa el captcha del propio proveedor.
-
----
-
-## Opción 2 — Función propia en Vercel + Resend (control total)
-
-La clave vive en el servidor, puedes validar otra vez ahí, limitar por IP, guardar copia de cada
-mensaje y enviar desde tu dominio.
-
-1. Adaptador de Vercel:
-
-   ```bash
-   pnpm astro add vercel
-   ```
-
-   Deja el sitio prerenderizado y solo la ruta de API como función: en `astro.config.mjs`,
-   `adapter: vercel()` con `output: 'static'` y `export const prerender = false` en la ruta.
-
-2. Cuenta en resend.com, dominio `laotracara.com` verificado (registros DNS que te indican) y
-   una API key. En Vercel, **sin** prefijo `PUBLIC_`:
-
-   ```
-   RESEND_API_KEY=re_…
-   CONTACTO_DESTINO=hola@laotracara.com
-   ```
-
-3. `src/pages/api/contacto.ts`: revalidar los campos obligatorios, rechazar si `botcheck` viene
-   lleno, enviar con Resend (`from: 'Web La Otra Cara <web@laotracara.com>'`,
-   `reply_to: <email del formulario>`) y responder `200` en JSON. Cualquier otro código hace que
-   el front muestre el estado de error, que es lo que queremos.
-
-4. Front: una sola variable, sin `access_key`.
-
-   ```
-   PUBLIC_CONTACTO_ENDPOINT=/api/contacto
-   ```
-
-Extras que esta opción habilita cuando haga falta: Cloudflare Turnstile (la validación del token
-va en la función), rate-limit con Vercel KV, y copia de los envíos en Vercel Postgres, Airtable
-o Notion.
-
-Qué asumes: una función serverless que mantener y el dominio verificado en Resend.
 
 ---
 

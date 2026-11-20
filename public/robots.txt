@@ -1,5 +1,4 @@
-# TODO: actualizar el dominio cuando se confirme el de producción (ver astro.config.mjs).
 User-agent: *
 Allow: /
 
-Sitemap: https://laotracara.com/sitemap-index.xml
+Sitemap: https://www.laotracaramkt.es/sitemap-index.xml

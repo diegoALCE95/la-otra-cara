@@ -5,9 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: confirmar el dominio de producción; probablemente no es este. Al cambiarlo,
-  // actualizar también public/robots.txt y el email de src/data/site.ts.
-  site: 'https://laotracara.com',
+  // Dominio de producción. Vercel redirige laotracaramkt.es → www, así que el
+  // canónico es www. Al cambiarlo, actualizar también public/robots.txt.
+  site: 'https://www.laotracaramkt.es',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
